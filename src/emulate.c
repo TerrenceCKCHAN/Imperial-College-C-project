@@ -62,6 +62,13 @@ typedef uint8_t u8;
 #define GET_DIS_REG(x)           (u32)          SET_DIS_REG_MASK(x)>>11
 #define GET_OPRAND2(x)           (u32)          SET_OPRAND2(x)
 
+/*define shifting operations*/
+#define MSB              1<<31
+#define LShiftL(x,n)     x<<n
+#define LShiftR(x,n)     x>>n
+#define AShiftR(x,n)     LShiftR(x,n)|(x&MSB)
+#define RotateR(x,n)     (x>>n)|LShiftL(x,32-n)
+
 
 typedef struct{
     u32 COND:4;
@@ -146,8 +153,23 @@ void loadbinaryFile(char* address){
 int main(int argc,  char **argv) {
     char address[400];
     strcpy(address, "/homes/hxm16/arm_1617_testsuite/test_cases/add01");
-    printBit(GET_COND(0xCu));
+    DATAPROCESSING d1;
+    d1.S = 1;
+    DATAPROCESSING *pt;
+    pt = &d1;
+    DATAPROCESSING_INSTR(pt);
+    u32 add = 0xfu;
+    printBit(add);
+    printBit(RotateR(add,2));
   return EXIT_SUCCESS;
+}
+
+void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
+    if((datapt->S)!=0){
+        //TODO: change CPSR FLAG
+    }
+    //The CPSR register is unaffected
+
 }
 
 
