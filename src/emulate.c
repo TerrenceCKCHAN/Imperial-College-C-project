@@ -11,15 +11,15 @@ typedef uint8_t u8;
 
 
 /*This is use to get the flag of the CPSR register*/
-#define NFLAG_MASK u32 1 << 31
-#define ZFLAG_MASK u32 1 << 30
-#define CFLAG_MASK u32 1 << 29
-#define VFLAG_MASK u32 1 << 28
+#define NFLAG_MASK (u32) 1 << 31
+#define ZFLAG_MASK (u32) 1 << 30
+#define CFLAG_MASK (u32) 1 << 29
+#define VFLAG_MASK (u32) 1 << 28
 
-#define SET_NFLAG(x) u32 (x << 31 & NFLAG_MASK)
-#define SET_ZFLAG(x) u32 (x << 30 & ZFLAG_MASK)
-#define SET_CFLAG(x) u32 (x << 29 & CFLAG_MASK)
-#define SET_VFLAG(x) u32 (x << 28 & VFLAG_MASK)
+#define SET_NFLAG(x) (u32) (x << 31 & NFLAG_MASK)
+#define SET_ZFLAG(x) (u32) (x << 30 & ZFLAG_MASK)
+#define SET_CFLAG(x) (u32) (x << 29 & CFLAG_MASK)
+#define SET_VFLAG(x) (u32) (x << 28 & VFLAG_MASK)
 
 /*This is the masks for data processing instruction */
 #define COND_MASK            (u32)         0xFu<<28
@@ -38,20 +38,62 @@ typedef uint8_t u8;
 #define SET_OPRAND2(x)           (u32)          (x)
 
 
-
-
-void printB(uint32_t );
-int main(int argc,  char **argv) {
-    printBit(SET_IS);
-  return EXIT_SUCCESS;
-}
-
 void printBit(uint32_t x){
     int i;
-    uint32_t mask = 1 << 31;
-    for(i = 0;i < 32;++i){
+    uint32_t mask = 1 << 7;
+    for(i = 0;i < 8;++i){
         printf("%i", (x & mask) != 0);
         x<<=1;
     }
     printf("\n");
 }
+
+void loadbinaryFile(char* address){
+    unsigned char *combuffer;
+    u32 size;
+    FILE *ifp;
+
+    ifp = fopen(address, "rb");
+
+    fseek(ifp, 0, SEEK_END);
+    size = ftell(ifp);
+    fseek(ifp, 0, SEEK_SET);
+    combuffer = (unsigned char *) malloc(size);
+    combuffer = malloc(size);
+
+    if(ifp == NULL){
+        fprintf(stderr,"Unable to read file!");
+        exit(EXIT_FAILURE);
+    }
+
+    fread(combuffer, 1,size,ifp);
+
+    for(int i = 0; i < size; i++) {
+        printf("%x ",combuffer[i]);
+        printBit(combuffer[i]);
+        printf("\n");
+    }
+
+    fclose(ifp);
+    free(combuffer);
+}
+
+
+
+
+int main(int argc,  char **argv) {
+    char address[400];
+    strcpy(address, "/homes/hxm16/arm_1617_testsuite/test_cases/add01");
+    loadbinaryFile(address);
+
+  return EXIT_SUCCESS;
+}
+
+
+
+
+
+
+
+
+
