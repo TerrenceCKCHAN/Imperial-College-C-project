@@ -1,11 +1,8 @@
-//
-// Created by klc116 on 5/29/17.
-//
 #include "emulate.h"
+#include "decode.h"
 
 DATAPROCESSING DecodeDataProcessing(u32 instruction) {
     DATAPROCESSING instr;
-    /* TODO: GETBIT function
     instr.COND     = GETBIT(instruction, 28, 31);
     instr.I        = GETBIT(instruction, 25, 25);
     instr.OPCODE   = GETBIT(instruction, 21, 24);
@@ -13,13 +10,11 @@ DATAPROCESSING DecodeDataProcessing(u32 instruction) {
     instr.REGN     = GETBIT(instruction, 16, 19);
     instr.REGD     = GETBIT(instruction, 12, 15);
     instr.OPRAND2  = GETBIT(instruction, 0, 11);
-     */
     return instr;
 }
 
 MULTIPLY DecodeMultiply(u32 instruction) {
     MULTIPLY instr;
-    /* TODO: GETBIT function
     instr.COND     = GETBIT(instruction, 28, 31);
     instr.A        = GETBIT(instruction, 21, 21);
     instr.S        = GETBIT(instruction, 20, 20);
@@ -27,12 +22,11 @@ MULTIPLY DecodeMultiply(u32 instruction) {
     instr.REGN     = GETBIT(instruction, 12, 15);
     instr.REGS     = GETBIT(instruction, 8, 11);
     instr.REGM     = GETBIT(instruction, 0, 3);
-    return instr;*/
+    return instr;
 }
 
 SIN_DATA_TRAN DecodeSingleDataTransfer(u32 instruction) {
     SIN_DATA_TRAN instr;
-    /* TODO: GETBIT function
     instr.COND      = GETBIT(instruction, 28, 31);
     instr.I         = GETBIT(instruction, 25, 25);
     instr.P         = GETBIT(instruction, 24, 24);
@@ -41,15 +35,14 @@ SIN_DATA_TRAN DecodeSingleDataTransfer(u32 instruction) {
     instr.REGN      = GETBIT(instruction, 16, 19);
     instr.REGD      = GETBIT(instruction, 12, 15);
     instr.OFFSET    = GETBIT(instruction, 0, 11);
-    return instr;*/
+    return instr;
 }
 
 BRANCH DecodeBranch(u32 instruction) {
     BRANCH instr;
-    /* TODO: GETBIT function
     instr.COND      = GETBIT(instruction, 28, 31);
     instr.OFFSET    = GETBIT(instruction, 0, 23);
-    return instr;*/
+    return instr;
 }
 
 void printDataProcessing(DATAPROCESSING dp) {

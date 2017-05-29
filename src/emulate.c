@@ -1,5 +1,4 @@
-#include "emulate.h"
-#include "decode.c"
+#include "decode.h"
 
 /*This is the function to print bit*/
 void printBit(uint32_t x){
@@ -81,7 +80,7 @@ int main(int argc,  char **argv) {
     printf("%x\n", generateDataFromHex(hex));
     u32 instruction = generateDataFromHex(hex);
     printBit(instruction);
-    printStruct(DecodeDataProcessing(instruction));
+    printDataProcessing(DecodeDataProcessing(instruction));
 
 
     printBit(GENERATEMASK(2,2));

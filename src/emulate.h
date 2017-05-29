@@ -8,12 +8,9 @@
 #include <limits.h>
 #include <string.h>
 
-
-
 typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
-
 
 /*This is use to set and get the flag of the CPSR register*/
 #define NFLAG_MASK (u32) 1 << 31
@@ -77,13 +74,7 @@ typedef uint8_t u8;
 #define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
 #define GETBIT(x, start, end)   (u32) (GENERATEMASK(start, end) & x)>>start
 
-
-
-
-
-
-
-typedef struct{
+typedef struct a{
     u32 COND:4;
     u32 I:1;
     u32 OPCODE:4;
@@ -118,5 +109,7 @@ typedef struct{
     u32 COND:4;
     u32 OFFSET:24;
 }BRANCH;
+
+
 
 #endif //ARM11_06_EMULATE_H
