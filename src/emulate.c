@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
+#include <string.h>
 
 
 
@@ -17,15 +18,17 @@ typedef uint8_t u8;
 #define CFLAG_MASK (u32) 1 << 29
 #define VFLAG_MASK (u32) 1 << 28
 
-#define SET_NFLAG(x) (u32) (x << 31 & NFLAG_MASK)
-#define SET_ZFLAG(x) (u32) (x << 30 & ZFLAG_MASK)
-#define SET_CFLAG(x) (u32) (x << 29 & CFLAG_MASK)
-#define SET_VFLAG(x) (u32) (x << 28 & VFLAG_MASK)
+#define SET_NFLAG(x) (u32) (x  & NFLAG_MASK)
+#define SET_ZFLAG(x) (u32) (x  & ZFLAG_MASK)
+#define SET_CFLAG(x) (u32) (x  & CFLAG_MASK)
+#define SET_VFLAG(x) (u32) (x  & VFLAG_MASK)
 
 #define GET_NFLAG(x) (u32) (SET_NFLAG(x)>>31)
 #define GET_ZFLAG(x) (u32) (SET_ZFLAG(x)>>30)
 #define GET_CFLAG(x) (u32) (SET_CFLAG(X)>>29)
 #define GET_VFLAG(x) (u32) (SET_VFLAG(x)>>28)
+
+/*
 
 
 
@@ -40,6 +43,7 @@ typedef uint8_t u8;
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
 /*This is the masks, setter and getter for data processing instruction (for testing purpose) */
+
 #define COND_MASK            (u32)         0xFu << 28
 #define IMMED_OP_MASK        (u32)         0x1u << 25
 #define OP_CODE_MASK         (u32)         0xFu << 21
@@ -69,6 +73,9 @@ typedef uint8_t u8;
 #define LShiftR(x,n)     x >> n
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+
+
+
 
 
 typedef struct{
@@ -110,7 +117,7 @@ typedef struct{
 /*This is the function to print bit*/
 void printBit(uint32_t x){
     int i;
-    uint32_t mask = 1 << 31;
+    uint32_t mask = (uint32_t) 1 << 31;
     for(i = 0;i < 32;++i){
         printf("%i", (x & mask) != 0);
         x<<=1;
@@ -118,7 +125,7 @@ void printBit(uint32_t x){
     printf("\n");
 }
 
-void loadbinaryFile(char* address){
+void loadbinaryFile(char *address){
     unsigned char *combuffer;
     u32 size;
     FILE *ifp;
@@ -126,7 +133,7 @@ void loadbinaryFile(char* address){
     ifp = fopen(address, "rb");
 
     fseek(ifp, 0, SEEK_END);
-    size = ftell(ifp);
+    size = (u32) ftell(ifp);
     fseek(ifp, 0, SEEK_SET);
     combuffer = (unsigned char *) malloc(size);
 
@@ -147,21 +154,23 @@ void loadbinaryFile(char* address){
     free(combuffer);
 }
 
-u32 generateDataFromHex(char hex[]){
+
+u32 generateDataFromHex(char hex[]) {
     int length = strlen(hex);
     u32 data = 0;
     u32 shift = (length - 1) * 4;
-    for(int pos = 0; pos < length; pos++) {
+    for (int pos = 0; pos < length; pos++) {
         u32 hexValue;
-        if(hex[pos] >= '0' && hex[pos] <= '9') {
+        if (hex[pos] >= '0' && hex[pos] <= '9') {
             hexValue = (hex[pos] - '0');
-        } else if(hex[pos] >= 'a' && hex[pos] <= 'f') {
+        } else if (hex[pos] >= 'a' && hex[pos] <= 'f') {
             hexValue = hex[pos] - 'a' + 10;
         }
         data += hexValue << shift;
         shift -= 4;
     }
     return data;
+
 }
 
 void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
