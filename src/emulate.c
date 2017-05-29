@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <limits.h>
 
 
@@ -29,45 +30,45 @@ typedef uint8_t u8;
 
 
 /*This is use to extract bit 26 and 27 in the instruction set*/
-#define BIT2627_MASK             (u32)   0x3u<<26
-#define FIND_BIT2627(x)          (u32)   (BIT2627_MASK & x)>>26
+#define BIT2627_MASK             (u32)   0x3u << 26
+#define FIND_BIT2627(x)          (u32)   (BIT2627_MASK & x) >> 26
 
 /*To determine which state the instruction set are*/
-#define IS_MULTI(x)              (u32)   ((0x90u & x)==0x90)&(FIND_BIT2627(x)==0)
-#define IS_DATAPROCESS(x)        (u32)   ((FIND_BIT2627(x)==0) & !IS_MULTI(x)
+#define IS_MULTI(x)              (u32)   ((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0)
+#define IS_DATAPROCESS(x)        (u32)   ((FIND_BIT2627(x) == 0) & !IS_MULTI(x)
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
 /*This is the masks, setter and getter for data processing instruction (for testing purpose) */
-#define COND_MASK            (u32)         0xFu<<28
-#define IMMED_OP_MASK        (u32)         0x1u<<24
-#define OP_CODE_MASK         (u32)         0xFu<<20
-#define S_MASK               (u32)         0x1u<<19
-#define FIRST_OP_REG_MASK    (u32)         0xFu<<15
-#define DIS_REG_MASK         (u32)         0xFu<<11
+#define COND_MASK            (u32)         0xFu << 28
+#define IMMED_OP_MASK        (u32)         0x1u << 25
+#define OP_CODE_MASK         (u32)         0xFu << 21
+#define S_MASK               (u32)         0x1u << 20
+#define FIRST_OP_REG_MASK    (u32)         0xFu << 16
+#define DIS_REG_MASK         (u32)         0xFu << 12
 
-#define SET_COND(x)              (u32)          (x << 28 & COND_MASK)
-#define SET_IMMED_OP             (u32)          (x << 24 & IMMED_OP_MASK)
-#define SET_OP_CODE(x)           (u32)          (x << 20 & OP_COND_MASK)
-#define SET_S(x)                 (u32)          (x << 19 & S_MASK)
-#define SET_FIRST_OP_REG(x)      (u32)          (x << 15 & FIRST_OP_REG_MASK)
-#define SET_DIS_REG(x)           (u32)          (x <<11 & DIS_REG_MASK)
+#define SET_COND(x)              (u32)          (x & COND_MASK)
+#define SET_IMMED_OP(x)          (u32)          (x & IMMED_OP_MASK)
+#define SET_OP_CODE(x)           (u32)          (x & OP_CODE_MASK)
+#define SET_S(x)                 (u32)          (x & S_MASK)
+#define SET_FIRST_OP_REG(x)      (u32)          (x & FIRST_OP_REG_MASK)
+#define SET_DIS_REG(x)           (u32)          (x & DIS_REG_MASK)
 #define SET_OPRAND2(x)           (u32)          (x)
 
-#define GET_COND(x)              (u32)          SET_COND(x)>>28
-#define GET_IMMED_OP(x)          (u32)          SET_IMMED_OP_MASK(x)>>24
-#define GET_OP_CODE(x)           (u32)          SET_OP_CODE(x)>>20
-#define GET_S(x)                 (u32)          SET_S(x)>>19
-#define GET_FIRST_OP_REG(x)      (u32)          SET_FIRST_OP_REG_MASK(x)>>15
-#define GET_DIS_REG(x)           (u32)          SET_DIS_REG_MASK(x)>>11
+#define GET_COND(x)              (u32)          SET_COND(x) >> 28
+#define GET_IMMED_OP(x)          (u32)          SET_IMMED_OP(x) >> 25
+#define GET_OP_CODE(x)           (u32)          SET_OP_CODE(x) >> 21
+#define GET_S(x)                 (u32)          SET_S(x) >> 20
+#define GET_FIRST_OP_REG(x)      (u32)          SET_FIRST_OP_REG(x) >> 16
+#define GET_DIS_REG(x)           (u32)          SET_DIS_REG(x) >> 12
 #define GET_OPRAND2(x)           (u32)          SET_OPRAND2(x)
 
 /*define shifting operations*/
-#define MSB              1<<31
-#define LShiftL(x,n)     x<<n
-#define LShiftR(x,n)     x>>n
-#define AShiftR(x,n)     LShiftR(x,n)|(x&MSB)
-#define RotateR(x,n)     (x>>n)|LShiftL(x,32-n)
+#define MSB              1 << 31
+#define LShiftL(x,n)     x << n
+#define LShiftR(x,n)     x >> n
+#define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
+#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 
 
 typedef struct{
@@ -128,7 +129,6 @@ void loadbinaryFile(char* address){
     size = ftell(ifp);
     fseek(ifp, 0, SEEK_SET);
     combuffer = (unsigned char *) malloc(size);
-    combuffer = malloc(size);
 
     if(ifp == NULL){
         fprintf(stderr,"Unable to read file!");
@@ -147,21 +147,21 @@ void loadbinaryFile(char* address){
     free(combuffer);
 }
 
-
-
-
-int main(int argc,  char **argv) {
-    char address[400];
-    strcpy(address, "/homes/hxm16/arm_1617_testsuite/test_cases/add01");
-    DATAPROCESSING d1;
-    d1.S = 1;
-    DATAPROCESSING *pt;
-    pt = &d1;
-    DATAPROCESSING_INSTR(pt);
-    u32 add = 0xfu;
-    printBit(add);
-    printBit(RotateR(add,2));
-  return EXIT_SUCCESS;
+u32 generateDataFromHex(char hex[]){
+    int length = strlen(hex);
+    u32 data = 0;
+    u32 shift = (length - 1) * 4;
+    for(int pos = 0; pos < length; pos++) {
+        u32 hexValue;
+        if(hex[pos] >= '0' && hex[pos] <= '9') {
+            hexValue = (hex[pos] - '0');
+        } else if(hex[pos] >= 'a' && hex[pos] <= 'f') {
+            hexValue = hex[pos] - 'a' + 10;
+        }
+        data += hexValue << shift;
+        shift -= 4;
+    }
+    return data;
 }
 
 void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
@@ -172,11 +172,38 @@ void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
 
 }
 
+DATAPROCESSING DecodeDataProcessing(u32 instruction) {
+    DATAPROCESSING instr;
+    instr.COND     = GET_COND(instruction);
+    instr.I        = GET_IMMED_OP(instruction);
+    instr.OPCODE   = GET_OP_CODE(instruction);
+    instr.S        = GET_S(instruction);
+    instr.REGN     = GET_FIRST_OP_REG(instruction);
+    instr.REGD     = GET_DIS_REG(instruction);
+    instr.OPRAND2  = GET_OPRAND2(instruction);
+    return instr;
+}
 
+void printStruct(DATAPROCESSING dp) {
+    printf("COND %x\n",dp.COND);
+    printf("I %x\n",dp.I);
+    printf("OPCODE %x\n",dp.OPCODE);
+    printf("S %x\n",dp.S);
+    printf("REGN %x\n",dp.REGN);
+    printf("REGD %x\n",dp.REGD);
+    printf("OPRAND2 %x\n",dp.OPRAND2);
+}
 
-
-
-
-
+int main(int argc,  char **argv) {
+    char hex[16];
+    DATAPROCESSING dpstruct;
+    printBit(0xFu<<11);
+    scanf("%s", hex);
+    printf("%x\n", generateDataFromHex(hex));
+    u32 instruction = generateDataFromHex(hex);
+    printBit(instruction);
+    printStruct(DecodeDataProcessing(instruction));
+    return EXIT_SUCCESS;
+}
 
 
