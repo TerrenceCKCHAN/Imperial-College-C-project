@@ -67,10 +67,7 @@ void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
 }
 
 u32 generateMask(u32 start, u32 end){
-    return (u32) ((1<<(end+1)) -1) - ((1<<start)-1);
-
-
-
+    return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
 }
 
 int main(int argc,  char **argv) {
