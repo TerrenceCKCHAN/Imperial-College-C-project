@@ -66,11 +66,14 @@ void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
 
 }
 
+
 u32 generateMask(u32 start, u32 end){
     return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
 }
 
+
 int main(int argc,  char **argv) {
+
     char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
@@ -81,7 +84,8 @@ int main(int argc,  char **argv) {
     printStruct(DecodeDataProcessing(instruction));
 
 
-    printBit(generateMask(2,7));
+    printBit(GENERATEMASK(2,2));
+    printBit(GETBIT(0xe3a01001,21,24));
     return EXIT_SUCCESS;
 }
 

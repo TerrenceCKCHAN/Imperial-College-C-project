@@ -74,6 +74,11 @@ typedef uint8_t u8;
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 
+#define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
+#define GETBIT(x, start, end)   (u32) (GENERATEMASK(start, end) & x)>>start
+
+
+
 
 
 
