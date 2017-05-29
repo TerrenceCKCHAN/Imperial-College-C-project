@@ -68,7 +68,8 @@ void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
 
 
 int main(int argc,  char **argv) {
-/*    char hex[16];
+
+    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
     scanf("%s", hex);
@@ -77,9 +78,9 @@ int main(int argc,  char **argv) {
     printBit(instruction);
     printStruct(DecodeDataProcessing(instruction));
 
-*/
+
     printBit(GENERATEMASK(2,2));
-    printBit(GETBIT(0xe3a01001,21,21));
+    printBit(GETBIT(0xe3a01001,21,24));
     return EXIT_SUCCESS;
 }
 
