@@ -67,7 +67,8 @@ typedef uint8_t u8;
 #define GET_OPRAND2(x)           (u32)          SET_OPRAND2(x)
 
 /*define shifting operations*/
-#define MSB              1 << 31
+#define MSB(x)           (1 << 31 & x) >> 31
+#define MSBH(x)          (MSB(x)<<v )-1<<(32-v)
 #define LShiftL(x,n)     x << n
 #define LShiftR(x,n)     x >> n
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)

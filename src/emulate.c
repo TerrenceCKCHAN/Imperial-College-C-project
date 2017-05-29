@@ -12,7 +12,7 @@ void printBit(uint32_t x){
     printf("\n");
 }
 
-void loadbinaryFile(char *address){
+void loadBinaryFile(char *address){
     unsigned char *combuffer;
     u32 size;
     FILE *ifp;
@@ -66,6 +66,13 @@ void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
 
 }
 
+u32 generateMask(u32 start, u32 end){
+    return (u32) ((1<<(end+1)) -1) - ((1<<start)-1);
+
+
+
+}
+
 int main(int argc,  char **argv) {
     char hex[16];
     DATAPROCESSING dpstruct;
@@ -75,6 +82,9 @@ int main(int argc,  char **argv) {
     u32 instruction = generateDataFromHex(hex);
     printBit(instruction);
     printStruct(DecodeDataProcessing(instruction));
+
+
+    printBit(generateMask(2,7));
     return EXIT_SUCCESS;
 }
 
