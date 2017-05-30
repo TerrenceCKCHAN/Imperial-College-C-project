@@ -68,10 +68,10 @@ typedef uint8_t u8;
 
 /*define shifting operations*/
 #define MSB(x)           (1 << 31 & x) >> 31
-#define MSBH(x,v)          (MSB(x)<<v )-1<<(32-v)
+#define MSBH(x,v)        (MSB(x)<<v )-1<<(32-v)
 #define LShiftL(x,n)     x << n
 #define LShiftR(x,n)     x >> n
-#define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
+#define AShiftR(x,n)     LShiftR(x, n)|MSBH(x,n)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 
 //Generate a mask to extract the bits of position start to position end

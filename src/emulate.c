@@ -1,4 +1,4 @@
-#include <hwloc.h>
+//#include <hwloc.h>
 #include "decode.h"
 #include "emulate.h"
 
@@ -154,7 +154,7 @@ int main(int argc,  char **argv) {
     printBit(dp.OPRAND2);
     printBit(GETBITS(dp.OPRAND2,0,7));//thing to rotate
     printBit(RotateR(GETBITS(dp.OPRAND2,0,7),1*2));
-   // printBit(SETBITS(dp.OPRAND2,0,0,6));
+    printBit(SETBITS(dp.OPRAND2,0,0,6));
     printBit(SETBITS(RotateR(GETBITS(dp.OPRAND2,0,7),1*2),dp.OPRAND2,0,8));
     return EXIT_SUCCESS;
 }
