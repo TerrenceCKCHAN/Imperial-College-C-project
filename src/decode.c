@@ -1,15 +1,15 @@
 #include "emulate.h"
 #include "decode.h"
 
-DATAPROCESSING DecodeDataProcessing(u32 instruction) {
-    DATAPROCESSING instr;
-    instr.COND     = GETBIT(instruction, 28, 31);
-    instr.I        = GETBIT(instruction, 25, 25);
-    instr.OPCODE   = GETBIT(instruction, 21, 24);
-    instr.S        = GETBIT(instruction, 20, 20);
-    instr.REGN     = GETBIT(instruction, 16, 19);
-    instr.REGD     = GETBIT(instruction, 12, 15);
-    instr.OPRAND2  = GETBIT(instruction, 0, 11);
+DATAPROCESSING* DecodeDataProcessing(u32 instruction) {
+    DATAPROCESSING* instr = malloc(sizeof(DATAPROCESSING));
+    instr->COND     = GETBIT(instruction, 28, 31);
+    instr->I        = GETBIT(instruction, 25, 25);
+    instr->OPCODE   = GETBIT(instruction, 21, 24);
+    instr->S        = GETBIT(instruction, 20, 20);
+    instr->REGN     = GETBIT(instruction, 16, 19);
+    instr->REGD     = GETBIT(instruction, 12, 15);
+    instr->OPRAND2  = GETBIT(instruction, 0, 11);
     return instr;
 }
 

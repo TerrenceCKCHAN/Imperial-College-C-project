@@ -120,4 +120,6 @@ typedef struct{
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
 
+int satisfyCondition(MACHINE* ARM, u32 instruction);
+
 #endif //ARM11_06_EMULATE_H

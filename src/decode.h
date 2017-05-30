@@ -2,7 +2,7 @@
 #define ARM11_06_DECODE_H
 
 #include "emulate.h"
-DATAPROCESSING DecodeDataProcessing(u32 instructions);
+DATAPROCESSING* DecodeDataProcessing(u32 instructions);
 MULTIPLY DecodeMultiply(u32);
 SIN_DATA_TRAN DecodeSingleDataTransfer(u32);
 BRANCH DecodeBranch(u32);
