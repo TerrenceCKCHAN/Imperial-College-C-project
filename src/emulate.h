@@ -68,7 +68,7 @@ typedef uint8_t u8;
 
 /*define shifting operations*/
 #define MSB(x)           (1 << 31 & x) >> 31
-#define MSBH(x)          (MSB(x)<<v )-1<<(32-v)
+#define MSBH(x,v)          (MSB(x)<<v )-1<<(32-v)
 #define LShiftL(x,n)     x << n
 #define LShiftR(x,n)     x >> n
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
@@ -119,6 +119,5 @@ typedef struct{
     u32 REGISTER[NUM_OF_GENERAL_REGISTER];
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
-
 
 #endif //ARM11_06_EMULATE_H
