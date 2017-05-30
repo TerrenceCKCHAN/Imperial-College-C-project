@@ -1,4 +1,6 @@
+#include <hwloc.h>
 #include "decode.h"
+#include "emulate.h"
 
 /*This is the function to print bit*/
 void printBit(uint32_t x){
@@ -70,22 +72,44 @@ u32 generateMask(u32 start, u32 end){
     return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
 }
 
-void printRegisters() {
+void printRegisters(MACHINE ARM) {
     for(int index = 1; index <= 12; index++) {
-        printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.REGISTER[index], MACHINE.REGISTER[index]);
+        printf("$%d\t:% 11d (0x%08x)\n", index, ARM.REGISTER[index], ARM.REGISTER[index]);
     }
-    printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.PCREG, MACHINE.PCREG);
-    printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.CPSRREG, MACHINE.CPSRREG);
+    printf("PC\t:% 11d (0x%08x)\n", ARM.PCREG, ARM.PCREG);
+    printf("CPSR:% 11d (0x%08x)\n", ARM.CPSRREG, ARM.CPSRREG);
 }
 
-void printMemory() {
-    for(int index = 0; index < 65536; index++) {
-        printf("0x%08x: 0x%08x\n", index * 4, MACHINE.MEMORY[index]);
+MACHINE createMachine() {
+    MACHINE ARM;
+    ARM.PCREG = 0;
+    ARM.CPSRREG = 0;
+    for(int index = 0; index <=12; index++) {
+        ARM.REGISTER[index] = 0;
     }
+    for(int index = 0; index <65536; index++) {
+        ARM.MEMORY[index] = 0;
+    }
+    return ARM;
+}
+
+
+void printMemory(MACHINE ARM) {
+    for(int index = 0; index < 65536; index++) {
+        if(ARM.MEMORY[index] != 0) {
+            printf("0x%08x: 0x%08x\n", index * 4, ARM.MEMORY[index]);
+        }
+    }
+}
+
+void printMachineState(MACHINE ARM) {
+    printRegisters(ARM);
+    printf("Non-zero memory:\n");
+    printMemory(ARM);
 }
 
 int main(int argc,  char **argv) {
-
+    MACHINE ARM = createMachine();
 /*    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
@@ -98,8 +122,7 @@ int main(int argc,  char **argv) {
 
     printBit(GENERATEMASK(2,2));
     printBit(GETBIT(0xe3a01001,21,24));*/
-
-
+    printMachineState(ARM);
     return EXIT_SUCCESS;
 }
 
