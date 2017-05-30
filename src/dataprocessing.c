@@ -33,12 +33,12 @@ void dataprocessing(MACHINE* ARM, u32 instruction){
         }
         if(dataproInstr->I){
             //If operand2 is a immediate value
-            u32 rotate = GETBIT(dataproInstr->OPRAND2, 11, 8);
-            //RotateR(GETBIT(dataproInstr->OPRAND2,7,0),rotate*2);
+            u32 rotate = GETBITS(dataproInstr->OPRAND2, 11, 8);
+            //RotateR(GETBITS(dataproInstr->OPRAND2,7,0),rotate*2);
         }else{
             //If operand2 is a register
-            u32 shiftType = GETBIT(dataproInstr->OPRAND2,5,6);
-            if(GETBIT(dataproInstr->OPRAND2,4,4)){
+            u32 shiftType = GETBITS(dataproInstr->OPRAND2,5,6);
+            if(GETBITS(dataproInstr->OPRAND2,4,4)){
                 //shift specified by register
             } else{
                 //shift by constant
