@@ -12,6 +12,9 @@ typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
 
+#define NUM_OF_GENERAL_REGISTER 12
+#define MAX_MEMORY  65536
+
 /*This is use to set and get the flag of the CPSR register*/
 #define NFLAG_MASK (u32) 1 << 31
 #define ZFLAG_MASK (u32) 1 << 30
@@ -110,6 +113,11 @@ typedef struct{
     u32 OFFSET:24;
 }BRANCH;
 
-
+typedef struct{
+    u32 CPSRREG;
+    u32 PCREG;
+    u32 REGISTER[NUM_OF_GENERAL_REGISTER];
+    u32 MEMORY[MAX_MEMORY];
+}MACHINE;
 
 #endif //ARM11_06_EMULATE_H
