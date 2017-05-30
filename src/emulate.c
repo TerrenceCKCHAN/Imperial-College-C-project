@@ -72,44 +72,44 @@ u32 generateMask(u32 start, u32 end){
     return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
 }
 
-void printRegisters(MACHINE ARM) {
+void printRegisters(MACHINE* ARM) {
     for(int index = 1; index <= 12; index++) {
-        printf("$%d\t:% 11d (0x%08x)\n", index, ARM.REGISTER[index], ARM.REGISTER[index]);
+        printf("$%d\t:% 11d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
     }
-    printf("PC\t:% 11d (0x%08x)\n", ARM.PCREG, ARM.PCREG);
-    printf("CPSR:% 11d (0x%08x)\n", ARM.CPSRREG, ARM.CPSRREG);
+    printf("PC\t:% 11d (0x%08x)\n", ARM->PCREG, ARM->PCREG);
+    printf("CPSR:% 11d (0x%08x)\n", ARM->CPSRREG, ARM->CPSRREG);
 }
 
-MACHINE createMachine() {
-    MACHINE ARM;
-    ARM.PCREG = 0;
-    ARM.CPSRREG = 0;
-    for(int index = 0; index <=12; index++) {
-        ARM.REGISTER[index] = 0;
+MACHINE* createMachine() {
+    MACHINE* ARM = malloc(sizeof(MACHINE));
+    ARM->PCREG = 0;
+    ARM->CPSRREG = 0;
+    for(int index = 0; index <=NUM_OF_GENERAL_REGISTER; index++) {
+        ARM->REGISTER[index] = 0;
     }
-    for(int index = 0; index <65536; index++) {
-        ARM.MEMORY[index] = 0;
+    for(int index = 0; index <MAX_MEMORY; index++) {
+        ARM->MEMORY[index] = 0;
     }
     return ARM;
 }
 
 
-void printMemory(MACHINE ARM) {
-    for(int index = 0; index < 65536; index++) {
-        if(ARM.MEMORY[index] != 0) {
-            printf("0x%08x: 0x%08x\n", index * 4, ARM.MEMORY[index]);
+void printMemory(MACHINE* ARM) {
+    for(int index = 0; index < MAX_MEMORY; index++) {
+        if(ARM->MEMORY[index] != 0) {
+            printf("0x%08x: 0x%08x\n", index * 4, ARM->MEMORY[index]);
         }
     }
 }
 
-void printMachineState(MACHINE ARM) {
+void printMachineState(MACHINE* ARM) {
     printRegisters(ARM);
     printf("Non-zero memory:\n");
     printMemory(ARM);
 }
 
 int main(int argc,  char **argv) {
-    MACHINE ARM = createMachine();
+    MACHINE* ARM = createMachine();
 /*    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
