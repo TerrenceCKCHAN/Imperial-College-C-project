@@ -3,11 +3,11 @@
 #include "emulate.h"
 
 int satisfyCondition(MACHINE* ARM, u32 instruction) {
-    int NFlag = GETBIT(ARM->CPSRREG, 31, 31);
-    int ZFlag = GETBIT(ARM->CPSRREG, 30, 30);
-    int CFlag = GETBIT(ARM->CPSRREG, 29, 29);
-    int VFlag = GETBIT(ARM->CPSRREG, 28, 28);
-    u32 cond = GETBIT(instruction, 29, 31);
+    int NFlag = GETBITS(ARM->CPSRREG, 31, 31);
+    int ZFlag = GETBITS(ARM->CPSRREG, 30, 30);
+    int CFlag = GETBITS(ARM->CPSRREG, 29, 29);
+    int VFlag = GETBITS(ARM->CPSRREG, 28, 28);
+    u32 cond = GETBITS(instruction, 29, 31);
     int bool;
     switch(cond) {
         case 0x0:
@@ -147,7 +147,7 @@ int main(int argc,  char **argv) {
 
 
     printBit(GENERATEMASK(2,2));
-    printBit(GETBIT(0xe3a01001,21,24));*/
+    printBit(GETBITS(0xe3a01001,21,24));*/
     printMachineState(ARM);
     return EXIT_SUCCESS;
 }
