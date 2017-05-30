@@ -70,10 +70,23 @@ u32 generateMask(u32 start, u32 end){
     return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
 }
 
+void printRegisters() {
+    for(int index = 1; index <= 12; index++) {
+        printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.REGISTER[index], MACHINE.REGISTER[index]);
+    }
+    printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.PCREG, MACHINE.PCREG);
+    printf("$%d\t:% 11d (0x%08x)\n", index, MACHINE.CPSRREG, MACHINE.CPSRREG);
+}
+
+void printMemory() {
+    for(int index = 0; index < 65536; index++) {
+        printf("0x%08x: 0x%08x\n", index * 4, MACHINE.MEMORY[index]);
+    }
+}
 
 int main(int argc,  char **argv) {
 
-    char hex[16];
+/*    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
     scanf("%s", hex);
@@ -84,7 +97,9 @@ int main(int argc,  char **argv) {
 
 
     printBit(GENERATEMASK(2,2));
-    printBit(GETBIT(0xe3a01001,21,24));
+    printBit(GETBIT(0xe3a01001,21,24));*/
+
+
     return EXIT_SUCCESS;
 }
 
