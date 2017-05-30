@@ -148,7 +148,14 @@ int main(int argc,  char **argv) {
 
     printBit(GENERATEMASK(2,2));
     printBit(GETBITS(0xe3a01001,21,24));*/
+    DATAPROCESSING dp;
+    dp.OPRAND2 =0x136;
     printMachineState(ARM);
+    printBit(dp.OPRAND2);
+    printBit(GETBITS(dp.OPRAND2,0,7));//thing to rotate
+    printBit(RotateR(GETBITS(dp.OPRAND2,0,7),1*2));
+   // printBit(SETBITS(dp.OPRAND2,0,0,6));
+    printBit(SETBITS(RotateR(GETBITS(dp.OPRAND2,0,7),1*2),dp.OPRAND2,0,8));
     return EXIT_SUCCESS;
 }
 
