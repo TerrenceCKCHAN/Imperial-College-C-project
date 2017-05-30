@@ -83,7 +83,7 @@ typedef uint8_t u8;
 //Change bit at position pos to 0
 #define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
 //Change bits in target from position start to position end to input
-#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1)))
+#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
 
 typedef struct a{
     u32 COND:4;
