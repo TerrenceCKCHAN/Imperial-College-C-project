@@ -77,11 +77,13 @@ typedef uint8_t u8;
 //Generate a mask to extract the bits of position start to position end
 #define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
 //Change the bits from position start to position end
-#define GETBIT(x, start, end)   (u32) (GENERATEMASK(start, end) & x)>>start
+#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
 //Change bit at position pos to 1
-#define SETBIT(x, pos)          (u32) (x | 1 << pos)
+#define SETBIT(input, pos)          (u32) (input | 1 << pos)
 //Change bit at position pos to 0
-#define CLEARBIT(x, pos)        (u32) (x & (~(1 << pos)))
+#define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
+//Change bits in target from position start to position end to input
+#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1)));
 
 typedef struct a{
     u32 COND:4;

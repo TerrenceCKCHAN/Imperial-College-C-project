@@ -3,45 +3,45 @@
 
 DATAPROCESSING* DecodeDataProcessing(u32 instruction) {
     DATAPROCESSING* instr = malloc(sizeof(DATAPROCESSING));
-    instr->COND     = GETBIT(instruction, 28, 31);
-    instr->I        = GETBIT(instruction, 25, 25);
-    instr->OPCODE   = GETBIT(instruction, 21, 24);
-    instr->S        = GETBIT(instruction, 20, 20);
-    instr->REGN     = GETBIT(instruction, 16, 19);
-    instr->REGD     = GETBIT(instruction, 12, 15);
-    instr->OPRAND2  = GETBIT(instruction, 0, 11);
+    instr->COND     = GETBITS(instruction, 28, 31);
+    instr->I        = GETBITS(instruction, 25, 25);
+    instr->OPCODE   = GETBITS(instruction, 21, 24);
+    instr->S        = GETBITS(instruction, 20, 20);
+    instr->REGN     = GETBITS(instruction, 16, 19);
+    instr->REGD     = GETBITS(instruction, 12, 15);
+    instr->OPRAND2  = GETBITS(instruction, 0, 11);
     return instr;
 }
 
 MULTIPLY* DecodeMultiply(u32 instruction) {
     MULTIPLY* instr = malloc(sizeof(MULTIPLY));
-    instr->COND     = GETBIT(instruction, 28, 31);
-    instr->A        = GETBIT(instruction, 21, 21);
-    instr->S        = GETBIT(instruction, 20, 20);
-    instr->REGD     = GETBIT(instruction, 16, 19);
-    instr->REGN     = GETBIT(instruction, 12, 15);
-    instr->REGS     = GETBIT(instruction, 8, 11);
-    instr->REGM     = GETBIT(instruction, 0, 3);
+    instr->COND     = GETBITS(instruction, 28, 31);
+    instr->A        = GETBITS(instruction, 21, 21);
+    instr->S        = GETBITS(instruction, 20, 20);
+    instr->REGD     = GETBITS(instruction, 16, 19);
+    instr->REGN     = GETBITS(instruction, 12, 15);
+    instr->REGS     = GETBITS(instruction, 8, 11);
+    instr->REGM     = GETBITS(instruction, 0, 3);
     return instr;
 }
 
 SIN_DATA_TRAN* DecodeSingleDataTransfer(u32 instruction) {
     SIN_DATA_TRAN* instr = malloc(sizeof(SIN_DATA_TRAN));
-    instr->COND      = GETBIT(instruction, 28, 31);
-    instr->I         = GETBIT(instruction, 25, 25);
-    instr->P         = GETBIT(instruction, 24, 24);
-    instr->U         = GETBIT(instruction, 23, 23);
-    instr->L         = GETBIT(instruction, 20, 20);
-    instr->REGN      = GETBIT(instruction, 16, 19);
-    instr->REGD      = GETBIT(instruction, 12, 15);
-    instr->OFFSET    = GETBIT(instruction, 0, 11);
+    instr->COND      = GETBITS(instruction, 28, 31);
+    instr->I         = GETBITS(instruction, 25, 25);
+    instr->P         = GETBITS(instruction, 24, 24);
+    instr->U         = GETBITS(instruction, 23, 23);
+    instr->L         = GETBITS(instruction, 20, 20);
+    instr->REGN      = GETBITS(instruction, 16, 19);
+    instr->REGD      = GETBITS(instruction, 12, 15);
+    instr->OFFSET    = GETBITS(instruction, 0, 11);
     return instr;
 }
 
 BRANCH* DecodeBranch(u32 instruction) {
     BRANCH* instr = malloc(sizeof(BRANCH));
-    instr->COND      = GETBIT(instruction, 28, 31);
-    instr->OFFSET    = GETBIT(instruction, 0, 23);
+    instr->COND      = GETBITS(instruction, 28, 31);
+    instr->OFFSET    = GETBITS(instruction, 0, 23);
     return instr;
 }
 

@@ -3,11 +3,11 @@
 #include "emulate.h"
 
 int satisfyCondition(MACHINE* ARM, u32 instruction) {
-    int NFlag = GETBIT(ARM->CPSRREG, 31, 31);
-    int ZFlag = GETBIT(ARM->CPSRREG, 30, 30);
-    int CFlag = GETBIT(ARM->CPSRREG, 29, 29);
-    int VFlag = GETBIT(ARM->CPSRREG, 28, 28);
-    u32 cond = GETBIT(instruction, 29, 31);
+    int NFlag = GETBITS(ARM->CPSRREG, 31, 31);
+    int ZFlag = GETBITS(ARM->CPSRREG, 30, 30);
+    int CFlag = GETBITS(ARM->CPSRREG, 29, 29);
+    int VFlag = GETBITS(ARM->CPSRREG, 28, 28);
+    u32 cond = GETBITS(instruction, 29, 31);
     int bool;
     switch(cond) {
         case 0x0:
@@ -135,12 +135,12 @@ void printMachineState(MACHINE* ARM) {
 }
 
 int main(int argc,  char **argv) {
-    MACHINE* ARM = createMachine();
+/*    MACHINE* ARM = createMachine();
     ARM->REGISTER[1] = 2;
     ARM->REGISTER[2] = 4;
     multiply(ARM, generateDataFromHex("0xe0030291"));
     printMachineState(ARM);
-/*    char hex[16];
+    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
     scanf("%s", hex);
@@ -151,10 +151,17 @@ int main(int argc,  char **argv) {
 /*
 
     printBit(GENERATEMASK(2,2));
-    printBit(GETBIT(0xe3a01001,21,24));
+    printBit(GETBITS(0xe3a01001,21,24));
     printMachineState(ARM);
     printBit(CLEARBIT(0xffffffff, 28));*/
 //    loadBinaryFile("/homes/klc116/arm11_1617_testsuite/test_cases/mul01");
+//    printBit(SETBITS(0xfed, 0x10101010, 0, 12);
+//    printBit(~0);
+//    printBit(((0x9) << 5));
+//    printBit(((GENERATEMASK(4, 31) | (0x9)) << 5) | GENERATEMASK(0, 4));
+//    printBit(GENERATEMASK(5, 8) | 0);
+//    printBit((((GENERATEMASK(4, 31) | (0x9)) << 5) | GENERATEMASK(0, 4)) & (GENERATEMASK(5, 8) | 0x10000000));
+//    printBit(((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, length));
     return EXIT_SUCCESS;
 }
 

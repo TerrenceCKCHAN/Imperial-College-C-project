@@ -20,7 +20,7 @@ void multiply(MACHINE* ARM,u32 instruction) {
         ARM->REGISTER[rd] = res;
         // Check if S bit is set and modify the CPSR register
         if(multiInstr->S) {
-            u32 n = GETBIT(res, 31, 31);
+            u32 n = GETBITS(res, 31, 31);
             // Setting bit 31 of the CPSR register to the N bit
             if(n) {
                 ARM->CPSRREG = SETBIT(ARM->CPSRREG, 31);
