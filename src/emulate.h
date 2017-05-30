@@ -74,9 +74,13 @@ typedef uint8_t u8;
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 
+//Generate a mask to extract the bits of position start to position end
 #define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
+//Change the bits from position start to position end
 #define GETBIT(x, start, end)   (u32) (GENERATEMASK(start, end) & x)>>start
+//Change bit at position pos to 1
 #define SETBIT(x, pos)          (u32) (x | 1 << pos)
+//Change bit at position pos to 0
 #define CLEARBIT(x, pos)        (u32) (x & (~(1 << pos)))
 
 typedef struct a{
