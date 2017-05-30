@@ -120,4 +120,5 @@ typedef struct{
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
 
+
 #endif //ARM11_06_EMULATE_H
