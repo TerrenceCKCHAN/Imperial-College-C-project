@@ -148,14 +148,22 @@ int main(int argc,  char **argv) {
 
     printBit(GENERATEMASK(2,2));
     printBit(GETBITS(0xe3a01001,21,24));*/
-    DATAPROCESSING dp;
-    dp.OPRAND2 =0x136;
-    printMachineState(ARM);
-    printBit(dp.OPRAND2);
-    printBit(GETBITS(dp.OPRAND2,0,7));//thing to rotate
-    printBit(RotateR(GETBITS(dp.OPRAND2,0,7),1*2));
-    printBit(SETBITS(dp.OPRAND2,0,0,6));
-    printBit(SETBITS(RotateR(GETBITS(dp.OPRAND2,0,7),1*2),dp.OPRAND2,0,8));
+    DATAPROCESSING* dp;
+    dp->OPRAND2 =0x136;
+    printf("Oprand2\n");
+    printBit(dp->OPRAND2);
+    printf("IMM:\n");
+    printBit(GETBITS(dp->OPRAND2,0,7));//thing to rotate
+    printf("After rotate for 2\n");
+    u32 roate = GETBITS(dp->OPRAND2,8,11);
+    printBit(RotateR(GETBITS(dp->OPRAND2, 0, 7),roate*2));
+    u32 result = SETBITS(RotateR(GETBITS(dp->OPRAND2, 0, 7),roate*2),dp->OPRAND2,0,8);
+    printBit(result);
+    printBit(RotateR(0xef,2));
+    printDataProcessing(dp);
+
+
+
     return EXIT_SUCCESS;
 }
 

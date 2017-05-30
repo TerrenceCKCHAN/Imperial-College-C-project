@@ -1,21 +1,6 @@
 #include "emulate.h"
 #include "decode.h"
 
-#define and 0x00
-#define eor 0x01
-#define sub 0x02
-#define rsb 0x03
-#define add 0x04
-#define tst 0x08
-#define teq 0x09
-#define cmp 0x0a
-#define orr 0x0c
-#define mov 0x0d
-
-#define lsl 0x0
-#define lsr 0x1
-#define asr 0x2
-#define ror 0x3
 
 void dataprocessing(MACHINE* ARM, u32 instruction){
     DATAPROCESSING* dataproInstr = DecodeDataProcessing(instruction);
@@ -33,7 +18,8 @@ void dataprocessing(MACHINE* ARM, u32 instruction){
         }
         if(dataproInstr->I){
             //If operand2 is a immediate value
-            u32 rotate = GETBITS(dataproInstr->OPRAND2, 11, 8);
+            u32 rotate = GETBITS(dataproInstr->OPRAND2, 8, 11);
+            u32 Imm = GETBITS(dataproInstr->OPRAND2,0,7);
             SETBITS(RotateR(GETBITS(dataproInstr->OPRAND2,0,7),rotate*2),dataproInstr->OPRAND2,0,8);
         }else{
             //If operand2 is a register
