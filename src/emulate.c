@@ -2,6 +2,32 @@
 #include "decode.h"
 #include "emulate.h"
 
+int satisfyCondition(MACHINE* ARM, u32 instruction) {
+    int NFlag = GETBIT(ARM->CPSRREG, 31, 31);
+    int ZFlag = GETBIT(ARM->CPSRREG, 30, 30);
+    int CFlag = GETBIT(ARM->CPSRREG, 29, 29);
+    int VFlag = GETBIT(ARM->CPSRREG, 28, 28);
+    u32 cond = GETBIT(instruction, 29, 31);
+    int bool;
+    switch(cond) {
+        case 0x0:
+            bool = (ZFlag == 1) ? 1 : 0; break;
+        case 0x1:
+            bool = (ZFlag == 0) ? 1 : 0; break;
+        case 0xa:
+            bool = (NFlag == VFlag) ? 1 : 0; break;
+        case 0xb:
+            bool = (NFlag != VFlag) ? 1 : 0; break;
+        case 0xc:
+            bool = (ZFlag == 0) && (NFlag == VFlag) ? 1 : 0; break;
+        case 0xd:
+            bool = (ZFlag == 1) || (NFlag != VFlag) ? 1 : 0; break;
+        case 0xe:
+            bool = 1; break;
+    }
+    return bool;
+}
+
 /*This is the function to print bit*/
 void printBit(uint32_t x){
     int i;
