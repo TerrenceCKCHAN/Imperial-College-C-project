@@ -76,6 +76,8 @@ typedef uint8_t u8;
 
 #define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
 #define GETBIT(x, start, end)   (u32) (GENERATEMASK(start, end) & x)>>start
+#define SETBIT(x, pos)          (u32) (x | 1 << pos)
+#define CLEARBIT(x, pos)        (u32) (x & (~(1 << pos)))
 
 typedef struct a{
     u32 COND:4;
@@ -119,5 +121,9 @@ typedef struct{
     u32 REGISTER[NUM_OF_GENERAL_REGISTER];
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
+
+int satisfyCondition(MACHINE* ARM, u32 instruction);
+void multiply(MACHINE* ARM,u32 instruction);
+
 
 #endif //ARM11_06_EMULATE_H

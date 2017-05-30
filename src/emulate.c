@@ -136,6 +136,10 @@ void printMachineState(MACHINE* ARM) {
 
 int main(int argc,  char **argv) {
     MACHINE* ARM = createMachine();
+    ARM->REGISTER[1] = 2;
+    ARM->REGISTER[2] = 4;
+    multiply(ARM, generateDataFromHex("0xe0030291"));
+    printMachineState(ARM);
 /*    char hex[16];
     DATAPROCESSING dpstruct;
     printBit(0xFu<<11);
@@ -143,12 +147,14 @@ int main(int argc,  char **argv) {
     printf("%x\n", generateDataFromHex(hex));
     u32 instruction = generateDataFromHex(hex);
     printBit(instruction);
-    printDataProcessing(DecodeDataProcessing(instruction));
-
+    printDataProcessing(DecodeDataProcessing(instruction));*/
+/*
 
     printBit(GENERATEMASK(2,2));
-    printBit(GETBIT(0xe3a01001,21,24));*/
+    printBit(GETBIT(0xe3a01001,21,24));
     printMachineState(ARM);
+    printBit(CLEARBIT(0xffffffff, 28));*/
+//    loadBinaryFile("/homes/klc116/arm11_1617_testsuite/test_cases/mul01");
     return EXIT_SUCCESS;
 }
 
