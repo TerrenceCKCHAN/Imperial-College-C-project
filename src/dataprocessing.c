@@ -18,18 +18,26 @@ void dataprocessing(MACHINE* ARM, u32 instruction){
         }
         if(dataproInstr->I){
             //If operand2 is a immediate value
-            u32 rotate = GETBITS(dataproInstr->OPRAND2, 8, 11);
-            u32 Imm = GETBITS(dataproInstr->OPRAND2,0,7);
-            SETBITS(RotateR(GETBITS(dataproInstr->OPRAND2,0,7),rotate*2),dataproInstr->OPRAND2,0,8);
+            u32 rotate = GETBITS(Oprand2, 8, 11);
+            u32 Imm = GETBITS(Oprand2,0,7);
+            u32 ImmAfterRotate = RotateRH(Imm,rotate*2,8);
+            dataproInstr->OPRAND2 = SETBITS(ImmAfterRotate,Oprand2,0,8);
+
         }else{
             //If operand2 is a register
-            u32 shiftType = GETBITS(dataproInstr->OPRAND2,5,6);
+            u32 shiftType = GETBITS(Oprand2,5,6);
+            u32 Rm = GETBITS(Oprand2,0,3);
+            u32 value = GETBITS(Oprand2,7,11);
+            u32 RmAfterRotate;
             if(GETBITS(dataproInstr->OPRAND2,4,4)){
                 //shift specified by register
+
+
             } else{
                 //shift by constant
                 switch (shiftType){
                     case lsl:
+                         dataproInstr->OPRAND2=SETBITS(LShiftL(Rm,value),Oprand2,0,4);
                         break;
                     case lsr:
                         break;

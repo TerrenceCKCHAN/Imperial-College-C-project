@@ -33,6 +33,9 @@ void printBit(uint32_t x){
     int i;
     uint32_t mask = (uint32_t) 1 << 31;
     for(i = 0;i < 32;++i){
+        if(i%8==0){
+            printf(" ");
+        }
         printf("%i", (x & mask) != 0);
         x<<=1;
     }
@@ -147,8 +150,8 @@ int main(int argc,  char **argv) {
 
 
     printBit(GENERATEMASK(2,2));
-    printBit(GETBITS(0xe3a01001,21,24));*/
-    DATAPROCESSING* dp;
+    printBit(GETBITS(0xe3a01001,21,24));
+    DATAPROCESSING* dp = DecodeDataProcessing(0);
     dp->OPRAND2 =0x136;
     printf("Oprand2\n");
     printBit(dp->OPRAND2);
@@ -160,7 +163,19 @@ int main(int argc,  char **argv) {
     u32 result = SETBITS(RotateR(GETBITS(dp->OPRAND2, 0, 7),roate*2),dp->OPRAND2,0,8);
     printBit(result);
     printBit(RotateR(0xef,2));
-    printDataProcessing(dp);
+    printDataProcessing(dp);*/
+    u32 Oprand2 =0x18d;
+
+    u32 rotate = GETBITS(Oprand2, 8, 11);
+    u32 Imm = GETBITS(Oprand2,0,7);
+    u32 ImmAfterRotate = RotateRH(Imm,rotate*2,8);
+    //printBit(SETBITS(ImmAfterRotate,Oprand2,0,8));
+    u32 shiftType = GETBITS(Oprand2,5,6);
+    u32 Rm = GETBITS(Oprand2,0,3);
+    u32 value = GETBITS(Oprand2,7,11);
+    printBit(Oprand2);
+    printBit(LShiftL(Rm ,value));
+    printBit(SETBITS(LShiftL(Rm,value),Oprand2,0,4));
 
 
 

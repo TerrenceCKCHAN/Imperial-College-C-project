@@ -15,6 +15,17 @@ typedef uint8_t u8;
 #define NUM_OF_GENERAL_REGISTER 12
 #define MAX_MEMORY  65536
 
+//Generate a mask to extract the bits of position start to position end
+#define GENERATEMASK(start,end) (u32) ((1 << (end+1)) -1) - ((1<<start)-1)
+//Change the bits from position start to position end
+#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
+//Change bit at position pos to 1
+#define SETBIT(input, pos)          (u32) (input | 1 << pos)
+//Change bit at position pos to 0
+#define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
+//Change bits in target from position start to position end to input
+#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
+
 /*This is use to set and get the flag of the CPSR register*/
 #define NFLAG_MASK (u32) 1 << 31
 #define ZFLAG_MASK (u32) 1 << 30
@@ -74,6 +85,7 @@ typedef uint8_t u8;
 #define LShiftR(x,n)     x >> n
 #define AShiftR(x,n)     LShiftR(x, n)|MSBH(x,n)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
 #define and 0x00
 #define eor 0x01
@@ -91,18 +103,8 @@ typedef uint8_t u8;
 #define asr 0x2
 #define ror 0x3
 
-//Generate a mask to extract the bits of position start to position end
-#define GENERATEMASK(start,end) (u32) ((1 << (end+1)) -1) - ((1<<start)-1)
-//Change the bits from position start to position end
-#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
-//Change bit at position pos to 1
-#define SETBIT(input, pos)          (u32) (input | 1 << pos)
-//Change bit at position pos to 0
-#define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
-//Change bits in target from position start to position end to input
-#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
 
-typedef struct a{
+typedef struct {
     u32 COND:4;
     u32 I:1;
     u32 OPCODE:4;
