@@ -12,7 +12,7 @@ typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
 
-#define NUM_OF_GENERAL_REGISTER 12
+#define NUM_OF_GENERAL_REGISTER 13
 #define MAX_MEMORY  65536
 
 /*This is use to set and get the flag of the CPSR register*/
@@ -127,5 +127,14 @@ typedef struct{
     u32 REGISTER[NUM_OF_GENERAL_REGISTER];
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
+
+int satisfyCondition(MACHINE* ARM, u32 instruction);
+void printBit(uint32_t x);
+u32 generateDataFromHex(char hex[]);
+void printRegisters(MACHINE* ARM);
+MACHINE* createMachine();
+void printMemory(MACHINE* ARM);
+void printMachineState(MACHINE* ARM);
+void loadBinaryFile(MACHINE* ARM, char *address);
 
 #endif //ARM11_06_EMULATE_H
