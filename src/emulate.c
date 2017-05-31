@@ -1,4 +1,3 @@
-//#include <hwloc.h>
 #include "decode.h"
 #include "emulate.h"
 
@@ -33,7 +32,7 @@ void printBit(uint32_t x){
     int i;
     uint32_t mask = (uint32_t) 1 << 31;
     for(i = 0;i < 32;++i){
-        if(i%8==0){
+        if(i%4==0){
             printf(" ");
         }
         printf("%i", (x & mask) != 0);
@@ -176,6 +175,12 @@ int main(int argc,  char **argv) {
     printBit(Oprand2);
     printBit(LShiftL(Rm ,value));
     printBit(SETBITS(LShiftL(Rm,value),Oprand2,0,4));
+
+
+    dataprocessing(ARM,0xe3a01001);
+    dataprocessing(ARM,0xe1a01081);
+    printMachineState(ARM);
+
 
 
 

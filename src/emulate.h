@@ -49,7 +49,7 @@ typedef uint8_t u8;
 
 /*To determine which state the instruction set are*/
 #define IS_MULTI(x)              (u32)   ~FIND_BIT25(x)&((0x90u & x) == 0x90u) & (FIND_BIT2627(x) == 0)
-#define IS_DATAPROCESS(x)        (u32)   ((FIND_BIT2627(x) == 0) & !IS_MULTI(x)
+#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & !IS_MULTI(x)
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
@@ -148,5 +148,7 @@ typedef struct{
 }MACHINE;
 
 int satisfyCondition(MACHINE* ARM, u32 instruction);
+
+void dataprocessing(MACHINE* ARM, u32 instruction);
 
 #endif //ARM11_06_EMULATE_H

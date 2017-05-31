@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         src/assemble.c
         src/emulate.c
-        src/dataprocessing.c/
+        src/dataprocessing.c
         src/emulate.h
         src/decode.c
         src/decode.h
