@@ -20,10 +20,8 @@ void loadBinaryFile(MACHINE* ARM, char *address){
 
     fread(combuffer, 1,size,ifp);
 
-    for(int i = 0; i < size / 4; i++) {
-        for(int byte = 0; byte < 4; byte++) {
-            ARM->MEMORY[i] += combuffer[i * 4 + byte] << ((3 - byte) * 8);
-        }
+    for(int i = 0; i < size; i++) {
+        ARM->MEMORY[i] = combuffer[i];
 //        printf("%x ",combuffer[i]);
 //        printBit(combuffer[i]);
 //        printf("\n");

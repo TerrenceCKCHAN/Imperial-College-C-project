@@ -1,4 +1,5 @@
 #include "decode.h"
+#include "emulate.h"
 
 int satisfyCondition(MACHINE* ARM, u32 instruction) {
     int NFlag = GETBITS(ARM->CPSRREG, 31, 31);
@@ -77,9 +78,14 @@ MACHINE* createMachine() {
 
 
 void printMemory(MACHINE* ARM) {
-    for(int index = 0; index < MAX_MEMORY; index++) {
-        if(ARM->MEMORY[index] != 0) {
-            printf("0x%08x: 0x%08x\n", index * 4, ARM->MEMORY[index]);
+
+    for(int index = 0; index < MAX_MEMORY; index+=4) {
+        u32 instruction = 0;
+        for(int byte = 0; byte < 4; byte++) {
+            instruction += ARM->MEMORY[index + byte] << ((3 - byte) * 8);
+        }
+        if(instruction != 0) {
+            printf("0x%08x: 0x%08x\n", index, instruction);
         }
     }
 }

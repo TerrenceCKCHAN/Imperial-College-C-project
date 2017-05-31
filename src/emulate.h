@@ -34,10 +34,11 @@ typedef uint8_t u8;
 /*This is use to extract bit 26 and 27 in the instruction set*/
 #define BIT2627_MASK             (u32)   0x3u << 26
 #define FIND_BIT2627(x)          (u32)   (BIT2627_MASK & x) >> 26
+#define FIND_BIT25(x)            (u32)   (0x1u<<25 & x)>>25
 
 /*To determine which state the instruction set are*/
-#define IS_MULTI(x)              (u32)   ((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0)
-#define IS_DATAPROCESS(x)        (u32)   ((FIND_BIT2627(x) == 0) & !IS_MULTI(x)
+#define IS_MULTI(x)              (u32)   ~FIND_BIT25(x)&((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0)
+#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & !IS_MULTI(x)
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
