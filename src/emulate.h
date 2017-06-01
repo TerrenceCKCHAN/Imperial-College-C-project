@@ -15,6 +15,17 @@ typedef uint8_t u8;
 #define NUM_OF_GENERAL_REGISTER 13
 #define MAX_MEMORY  65536
 
+//Generate a mask to extract the bits of position start to position end
+#define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
+//Change the bits from position start to position end
+#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
+//Change bit at position pos to 1
+#define SETBIT(input, pos)          (u32) (input | 1 << pos)
+//Change bit at position pos to 0
+#define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
+//Change bits in target from position start to position end to input
+#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
+
 /*This is use to set and get the flag of the CPSR register*/
 #define NFLAG_MASK (u32) 1 << 31
 #define ZFLAG_MASK (u32) 1 << 30
@@ -37,8 +48,8 @@ typedef uint8_t u8;
 #define FIND_BIT25(x)            (u32)   (0x1u<<25 & x)>>25
 
 /*To determine which state the instruction set are*/
-#define IS_MULTI(x)              (u32)   ~FIND_BIT25(x)&((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0)
-#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & !IS_MULTI(x)
+#define IS_MULTI(x)              (u32)   (~FIND_BIT25(x)&((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0))
+#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & ~(IS_MULTI(x))
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
@@ -75,18 +86,29 @@ typedef uint8_t u8;
 #define AShiftR(x,n)     LShiftR(x, n)|(x & MSB)
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 
-//Generate a mask to extract the bits of position start to position end
-#define GENERATEMASK(start,end) (u32) ((1<<(end+1)) -1) - ((1<<start)-1)
-//Change the bits from position start to position end
-#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
-//Change bit at position pos to 1
-#define SETBIT(input, pos)          (u32) (input | 1 << pos)
-//Change bit at position pos to 0
-#define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
-//Change bits in target from position start to position end to input
-#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
+#define NOT_EXIST 0xffffffffu
 
-typedef struct a{
+#define and 0x00
+#define eor 0x01
+#define sub 0x02
+#define rsb 0x03
+#define add 0x04
+#define tst 0x08
+#define teq 0x09
+#define cmp 0x0a
+#define orr 0x0c
+#define mov 0x0d
+
+#define eq 0x0
+#define ne 0x1
+#define ge 0xa
+#define lt 0xb
+#define gt 0xc
+#define le 0xd
+#define al 0xe
+
+
+typedef struct{
     u32 COND:4;
     u32 I:1;
     u32 OPCODE:4;
@@ -121,6 +143,40 @@ typedef struct{
     u32 COND:4;
     u32 OFFSET:24;
 }BRANCH;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 DEST;
+    u32 SRC;
+    u32 OPERAND2;
+}DATAPROCESSING_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 DEST;
+    u32 REGM;
+    u32 REGS;
+    u32 ACC;
+}MULTIPLY_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 REG;
+    u32 ADDRESS;
+}SIN_DATA_TRAN_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 OFFSET;
+}BRANCH_INSTR;
 
 typedef struct{
     u32 CPSRREG;
