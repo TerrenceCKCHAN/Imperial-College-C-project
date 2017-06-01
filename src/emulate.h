@@ -12,7 +12,7 @@ typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
 
-#define NUM_OF_GENERAL_REGISTER 12
+#define NUM_OF_GENERAL_REGISTER 13
 #define MAX_MEMORY  65536
 
 //Generate a mask to extract the bits of position start to position end
@@ -48,6 +48,7 @@ typedef uint8_t u8;
 #define FIND_BIT25(x)            (u32)   (0x1u<<25 & x)>>25
 
 /*To determine which state the instruction set are*/
+
 #define IS_MULTI(x)              (u32)   ~FIND_BIT25(x)&((0x90u & x) == 0x90u) & (FIND_BIT2627(x) == 0)
 #define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & !IS_MULTI(x)
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
@@ -148,7 +149,14 @@ typedef struct{
 }MACHINE;
 
 int satisfyCondition(MACHINE* ARM, u32 instruction);
-
 void dataprocessing(MACHINE* ARM, u32 instruction);
+void printBit(uint32_t x);
+u32 generateDataFromHex(char hex[]);
+void printRegisters(MACHINE* ARM);
+MACHINE* createMachine();
+void printMemory(MACHINE* ARM);
+void printMachineState(MACHINE* ARM);
+void loadBinaryFile(MACHINE* ARM, char *address);
+
 
 #endif //ARM11_06_EMULATE_H

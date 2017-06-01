@@ -1,9 +1,8 @@
 #include "emulate.h"
 #include "decode.h"
 
-DATAPROCESSING* DecodeDataProcessing(u32 instruction) {
-    DATAPROCESSING* instr = malloc(sizeof(DATAPROCESSING));
 
+void DecodeDataProcessing(DATAPROCESSING* instr, u32 instruction) {
     instr->COND     = GETBITS(instruction, 28, 31);
     instr->I        = GETBITS(instruction, 25, 25);
     instr->OPCODE   = GETBITS(instruction, 21, 24);
@@ -11,11 +10,9 @@ DATAPROCESSING* DecodeDataProcessing(u32 instruction) {
     instr->REGN     = GETBITS(instruction, 16, 19);
     instr->REGD     = GETBITS(instruction, 12, 15);
     instr->OPRAND2  = GETBITS(instruction, 0, 11);
-    return instr;
 }
 
-MULTIPLY* DecodeMultiply(u32 instruction) {
-    MULTIPLY* instr = malloc(sizeof(MULTIPLY));
+void DecodeMultiply(MULTIPLY* instr, u32 instruction) {
     instr->COND     = GETBITS(instruction, 28, 31);
     instr->A        = GETBITS(instruction, 21, 21);
     instr->S        = GETBITS(instruction, 20, 20);
@@ -23,11 +20,9 @@ MULTIPLY* DecodeMultiply(u32 instruction) {
     instr->REGN     = GETBITS(instruction, 12, 15);
     instr->REGS     = GETBITS(instruction, 8, 11);
     instr->REGM     = GETBITS(instruction, 0, 3);
-    return instr;
 }
 
-SIN_DATA_TRAN* DecodeSingleDataTransfer(u32 instruction) {
-    SIN_DATA_TRAN* instr = malloc(sizeof(SIN_DATA_TRAN));
+void DecodeSingleDataTransfer(SIN_DATA_TRAN* instr, u32 instruction) {
     instr->COND      = GETBITS(instruction, 28, 31);
     instr->I         = GETBITS(instruction, 25, 25);
     instr->P         = GETBITS(instruction, 24, 24);
@@ -36,14 +31,11 @@ SIN_DATA_TRAN* DecodeSingleDataTransfer(u32 instruction) {
     instr->REGN      = GETBITS(instruction, 16, 19);
     instr->REGD      = GETBITS(instruction, 12, 15);
     instr->OFFSET    = GETBITS(instruction, 0, 11);
-    return instr;
 }
 
-BRANCH* DecodeBranch(u32 instruction) {
-    BRANCH* instr = malloc(sizeof(BRANCH));
+void DecodeBranch(BRANCH* instr, u32 instruction) {
     instr->COND      = GETBITS(instruction, 28, 31);
     instr->OFFSET    = GETBITS(instruction, 0, 23);
-    return instr;
 }
 
 void printDataProcessing(DATAPROCESSING* dp) {
@@ -81,3 +73,4 @@ void printBranch(BRANCH* br) {
     printf("COND %x\n",br->COND);
     printf("OFFSET %x\n",br->OFFSET);
 }
+
