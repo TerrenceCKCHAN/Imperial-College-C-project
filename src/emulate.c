@@ -21,7 +21,8 @@ u32 fetchInstruction(MACHINE* ARM, u32 pc) {
 // Post: The union of the instructions, showing the type and respective
 // instruction structures
 
-INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
+void decodeInstruction(INSTRUCTION* instr, u32 instruction) {
+    printf("%x %d\n", instruction, IS_BRANCH(instruction));
     if (instruction == 0) {  // Represent the all-zero halt instruction
         strcpy(instr->type, "halt");
     } else if(IS_DATAPROCESS(instruction)) { //Represent the dataprocessing instruction
@@ -40,15 +41,15 @@ INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
         DecodeSingleDataTransfer(instr->instr.sdt, instruction);
         printSDT(instr->instr.sdt);
     } else if(IS_BRANCH(instruction)) { //Represent the branch instruction
+        printf("HI\n");
         strcpy(instr->type, "branch");
         instr->instr.br = malloc(sizeof(BRANCH_INSTR));
         DecodeBranch(instr->instr.br, instruction);//
-//        printBranch(instr->instr.br);
+        printBranch(instr->instr.br);
     } else {
         printf("Instruction not valid!");
         exit(EXIT_FAILURE);
     }
-    return instr;
 }
 
 // Execute the decoded function and change the state of the ARM machine
@@ -56,6 +57,7 @@ INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
 // Post: The modified state of the machine after each execution function
 
 void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
+
     if(strcmp(instr->type, "dataprocessing") == 0) {
 //        parseDataprocessing(instr->instr.dp);
         dataprocessing(ARM, instr->instr.dp);
@@ -64,7 +66,7 @@ void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
     } else if(strcmp(instr->type, "singledatatransfer") == 0) {
         //singledatatransfer(ARM, instr->instr.sdt);
     } else if(strcmp(instr->type, "branch") == 0) {
-        //branch(ARM, instr->instr.br);
+        branch(ARM, instr->instr.br);
     } else if(strcmp(instr->type, "halt") == 0) {
         printf("halt function detected\n");
     }
@@ -78,7 +80,7 @@ int main(int argc,  char **argv) {
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
-    loadBinaryFile(ARM, argv[1]);
+    loadBinaryFile(ARM, "/homes/hxm16/arm_1617_testsuite/test_cases/beq01");
     while(execute) {
         if(decodedEmpty) {
             if(fetchedEmpty) {
@@ -89,12 +91,14 @@ int main(int argc,  char **argv) {
 //                printf("Decoded ");
 //                printDecodedInstruction(decodedInstr);
                 fetchedInstr = fetchInstruction(ARM, ARM->PCREG);
+                printf("%x %d\n", fetchedInstr, IS_BRANCH(fetchedInstr));
 //                printf("TRIGGERED %x\n", fetchedInstr);
                 decodedEmpty = 0;
             }
         } else {
-//            printf("%s\n", decodedInstr->type);
+            printf("%s\n", decodedInstr->type);
             if(strcmp(decodedInstr->type, "branch") == 0) {
+                printf("HI\n");
                 executeInstruction(ARM, decodedInstr);
                 decodedEmpty = 1;
             } else {
@@ -102,12 +106,17 @@ int main(int argc,  char **argv) {
                     execute = 0;
                     break;
                 }
+                printf("Execute %s %x\n", decodedInstr->type, decodedInstr->instr.dp->INSTRUCTION);
                 executeInstruction(ARM, decodedInstr);
+//                printf("Hi\n");
                 decodeInstruction(decodedInstr, fetchedInstr);
+                printf("Decoded %x\n", fetchedInstr);
             }
             fetchedInstr = fetchInstruction(ARM, ARM->PCREG);
+            printf("%x %d\n", fetchedInstr, IS_BRANCH(fetchedInstr));
         }
         ARM->PCREG += 4;
+        printMachineState(ARM);
     }
     printMachineState(ARM);
     return EXIT_SUCCESS;

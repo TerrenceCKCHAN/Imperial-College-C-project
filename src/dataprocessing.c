@@ -91,7 +91,9 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
         }
 
         if(strcmp(opcode,"tst")!=0 | strcmp(opcode,"teq")!=0 | strcmp(opcode,"cmp")!=0){
-            ARM->REGISTER[Rd] = result;
+            if(Rd != NOT_EXIST) {
+                ARM->REGISTER[Rd] = result;
+            }
         }
     }
 }
