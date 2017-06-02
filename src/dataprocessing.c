@@ -28,6 +28,10 @@ u32 shifingOperation(DATAPROCESSING_INSTR *datapro_I, u32 shiftType, u32 valueof
 
 
 void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
+//    printf("%x\n", datapro_I->INSTRUCTION);
+//    printf("\n");
+//    printf("%x\n", satisfyCondition(ARM,datapro_I->INSTRUCTION));
+//    parseDataprocessing(datapro_I);
     if(satisfyCondition(ARM,datapro_I->INSTRUCTION)){
 
         char* opcode = datapro_I->OPCODE;
@@ -36,12 +40,14 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
         u32 Rd = datapro_I->DEST;
         u32 Rn = datapro_I->SRC;
         u32 oprand2 = datapro_I->OPERAND2;
+        u32 ARM_Rn;
         u32 I = GETBITS(datapro_I->INSTRUCTION,25,25);
 
-        u32 ARM_Rn = ARM->REGISTER[Rn];
+        if(Rn != NOT_EXIST) {
+            ARM_Rn = ARM->REGISTER[Rn];
+        }
         u32 result=0;
         u32 carry =0;
-
         //OpCode operations
         switch (GETBITS(datapro_I->INSTRUCTION,21,24)){
             case and:
@@ -84,7 +90,6 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
 
 
 
-
         if(I){
             //If operand2 is a immediate value
             u32 rotatevalue = GETBITS(oprand2, 8, 11);
@@ -121,6 +126,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
             }
 
         }
+//        printf("Hi\n");
 
         if(S){
             //seting CPSR flag
@@ -131,12 +137,13 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
             if(carry==1){
                 ARM->CPSRREG = SETBIT(ARM->CPSRREG,29);
             }
-            if(GETBITS(result,31,31){
+            if(GETBITS(result,31,31)){
                 ARM->CPSRREG = SETBIT(ARM->CPSRREG,31);
             }
 
 
         }
+//        printMachineState(ARM);
     }
 }
 

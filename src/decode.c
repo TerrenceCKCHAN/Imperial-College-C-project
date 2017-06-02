@@ -154,3 +154,24 @@ void printBranch(BRANCH_INSTR* br) {
     printf(" %x\n",br->OFFSET);
 }
 
+void printDecodedInstruction(INSTRUCTION* instr) {
+    if(strcmp(instr->type, "dataprocessing") == 0) {
+        printDataProcessing(instr->instr.dp);
+    } else if(strcmp(instr->type, "multiply") == 0) {
+        printMultiply(instr->instr.mp);
+    } else if(strcmp(instr->type, "singledatatransfer") == 0) {
+        printSDT(instr->instr.sdt);
+    } else if(strcmp(instr->type, "branch") == 0) {
+        printBranch(instr->instr.br);
+    }
+}
+
+void parseDataprocessing(DATAPROCESSING_INSTR* dp) {
+    printf("instruction %x\n", dp->INSTRUCTION);
+    printf("cond %x\n", dp->COND);
+    printf("s %x\n", dp->S);
+    printf("opcode %s\n", dp->OPCODE);
+    printf("dest %x\n", dp->DEST);
+    printf("src %x\n", dp->SRC);
+    printf("operand2 %x\n", dp->OPERAND2);
+}
