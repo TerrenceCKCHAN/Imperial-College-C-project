@@ -8,6 +8,7 @@ set(SOURCE_FILES
         src/emulate.c
         src/emulate.h
         src/decode.c
+        src/branch.c
         src/decode.h src/emu_io.c src/emu_util.c)
 
 add_executable(arm11_06 ${SOURCE_FILES})
