@@ -107,7 +107,7 @@ typedef uint8_t u8;
 #define le 0xd
 #define al 0xe
 
-
+/*
 typedef struct{
     u32 COND:4;
     u32 I:1;
@@ -143,8 +143,8 @@ typedef struct{
     u32 COND:4;
     u32 OFFSET:24;
 }BRANCH;
-
-typedef struct{
+*/
+typedef struct dp{
     u32 INSTRUCTION;
     u32 COND: 4;
     u32 S:1;
@@ -154,7 +154,7 @@ typedef struct{
     u32 OPERAND2;
 }DATAPROCESSING_INSTR;
 
-typedef struct{
+typedef struct mp{
     u32 INSTRUCTION;
     u32 COND: 4;
     u32 S:1;
@@ -165,7 +165,7 @@ typedef struct{
     u32 ACC;
 }MULTIPLY_INSTR;
 
-typedef struct{
+typedef struct sdt{
     u32 INSTRUCTION;
     u32 COND: 4;
     char OPCODE[4];
@@ -173,12 +173,22 @@ typedef struct{
     u32 ADDRESS;
 }SIN_DATA_TRAN_INSTR;
 
-typedef struct{
+typedef struct br{
     u32 INSTRUCTION;
     u32 COND: 4;
     char OPCODE[4];
     u32 OFFSET;
 }BRANCH_INSTR;
+
+typedef struct {
+    char type[20];
+    union {
+        DATAPROCESSING_INSTR* dp;
+        MULTIPLY_INSTR* mp;
+        SIN_DATA_TRAN_INSTR* sdt;
+        BRANCH_INSTR* br;
+    }instr;
+}INSTRUCTION;
 
 typedef struct{
     u32 CPSRREG;
