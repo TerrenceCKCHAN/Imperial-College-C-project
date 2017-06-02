@@ -37,7 +37,7 @@ int main(int argc,  char **argv) {
     MACHINE* ARM = createMachine();
     u32 instruction;
     u32 PC = 0;
-    loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/eor01");
+    loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/mul01");
     instruction = fetchInstruction(ARM,0);
     while(fetchInstruction(ARM, PC) != 0) {
         decodeInstruction(fetchInstruction(ARM,PC));

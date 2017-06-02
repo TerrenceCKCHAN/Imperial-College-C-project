@@ -1,18 +1,16 @@
 #include "decode.h"
 #include "emulate.h"
 
-void multiply(MACHINE* ARM,u32 instruction) {
-    // Decode the instruction for the multiply execution
-    MULTIPLY* multiInstr = DecodeMultiply(instruction);
-    if(satisfyCondition(ARM, instruction)) {
+void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr) {
+    if(satisfyCondition(ARM, multiInstr->INSTRUCTION)) {
         // Get the index of the registers for ease of manipulation
-        u32 rd = multiInstr->REGD;
+        u32 rd = multiInstr->DEST;
         u32 rm = multiInstr->REGM;
         u32 rs = multiInstr->REGS;
-        u32 rn = multiInstr->REGN;
+        u32 rn = multiInstr->ACC;
         u32 res;
         // If the accumulate flag is set carry ouy multiply and accumulate. Otherwise just multiply.
-        if(multiInstr->A) {
+        if(rn != NOT_EXIST) {
             res = ARM->REGISTER[rm] * ARM->REGISTER[rs] + ARM->REGISTER[rn];
         } else {
             res = ARM->REGISTER[rm] * ARM->REGISTER[rs];
