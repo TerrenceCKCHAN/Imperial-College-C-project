@@ -48,9 +48,8 @@ typedef uint8_t u8;
 #define FIND_BIT25(x)            (u32)   (0x1u<<25 & x)>>25
 
 /*To determine which state the instruction set are*/
-
-#define IS_MULTI(x)              (u32)   ~FIND_BIT25(x)&((0x90u & x) == 0x90u) & (FIND_BIT2627(x) == 0)
-#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & !IS_MULTI(x)
+#define IS_MULTI(x)              (u32)   (~FIND_BIT25(x)&((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0))
+#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & ~(IS_MULTI(x))
 #define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
 #define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
 
@@ -88,6 +87,8 @@ typedef uint8_t u8;
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 #define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
+#define NOT_EXIST 0xffffffffu
+
 #define and 0x00
 #define eor 0x01
 #define sub 0x02
@@ -99,13 +100,18 @@ typedef uint8_t u8;
 #define orr 0x0c
 #define mov 0x0d
 
-#define lsl 0x0
-#define lsr 0x1
-#define asr 0x2
-#define ror 0x3
 
 
-typedef struct {
+#define eq 0x0
+#define ne 0x1
+#define ge 0xa
+#define lt 0xb
+#define gt 0xc
+#define le 0xd
+#define al 0xe
+
+
+typedef struct{
     u32 COND:4;
     u32 I:1;
     u32 OPCODE:4;
@@ -140,6 +146,42 @@ typedef struct{
     u32 COND:4;
     u32 OFFSET:24;
 }BRANCH;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    u32 S:1;
+    char OPCODE[4];
+    u32 DEST;
+    u32 SRC;
+    u32 OPERAND2;
+}DATAPROCESSING_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    u32 S:1;
+    char OPCODE[4];
+    u32 DEST;
+    u32 REGM;
+    u32 REGS;
+    u32 ACC;
+}MULTIPLY_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 REG;
+    u32 ADDRESS;
+}SIN_DATA_TRAN_INSTR;
+
+typedef struct{
+    u32 INSTRUCTION;
+    u32 COND: 4;
+    char OPCODE[4];
+    u32 OFFSET;
+}BRANCH_INSTR;
 
 typedef struct{
     u32 CPSRREG;

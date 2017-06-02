@@ -1,6 +1,7 @@
 #include "emulate.h"
 #include "decode.h"
 
+/*
 
 void dataprocessing(MACHINE* ARM, u32 instruction){
     DATAPROCESSING* datapro = DecodeDataProcessing(instruction);
@@ -99,3 +100,4 @@ void dataprocessing(MACHINE* ARM, u32 instruction){
 
 
 
+*/
