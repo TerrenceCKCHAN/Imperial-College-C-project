@@ -2,14 +2,14 @@
 #include "decode.h"
 
 void DecodeDataProcessing(DATAPROCESSING_INSTR* instr, u32 instruction) {
-    u32 i        = GETBITS(instruction, 25, 25);
-    u32 opcode   = GETBITS(instruction, 21, 24);
-    u32 s        = GETBITS(instruction, 20, 20);
-    instr->COND = GETBITS(instruction, 28, 31);
-    instr->INSTRUCTION = instruction;
-    instr->DEST = GETBITS(instruction, 12, 15);
-    instr->SRC = GETBITS(instruction, 16, 19);
-    instr->OPERAND2 = GETBITS(instruction, 0, 11);
+    u32 i               = GETBITS(instruction, 25, 25);
+    u32 opcode          = GETBITS(instruction, 21, 24);
+    instr->COND         = GETBITS(instruction, 28, 31);
+    instr->S            = GETBITS(instruction, 20, 20);
+    instr->INSTRUCTION  = instruction;
+    instr->DEST         = GETBITS(instruction, 12, 15);
+    instr->SRC          = GETBITS(instruction, 16, 19);
+    instr->OPERAND2     = GETBITS(instruction, 0, 11);
     switch(opcode) {
         case and:
             strcpy(instr->OPCODE,"and");
@@ -49,13 +49,13 @@ void DecodeDataProcessing(DATAPROCESSING_INSTR* instr, u32 instruction) {
 }
 
 void DecodeMultiply(MULTIPLY_INSTR* instr, u32 instruction) {
-    u32 a        = GETBITS(instruction, 21, 21);
-    u32 s        = GETBITS(instruction, 20, 20);
-    instr->INSTRUCTION = instruction;
-    instr->COND = GETBITS(instruction, 28, 31);
-    instr->DEST = GETBITS(instruction, 16, 19);
-    instr->REGM = GETBITS(instruction, 0, 3);
-    instr->REGS = GETBITS(instruction, 8, 11);
+    u32 a               = GETBITS(instruction, 21, 21);
+    instr->INSTRUCTION  = instruction;
+    instr->COND         = GETBITS(instruction, 28, 31);
+    instr->S            = GETBITS(instruction, 20, 20);
+    instr->DEST         = GETBITS(instruction, 16, 19);
+    instr->REGM         = GETBITS(instruction, 0, 3);
+    instr->REGS         = GETBITS(instruction, 8, 11);
     switch(a) {
         case 0:
             strcpy(instr->OPCODE,"mul");

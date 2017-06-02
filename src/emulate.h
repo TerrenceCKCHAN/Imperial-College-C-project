@@ -147,6 +147,7 @@ typedef struct{
 typedef struct{
     u32 INSTRUCTION;
     u32 COND: 4;
+    u32 S:1;
     char OPCODE[4];
     u32 DEST;
     u32 SRC;
@@ -156,6 +157,7 @@ typedef struct{
 typedef struct{
     u32 INSTRUCTION;
     u32 COND: 4;
+    u32 S:1;
     char OPCODE[4];
     u32 DEST;
     u32 REGM;
