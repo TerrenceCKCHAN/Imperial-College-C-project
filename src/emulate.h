@@ -209,6 +209,6 @@ MACHINE* createMachine();
 void printMemory(MACHINE* ARM);
 void printMachineState(MACHINE* ARM);
 void loadBinaryFile(MACHINE* ARM, char *address);
-
+u32 updatedOprand2(MACHINE *ARM, DATAPROCESSING_INSTR *data);
 
 #endif //ARM11_06_EMULATE_H

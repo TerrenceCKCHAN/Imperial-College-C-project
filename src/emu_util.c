@@ -57,9 +57,9 @@ u32 generateDataFromHex(char hex[]){
 
 void printRegisters(MACHINE* ARM) {
     for(int index = 0; index <= 12; index++) {
-        printf("$%d\t:% 11d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
+        printf("$%-3d:% 11d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
     }
-    printf("PC\t:% 11d (0x%08x)\n", ARM->PCREG, ARM->PCREG);
+    printf("PC  :% 11d (0x%08x)\n", ARM->PCREG, ARM->PCREG);
     printf("CPSR:% 11d (0x%08x)\n", ARM->CPSRREG, ARM->CPSRREG);
 }
 
@@ -91,6 +91,7 @@ void printMemory(MACHINE* ARM) {
 }
 
 void printMachineState(MACHINE* ARM) {
+    printf("Registers:\n");
     printRegisters(ARM);
     printf("Non-zero memory:\n");
     printMemory(ARM);
