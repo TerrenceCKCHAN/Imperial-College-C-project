@@ -43,6 +43,9 @@ int main(int argc,  char **argv) {
         decodeInstruction(fetchInstruction(ARM,PC));
         PC += 4;
     }
+
+
+
 /*    char hex[16];
     DATAPROCESSING_INSTR dpstruct;
     printBit(0xFu<<11);
@@ -57,5 +60,9 @@ int main(int argc,  char **argv) {
     printBit(GETBITS(0xe3a01001,21,24));
 
     printMachineState(ARM);*/
+    printBit(0xb);
+    printBit(MSB4(0xb));
+    printBit(MSBH4(0xb,1));
+    printBit(AShiftR(0x1,4));
     return EXIT_SUCCESS;
 }

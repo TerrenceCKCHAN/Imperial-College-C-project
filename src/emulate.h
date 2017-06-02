@@ -80,10 +80,10 @@ typedef uint8_t u8;
 
 /*define shifting operations*/
 #define MSB(x)           (1 << 31 & x) >> 31
-#define MSBH(x,v)        (MSB(x)<<v )-1<<(32-v)
+#define MSBH(x,v)        (MSB(x) ? (MSB(x)<<v )-1<<(32-v) : 0)
 #define LShiftL(x,n)     x << n
 #define LShiftR(x,n)     x >> n
-#define AShiftR(x,n)     LShiftR(x, n)|MSBH(x,n)
+#define AShiftR(x,n)     (MSBH(x,n) | LShiftR(x, n))
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 #define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
@@ -191,7 +191,7 @@ typedef struct{
 }MACHINE;
 
 int satisfyCondition(MACHINE* ARM, u32 instruction);
-void dataprocessing(MACHINE* ARM, u32 instruction);
+void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* instruction);
 void printBit(uint32_t x);
 u32 generateDataFromHex(char hex[]);
 void printRegisters(MACHINE* ARM);
