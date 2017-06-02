@@ -9,6 +9,7 @@ set(SOURCE_FILES
         src/dataprocessing.c
         src/emulate.h
         src/decode.c
+        src/branch.c
         src/decode.h src/emu_io.c src/emu_util.c)
 
 

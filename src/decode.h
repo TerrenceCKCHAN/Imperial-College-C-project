@@ -13,5 +13,4 @@ void printBranch(BRANCH_INSTR*);
 void printDecodedInstruction(INSTRUCTION* instr);
 void parseDataprocessing(DATAPROCESSING_INSTR* dp);
 
-
 #endif //ARM11_06_DECODE_H
