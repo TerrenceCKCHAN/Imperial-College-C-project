@@ -10,41 +10,75 @@ u32 fetchInstruction(MACHINE* ARM, u32 pc) {
     return instruction;
 }
 
-void decodeInstruction(u32 instruction) {
+INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
     if(IS_DATAPROCESS(instruction)) {
-        DATAPROCESSING_INSTR* dp = malloc(sizeof(DATAPROCESSING_INSTR));
-        DecodeDataProcessing(dp, instruction);
-        printDataProcessing(dp);
+        strcpy(instr->type, "dataprocessing");
+        instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
+        DecodeDataProcessing(instr->instr.dp, instruction);
+        printDataProcessing(instr->instr.dp);
     } else if(IS_MULTI(instruction)) {
-        MULTIPLY_INSTR* mp = malloc(sizeof(MULTIPLY_INSTR));
-        DecodeMultiply(mp, instruction);
-        printMultiply(mp);
+        strcpy(instr->type, "multiply");
+        instr->instr.mp = malloc(sizeof(MULTIPLY_INSTR));
+        DecodeMultiply(instr->instr.mp, instruction);
+        printMultiply(instr->instr.mp);
     } else if(IS_SINDATATRAN(instruction)) {
-        SIN_DATA_TRAN_INSTR* sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
-        DecodeSingleDataTransfer(sdt, instruction);
-        printSDT(sdt);
+        strcpy(instr->type, "singledatatransfer");
+        instr->instr.sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
+        DecodeSingleDataTransfer(instr->instr.sdt, instruction);
+        printSDT(instr->instr.sdt);
     } else if(IS_BRANCH(instruction)) {
-        BRANCH_INSTR* br = malloc(sizeof(BRANCH_INSTR));
-        DecodeBranch(br, instruction);
-        printBranch(br);
+        strcpy(instr->type, "branch");
+        instr->instr.br = malloc(sizeof(BRANCH_INSTR));
+        DecodeBranch(instr->instr.br, instruction);
+        printBranch(instr->instr.br);
     } else {
         printf("Instruction not valid!");
         exit(EXIT_FAILURE);
+    }
+    return instr;
+}
+
+void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
+    if(strcmp(instr->type, "dataprocessing") == 0) {
+        //dataprocessing(ARM, instr->instr.dp);
+    } else if(strcmp(instr->type, "multiply") == 0) {
+        //multiply(ARM, instr->instr.mp);
+    } else if(strcmp(instr->type, "singledatatransfer") == 0) {
+        //singledatatransfer(ARM, instr->instr.sdt);
+    } else if(strcmp(instr->type, "branch") == 0) {
+        //branch(ARM, instr->instr.br);
     }
 }
 
 int main(int argc,  char **argv) {
     MACHINE* ARM = createMachine();
-    u32 instruction;
-    u32 PC = 0;
-    loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/add01");
-    instruction = fetchInstruction(ARM,0);
-    while(fetchInstruction(ARM, PC) != 0) {
-        decodeInstruction(fetchInstruction(ARM,PC));
-        PC += 4;
+    u32 fetchedInstr = 1;
+    INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
+    int decodedEmpty = 1, fetchedEmpty = 1;
+    loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/eor01");
+    while(fetchedInstr != 0) {
+        if(decodedEmpty) {
+            if(fetchedEmpty) {
+                fetchedInstr = fetchInstruction(ARM, ARM->PCREG);
+                fetchedEmpty = 0;
+            } else {
+                decodeInstruction(decodedInstr, fetchedInstr);
+                decodedEmpty = 0;
+            }
+        } else {
+            if(strcmp(decodedInstr->type, "branch") == 0) {
+                executeInstruction(ARM, decodedInstr);
+                decodedEmpty = 1;
+            } else {
+                executeInstruction(ARM, decodedInstr);
+                decodeInstruction(decodedInstr, fetchedInstr);
+            }
+            fetchedInstr = fetchInstruction(ARM, ARM->PCREG);
+        }
+
+        ARM->PCREG += 4;
     }
-
-
+    printMachineState(ARM);
 
 /*    char hex[16];
     DATAPROCESSING_INSTR dpstruct;
