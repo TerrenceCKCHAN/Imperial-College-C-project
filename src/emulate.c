@@ -2,33 +2,46 @@
 #include "decode.h"
 #include "emulate.h"
 
+// Fetch 4 bytes starting from the program counter(PC)
+// and assemble the instruction for decoding
+// Pre: State of the machine, program counter
+// Post: the instruction in 32bits
+
 u32 fetchInstruction(MACHINE* ARM, u32 pc) {
+    // Initialize instruction
     u32 instruction = 0;
+    // Add the bytes to the instruction after shifting to the correct bit
     for(int byte = 0; byte < 4; byte++) {
         instruction += ARM->MEMORY[pc + byte] << (byte * 8);
     }
     return instruction;
 }
 
+// Decode the instruction into structures for executing
+// Pre: Instruction pointer and the 32bits instruction
+// Post: The union of the instructions, showing the type and respective
+// instruction structures
+
 INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
-    if (instruction == 0) {
+
+    if (instruction == 0) {  // Represent the all-zero halt instruction
         strcpy(instr->type, "halt");
-    } else if(IS_DATAPROCESS(instruction)) {
+    } else if(IS_DATAPROCESS(instruction)) { //Represent the dataprocessing instruction
         strcpy(instr->type, "dataprocessing");
         instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
         DecodeDataProcessing(instr->instr.dp, instruction);
         printDataProcessing(instr->instr.dp);
-    } else if(IS_MULTI(instruction)) {
+    } else if(IS_MULTI(instruction)) { //Represent the multiply instruction
         strcpy(instr->type, "multiply");
         instr->instr.mp = malloc(sizeof(MULTIPLY_INSTR));
         DecodeMultiply(instr->instr.mp, instruction);
         printMultiply(instr->instr.mp);
-    } else if(IS_SINDATATRAN(instruction)) {
+    } else if(IS_SINDATATRAN(instruction)) { //Represent the single data transfer instruction
         strcpy(instr->type, "singledatatransfer");
         instr->instr.sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
         DecodeSingleDataTransfer(instr->instr.sdt, instruction);
         printSDT(instr->instr.sdt);
-    } else if(IS_BRANCH(instruction)) {
+    } else if(IS_BRANCH(instruction)) { //Represent the branch instruction
         strcpy(instr->type, "branch");
         instr->instr.br = malloc(sizeof(BRANCH_INSTR));
         DecodeBranch(instr->instr.br, instruction);
@@ -40,6 +53,10 @@ INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
     return instr;
 }
 
+// Execute the decoded function and change the state of the ARM machine
+// Pre: State of the current machine, instruction structure
+// Post: The modified state of the machine after each execution function
+
 void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
     if(strcmp(instr->type, "dataprocessing") == 0) {
         //dataprocessing(ARM, instr->instr.dp);
@@ -50,16 +67,23 @@ void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
     } else if(strcmp(instr->type, "branch") == 0) {
         //branch(ARM, instr->instr.br);
     } else if(strcmp(instr->type, "halt") == 0) {
-        printf("halt fubctuib detected\n");
+        printf("halt function detected\n");
     }
 }
 
 int main(int argc,  char **argv) {
+    //Creating the ARM machine with 0s in registers and memory
     MACHINE* ARM = createMachine();
+    //Simulating the pipeline: fetchedInstr represents the Fetched state while
+    //DecodedInstr represens the Decoded state for execution
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
+    //initialize flags to represent whether the stage in the pipeline is empty
+    //and whether the program is finished executing
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
+    //load the binary file to machine memory
     loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/eor01");
+    //simulation of the Fetch-Decode-Execute pipeline
     while(execute) {
         if(decodedEmpty) {
             if(fetchedEmpty) {
@@ -87,18 +111,5 @@ int main(int argc,  char **argv) {
         ARM->PCREG += 4;
     }
     printMachineState(ARM);
-/*    char hex[16];
-    DATAPROCESSING_INSTR dpstruct;
-    printBit(0xFu<<11);
-    scanf("%s", hex);
-    printf("%x\n", generateDataFromHex(hex));
-    u32 instruction = generateDataFromHex(hex);
-    printBit(instruction);
-    printDataProcessing(DecodeDataProcessing(instruction));
-
-
-    printBit(GENERATEMASK(2,2));
-    printBit(GETBITS(0xe3a01001,21,24));
-    printMachineState(ARM);*/
     return EXIT_SUCCESS;
 }
