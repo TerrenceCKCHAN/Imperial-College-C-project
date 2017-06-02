@@ -4,27 +4,40 @@
 
 \begin{document}
 
-\title{ARM Checkpoint... }
-\author{TODO}
+\title{ARM Checkpoint Report (Group 6) }
+\author{Chan Chun(ckc16), Cheung Ka(klc116), Hao Mang(hxm16), Cheuk Ki(kfc16)}
 
 \maketitle
 
+\section{Work Distribution}
+
+The 4 members in our group are as follows: Chan Chun (Terrence), Cheung Ka (Matthew), Hao Mang (Ivan) and Cheuk Ki (Tim).
+ 
+Most of the parts in the emulator are interconnected: without the first part done, we would not be able to do testing for the second part. One example is deciding the structure of the emulator and how we are going to process and execute the instructions, which we saw as the top priority and held a group meeting to decide the structure together as a team. We also managed to complete the Input/Output part of the ARM machine together.
+ 
+After that, we divided the work among the group members: We works on decoding the binary data to instructions to be executed before each of us take a part in the execute function which is divided in the four parts conveniently. Ivan works on executing the data processing instructions, Matthew attempts the multiply part, Tim coding the execution for the single data transfer instruction and Terrence works on the branching instructions. After all the execute functions are completed Matthew will write the code for the simulation for the ARM pipeline and Tim is assigned the part about the fetch cycle.
+ 
+We are currently using the GitLab provided to coordinate our work by creating new branches to work on our own parts after agreeing and finish coding the ‘core’ part of the program. Any helper functions deemed reusable will also be added to the header file for future use. To make sure all of us knows what others are working on and how they are implementing it, we hold daily meetings in the lab to discuss about the work.
+
+
 \section{Group Organisation}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+For the most part our group is working as a group when working on different parts of the emulator, spending most of the time in the labs communicating with each other. Although this ensures that the code style is unified and helper functions for a certain part of the emulator can be easily created and placed in the header for other parts in the code, it slows down our progress by a bit as sometimes 3 of us would need to wait for the last person to finish up his code as their code require a part of it to function. Even though it reduces the amount of conflicts in the work, it prevented us from being able to work in parallel to achieve maximum efficiency. 
+ 
+Later on in the project when the workload is greater, we will need to divide the work better among ourselves so each of us can work on different parts of the project individually. We would also need to make sure that all of us are working on different parts instead of working on the same thing as that would make it much harder to resolve conflicts in our codes, which we find very bothersome resolving all the conflicts by hand just looking at the code.  One practice we think that we could keep is when one of us created a helper function for ease of coding and thinks that it would be useful to others, he could switch his working branch back to the main branch (master) and push the code so all of us can have access to the function and benefit from it.
+ 
+Another part we could improve on is organising the times of the meetings. Sometimes conflicts happen and someone need to be late for the meeting, resulting in us not all present at the same time. It made us unable to bring others up to date on what we are working on which could hinder the development of the project. As a result, we would try to coordinate better on our meetings to make sure everyone is present for all sessions.
 
-\section{Implementation Strategies}
+\section{Project Structure}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+Our structure for the emulator contain two header files – emulate.h and decode.h which defines all the types, structs, function declaration that we are going to use later in implementing functions. The main function is located at the emulate.c file for program testing. Other functions that define how our emulator works are written in other .c files.
+Our machine has the following structure: 13 Registers($0 - 12$) stored in arrays, along with the program counter register (PC) and the CPSR register. We also have a Memory Array that stores 64KB($2^{16}$ bytes) to represent that the memory is byte-addressable. 
+To follow the three stage pipeline mentioned in the specification, we divided each parts to their own file to work on, including the Fetch, Decode and Execute functions where the Execute functions are further divided to four extra parts (Data Processing, Multiply, Single Data Transfer and Branch instructions).
+ 
+In the future, we can reuse Header files (define structs and definitions) to carry out similar functions for the assembler. Also, with the binary file loader already created, creating the binary file writer for the assembler would be similar and so we can reuse so part of the logic and code in the binary file loader. Furthermore, we have created structures to store different instructions and are able to print them in assembly code, so by reusing that part of the code we can reduce the workload for translating the assembly code to binary files.
+
+\section{Future Implementations}
+
+At the moment we found the decoding part the hardest and therefore we would expect it to be challenging as well in future tasks. We expect to find the structure of the assembler complicated, it is essential to break the structure up into 3 parts for easier debugging and clarification. Debugging is one of the major challenges in the Raspberry Pi section and in fact the whole project, our plan is to test every function right after it is written before moving on to the next function. The current structure is not optimized and contains a large amount of clumsy and unused code, and we would tackle this problem during regular group meetings by communicating and making sure which part of the code is redundant or similar so we can refine our code. Also, our codes are not well-documented currently now which may cause difficulties when one of our group members wanted to inspect other’s code, so we decided that in the future we will try our best to comment on each function immediately after it is written and provide a clear explanation what it is doing before committing and pushing the changes to GitLab.
 
 \end{document}
