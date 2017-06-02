@@ -11,7 +11,9 @@ u32 fetchInstruction(MACHINE* ARM, u32 pc) {
 }
 
 INSTRUCTION* decodeInstruction(INSTRUCTION* instr, u32 instruction) {
-    if(IS_DATAPROCESS(instruction)) {
+    if (instruction == 0) {
+        strcpy(instr->type, "halt");
+    } else if(IS_DATAPROCESS(instruction)) {
         strcpy(instr->type, "dataprocessing");
         instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
         DecodeDataProcessing(instr->instr.dp, instruction);
@@ -47,6 +49,8 @@ void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
         //singledatatransfer(ARM, instr->instr.sdt);
     } else if(strcmp(instr->type, "branch") == 0) {
         //branch(ARM, instr->instr.br);
+    } else if(strcmp(instr->type, "halt") == 0) {
+        printf("halt fubctuib detected\n");
     }
 }
 
@@ -54,9 +58,9 @@ int main(int argc,  char **argv) {
     MACHINE* ARM = createMachine();
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
-    int decodedEmpty = 1, fetchedEmpty = 1;
+    int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
     loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/eor01");
-    while(fetchedInstr != 0) {
+    while(execute) {
         if(decodedEmpty) {
             if(fetchedEmpty) {
                 fetchedInstr = fetchInstruction(ARM, ARM->PCREG);
@@ -70,6 +74,10 @@ int main(int argc,  char **argv) {
                 executeInstruction(ARM, decodedInstr);
                 decodedEmpty = 1;
             } else {
+                if(strcmp(decodedInstr->type,"halt") == 0){
+                    execute = 0;
+                    break;
+                }
                 executeInstruction(ARM, decodedInstr);
                 decodeInstruction(decodedInstr, fetchedInstr);
             }

@@ -10,5 +10,7 @@ void printDataProcessing(DATAPROCESSING_INSTR*);
 void printMultiply(MULTIPLY_INSTR*);
 void printSDT(SIN_DATA_TRAN_INSTR*);
 void printBranch(BRANCH_INSTR*);
+void printDecodedInstruction(INSTRUCTION* instr);
+void parseDataprocessing(DATAPROCESSING_INSTR* dp);
 
 #endif //ARM11_06_DECODE_H

@@ -6,7 +6,7 @@ int satisfyCondition(MACHINE* ARM, u32 instruction) {
     int ZFlag = GETBITS(ARM->CPSRREG, 30, 30);
     int CFlag = GETBITS(ARM->CPSRREG, 29, 29);
     int VFlag = GETBITS(ARM->CPSRREG, 28, 28);
-    u32 cond = GETBITS(instruction, 29, 31);
+    u32 cond = GETBITS(instruction, 28, 31);
     int bool;
     switch(cond) {
         case 0x0:
