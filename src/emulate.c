@@ -2,146 +2,49 @@
 #include "decode.h"
 #include "emulate.h"
 
-int satisfyCondition(MACHINE* ARM, u32 instruction) {
-    int NFlag = GETBITS(ARM->CPSRREG, 31, 31);
-    int ZFlag = GETBITS(ARM->CPSRREG, 30, 30);
-    int CFlag = GETBITS(ARM->CPSRREG, 29, 29);
-    int VFlag = GETBITS(ARM->CPSRREG, 28, 28);
-    u32 cond = GETBITS(instruction, 29, 31);
-    int bool;
-    switch(cond) {
-        case 0x0:
-            bool = (ZFlag == 1) ? 1 : 0; break;
-        case 0x1:
-            bool = (ZFlag == 0) ? 1 : 0; break;
-        case 0xa:
-            bool = (NFlag == VFlag) ? 1 : 0; break;
-        case 0xb:
-            bool = (NFlag != VFlag) ? 1 : 0; break;
-        case 0xc:
-            bool = (ZFlag == 0) && (NFlag == VFlag) ? 1 : 0; break;
-        case 0xd:
-            bool = (ZFlag == 1) || (NFlag != VFlag) ? 1 : 0; break;
-        case 0xe:
-            bool = 1; break;
+u32 fetchInstruction(MACHINE* ARM, u32 pc) {
+    u32 instruction = 0;
+    for(int byte = 0; byte < 4; byte++) {
+        instruction += ARM->MEMORY[pc + byte] << (byte * 8);
     }
-    return bool;
+    return instruction;
 }
 
-/*This is the function to print bit*/
-void printBit(uint32_t x){
-    int i;
-    uint32_t mask = (uint32_t) 1 << 31;
-    for(i = 0;i < 32;++i){
-        printf("%i", (x & mask) != 0);
-        x<<=1;
-    }
-    printf("\n");
-}
-
-void loadBinaryFile(char *address){
-    unsigned char *combuffer;
-    u32 size;
-    FILE *ifp;
-
-    ifp = fopen(address, "rb");
-
-    fseek(ifp, 0, SEEK_END);
-    size = (u32) ftell(ifp);
-    fseek(ifp, 0, SEEK_SET);
-    combuffer = (unsigned char *) malloc(size);
-
-    if(ifp == NULL){
-        fprintf(stderr,"Unable to read file!");
+void decodeInstruction(u32 instruction) {
+    if(IS_DATAPROCESS(instruction)) {
+        DATAPROCESSING_INSTR* dp = malloc(sizeof(DATAPROCESSING_INSTR));
+        DecodeDataProcessing(dp, instruction);
+        printDataProcessing(dp);
+    } else if(IS_MULTI(instruction)) {
+        MULTIPLY_INSTR* mp = malloc(sizeof(MULTIPLY_INSTR));
+        DecodeMultiply(mp, instruction);
+        printMultiply(mp);
+    } else if(IS_SINDATATRAN(instruction)) {
+        SIN_DATA_TRAN_INSTR* sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
+        DecodeSingleDataTransfer(sdt, instruction);
+        printSDT(sdt);
+    } else if(IS_BRANCH(instruction)) {
+        BRANCH_INSTR* br = malloc(sizeof(BRANCH_INSTR));
+        DecodeBranch(br, instruction);
+        printBranch(br);
+    } else {
+        printf("Instruction not valid!");
         exit(EXIT_FAILURE);
     }
-
-    fread(combuffer, 1,size,ifp);
-
-    for(int i = 0; i < size; i++) {
-        printf("%x ",combuffer[i]);
-        printBit(combuffer[i]);
-        printf("\n");
-    }
-
-    fclose(ifp);
-    free(combuffer);
-}
-
-u32 generateDataFromHex(char hex[]){
-    int length = strlen(hex);
-    u32 data = 0;
-    u32 shift = (length - 1) * 4;
-    for(int pos = 0; pos < length; pos++) {
-        u32 hexValue;
-        if(hex[pos] >= '0' && hex[pos] <= '9') {
-            hexValue = (hex[pos] - '0');
-        } else if(hex[pos] >= 'a' && hex[pos] <= 'f') {
-            hexValue = hex[pos] - 'a' + 10;
-        }
-        data += hexValue << shift;
-        shift -= 4;
-    }
-    return data;
-}
-
-void DATAPROCESSING_INSTR(DATAPROCESSING *datapt){
-    if((datapt->S)!=0){
-        //TODO: change CPSR FLAG
-    }
-    //The CPSR register is unaffected
-
-}
-
-
-u32 generateMask(u32 start, u32 end){
-    return (u32) ((1 << (end + 1)) - 1) - ((1 << start)-1);
-}
-
-void printRegisters(MACHINE* ARM) {
-    for(int index = 1; index <= 12; index++) {
-        printf("$%d\t:% 11d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
-    }
-    printf("PC\t:% 11d (0x%08x)\n", ARM->PCREG, ARM->PCREG);
-    printf("CPSR:% 11d (0x%08x)\n", ARM->CPSRREG, ARM->CPSRREG);
-}
-
-MACHINE* createMachine() {
-    MACHINE* ARM = malloc(sizeof(MACHINE));
-    ARM->PCREG = 0;
-    ARM->CPSRREG = 0;
-    for(int index = 0; index <=NUM_OF_GENERAL_REGISTER; index++) {
-        ARM->REGISTER[index] = 0;
-    }
-    for(int index = 0; index <MAX_MEMORY; index++) {
-        ARM->MEMORY[index] = 0;
-    }
-    return ARM;
-}
-
-
-void printMemory(MACHINE* ARM) {
-    for(int index = 0; index < MAX_MEMORY; index++) {
-        if(ARM->MEMORY[index] != 0) {
-            printf("0x%08x: 0x%08x\n", index * 4, ARM->MEMORY[index]);
-        }
-    }
-}
-
-void printMachineState(MACHINE* ARM) {
-    printRegisters(ARM);
-    printf("Non-zero memory:\n");
-    printMemory(ARM);
 }
 
 int main(int argc,  char **argv) {
-/*    MACHINE* ARM = createMachine();
-    ARM->REGISTER[1] = 2;
-    ARM->REGISTER[2] = 4;
-    multiply(ARM, generateDataFromHex("0xe0030291"));
-    printMachineState(ARM);
-    char hex[16];
-    DATAPROCESSING dpstruct;
+    MACHINE* ARM = createMachine();
+    u32 instruction;
+    u32 PC = 0;
+    loadBinaryFile(ARM, "/homes/klc116/arm11_1617_testsuite/test_cases/eor01");
+    instruction = fetchInstruction(ARM,0);
+    while(fetchInstruction(ARM, PC) != 0) {
+        decodeInstruction(fetchInstruction(ARM,PC));
+        PC += 4;
+    }
+/*    char hex[16];
+    DATAPROCESSING_INSTR dpstruct;
     printBit(0xFu<<11);
     scanf("%s", hex);
     printf("%x\n", generateDataFromHex(hex));
@@ -152,17 +55,6 @@ int main(int argc,  char **argv) {
 
     printBit(GENERATEMASK(2,2));
     printBit(GETBITS(0xe3a01001,21,24));
-    printMachineState(ARM);
-    printBit(CLEARBIT(0xffffffff, 28));*/
-//    loadBinaryFile("/homes/klc116/arm11_1617_testsuite/test_cases/mul01");
-//    printBit(SETBITS(0xfed, 0x10101010, 0, 12);
-//    printBit(~0);
-//    printBit(((0x9) << 5));
-//    printBit(((GENERATEMASK(4, 31) | (0x9)) << 5) | GENERATEMASK(0, 4));
-//    printBit(GENERATEMASK(5, 8) | 0);
-//    printBit((((GENERATEMASK(4, 31) | (0x9)) << 5) | GENERATEMASK(0, 4)) & (GENERATEMASK(5, 8) | 0x10000000));
-//    printBit(((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, length));
+    printMachineState(ARM);*/
     return EXIT_SUCCESS;
 }
-
-
