@@ -10,6 +10,7 @@ set(SOURCE_FILES
         src/emulate.h
         src/decode.c
         src/branch.c
+        src/multiply.c
         src/decode.h src/emu_io.c src/emu_util.c)
 
 
