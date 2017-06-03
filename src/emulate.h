@@ -211,5 +211,7 @@ void printMachineState(MACHINE* ARM);
 void loadBinaryFile(MACHINE* ARM, char *address);
 u32 updatedOprand2(MACHINE *ARM, DATAPROCESSING_INSTR *data);
 void branch(MACHINE* ARM, BRANCH_INSTR* br);
+void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
+u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
 
 #endif //ARM11_06_EMULATE_H
