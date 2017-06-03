@@ -1,14 +1,15 @@
-//
-// Created by admin on 30/5/2017.
-//
-
 #include "decode.h"
 #include "emulate.h"
 
 void branch(MACHINE* ARM, BRANCH_INSTR* br) {
     if(satisfyCondition(ARM, br->INSTRUCTION)) {
-        u32 offset  = GETBITS(br->INSTRUCTION, 23, 0);
-        u32 shifted = LShiftL(offset, 2);
-        ARM->PCREG += shifted;
+        u32 offset  = br->OFFSET;
+        offset = LShiftL(offset,2);
+        if(offset & ( 1 << 23 )){
+            //offset is negative
+            offset = ~offset+1;
+            ARM->PCREG -= offset;
+        }
+        ARM->PCREG += offset;
     }
 }
