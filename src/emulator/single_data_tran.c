@@ -35,7 +35,7 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
             carry = GETBITS(ImmAfterRotate,rotateValue-1,rotateValue-1);
             result =  ImmAfterRotate;
         }
-        /////////////////////////////////////////////////
+
 
         if (GETBITS(sin_I->INSTRUCTION,24,24)) {  //P flag
             //pre indexing
@@ -50,7 +50,6 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
                 } else {
                     u32 memToRegister = 0;
                     for(int byte = 0; byte < 4; byte++) {
-//                    printf("%x\n", ARM->MEMORY[address + byte]);
                         memToRegister += ARM->MEMORY[address + byte] << (byte * 8);
                     }
                     ARM->REGISTER[Rd] = memToRegister;
