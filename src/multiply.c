@@ -21,13 +21,13 @@ void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr) {
             u32 n = GETBITS(res, 31, 31);
             // Setting bit 31 of the CPSR register to the N bit
             if(n) {
-                ARM->CPSRREG = SETBIT(ARM->CPSRREG, 31);
+                ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16], 31);
             } else {
-                ARM->CPSRREG = CLEARBIT(ARM->CPSRREG, 31);
+                ARM->REGISTER[16] = CLEARBIT(ARM->REGISTER[16], 31);
             }
             // Setting the zero flag if the result is zero
             if(res == 0) {
-                ARM->CPSRREG = SETBIT(ARM->CPSRREG, 30);
+                ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16], 30);
             }
         }
     }

@@ -12,7 +12,7 @@ typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
 
-#define NUM_OF_GENERAL_REGISTER 13
+#define NUM_OF_GENERAL_REGISTER 17
 #define MAX_MEMORY  65536
 
 //Generate a mask to extract the bits of position start to position end
@@ -194,8 +194,6 @@ typedef struct {
 }INSTRUCTION;
 
 typedef struct{
-    u32 CPSRREG;
-    u32 PCREG;
     u32 REGISTER[NUM_OF_GENERAL_REGISTER];
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
@@ -211,5 +209,9 @@ void printMachineState(MACHINE* ARM);
 void loadBinaryFile(MACHINE* ARM, char *address);
 u32 updatedOprand2(MACHINE *ARM, DATAPROCESSING_INSTR *data);
 void branch(MACHINE* ARM, BRANCH_INSTR* br);
+void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
+u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
+void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
+void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
 
 #endif //ARM11_06_EMULATE_H

@@ -2,10 +2,10 @@
 #include "emulate.h"
 
 int satisfyCondition(MACHINE* ARM, u32 instruction) {
-    int NFlag = GETBITS(ARM->CPSRREG, 31, 31);
-    int ZFlag = GETBITS(ARM->CPSRREG, 30, 30);
-    int CFlag = GETBITS(ARM->CPSRREG, 29, 29);
-    int VFlag = GETBITS(ARM->CPSRREG, 28, 28);
+    int NFlag = GETBITS(ARM->REGISTER[16], 31, 31);
+    int ZFlag = GETBITS(ARM->REGISTER[16], 30, 30);
+    int CFlag = GETBITS(ARM->REGISTER[16], 29, 29);
+    int VFlag = GETBITS(ARM->REGISTER[16], 28, 28);
     u32 cond = GETBITS(instruction, 28, 31);
     int bool;
     switch(cond) {
@@ -57,16 +57,16 @@ u32 generateDataFromHex(char hex[]){
 
 void printRegisters(MACHINE* ARM) {
     for(int index = 0; index <= 12; index++) {
-        printf("$%-3d:% 11d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
+        printf("$%-3d: %10d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
     }
-    printf("PC  :% 11d (0x%08x)\n", ARM->PCREG, ARM->PCREG);
-    printf("CPSR:% 11d (0x%08x)\n", ARM->CPSRREG, ARM->CPSRREG);
+    printf("PC  : %10d (0x%08x)\n", ARM->REGISTER[15], ARM->REGISTER[15]);
+    printf("CPSR: %10d (0x%08x)\n", ARM->REGISTER[16], ARM->REGISTER[16]);
 }
 
 MACHINE* createMachine() {
     MACHINE* ARM = malloc(sizeof(MACHINE));
-    ARM->PCREG = 0;
-    ARM->CPSRREG = 0;
+    ARM->REGISTER[15] = 0;
+    ARM->REGISTER[16] = 0;
     for(int index = 0; index <=NUM_OF_GENERAL_REGISTER; index++) {
         ARM->REGISTER[index] = 0;
     }
