@@ -15,7 +15,7 @@ int main(int argc, char **argv){
   return EXIT_SUCCESS;
 }
 
-
+/*
 BST_Node* allocBST_Node(void){
     BST_Node *node = malloc(sizeof(BST_Node));
     if(node ==NULL){
@@ -38,4 +38,4 @@ BST* BST_init(BST* tree, bst_compare_t compare){
 
 BST* insert_Node(BST* tree,char* key, u32 value ){
     
-}
+}*/
