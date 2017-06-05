@@ -12,10 +12,30 @@ void binaryFileWriter(u32 instr[], char ** argv){
 }
 
 int main(int argc, char **argv){
+  return EXIT_SUCCESS;
+}
 
-    char str[] = "sub r1, r2, r3, lsl r4";
-    LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    LineToTokens(line_token, str);
-    printToken(line_token);
-    return EXIT_SUCCESS;
+
+BST_Node* allocBST_Node(void){
+    BST_Node *node = malloc(sizeof(BST_Node));
+    if(node ==NULL){
+        perror("allocBSTNode");
+        exit(EXIT_FAILURE);
+    }
+    return node;
+}
+
+void freeBST_Node(BST_Node* node){
+    free(node);
+}
+
+BST* BST_init(BST* tree, bst_compare_t compare){
+    tree->compare = compare;
+    tree->root = NULL;
+    return tree;
+}
+
+
+BST* insert_Node(BST* tree,char* key, u32 value ){
+    
 }
