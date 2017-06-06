@@ -5,11 +5,22 @@
 #include "assemble.h";
 #include "tokenizer.h"
 
+/*typedef struct {
+    u32 INSTRUCTION;
+    char OPCODE[4];
+    u32 COND: 4;
+    u32 S:1;
+    u32 I:1;
+    u32 DEST;
+    u32 SRC;
+    u32 OPERAND2;
+}DATAPROCESSING_INSTR;*/
+
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
     instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
-    instr->instr.dp->COND     = 1110 << 28;
+    instr->instr.dp->COND     = 1110;
 }
 
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr) {
@@ -46,7 +57,7 @@ void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr) {
 void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
-    instr->instr.dp->COND     = 1110 << 28;
+    instr->instr.dp->COND     = 1110;
 }
 
 void assemble_set_flag_instructions(LINE_TOKEN* line_token, INTSRUCTION* instr) {
