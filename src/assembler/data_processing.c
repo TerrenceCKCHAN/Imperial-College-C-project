@@ -29,9 +29,4 @@ void dataProcessing(LINE_TOKEN *line_token) {
         instr->instr.dp->OPCODE == line_token->opcode;
     }
 
-
-
-    }
-
-
 }
