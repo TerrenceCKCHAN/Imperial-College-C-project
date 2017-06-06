@@ -42,6 +42,7 @@
 
 }*/
 
+
 u32* assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr){
 
     u32* address= NULL;
