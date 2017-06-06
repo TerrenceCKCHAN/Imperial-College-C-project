@@ -4,13 +4,18 @@
 
 #include "assemble.h";
 #include "tokenizer.h"
+#include "../emulator/emulate.h"
 
 void dataProcessing(LINE_TOKEN *line_token) {
-    enum TOKEN_TYPE type = line_token->type;
-    char label           = line_token->label;
-    char opcode          = line_token->opcode;
-    char *operands       = line_token->operands;
-    int  numOfOperands   = line_token->numOfOperands;
+    INSTRUCTION *instr = malloc(sizeof(INSTRUCTION));
+
+    u32 Cond;
+    u32 I;
+    char OpCode;
+    u32 S;
+    u32 Rn;
+    u32 Rd;
+    u32 Operand2;
 
     // This is the case for Instructions that do not compute results
     if (operands[0] == NULL) {
@@ -22,9 +27,8 @@ void dataProcessing(LINE_TOKEN *line_token) {
     }
     // This is the case for instructions that compute results
     else {
-        switch (opcode) {
-            
-        }
+        instr->instr.dp->OPCODE == line_token->opcode;
+    }
 
 
 
