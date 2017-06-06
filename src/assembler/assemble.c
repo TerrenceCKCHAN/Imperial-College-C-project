@@ -11,7 +11,7 @@ void binaryFileWriter(u32 instr[], char ** argv){
     fwrite(instr,sizeof(instr),1,ofp);
 }
 
-int main(int argc, char **argv){
+int main1(int argc, char **argv){
     LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
     char line[] = "str r0, [r3, r2]";
     LineToTokens(line_token, line);

@@ -70,19 +70,16 @@ void DecodeMultiply(MULTIPLY_INSTR* instr, u32 instruction) {
 }
 
 void DecodeSingleDataTransfer(SIN_DATA_TRAN_INSTR* instr, u32 instruction) {
-    u32 cond      = GETBITS(instruction, 28, 31);
-    u32 i         = GETBITS(instruction, 25, 25);
-    u32 p         = GETBITS(instruction, 24, 24);
-    u32 u         = GETBITS(instruction, 23, 23);
-    u32 l         = GETBITS(instruction, 20, 20);
-    u32 regn      = GETBITS(instruction, 16, 19);
-    u32 regd      = GETBITS(instruction, 12, 15);
-    u32 offset    = GETBITS(instruction, 0, 11);
+    instr->COND      = GETBITS(instruction, 28, 31);
+    instr->I         = GETBITS(instruction, 25, 25);
+    instr->P         = GETBITS(instruction, 24, 24);
+    instr->U         = GETBITS(instruction, 23, 23);
+    instr->L         = GETBITS(instruction, 20, 20);
+    instr->REGN      = GETBITS(instruction, 16, 19);
+    instr->REGD      = GETBITS(instruction, 12, 15);
+    instr->OFFSET    = GETBITS(instruction, 0, 11);
     instr->INSTRUCTION = instruction;
-    instr->COND = cond;
-    instr->REG = regd;
-    instr->ADDRESS = offset;
-    switch(l) {
+    switch(instr->L) {
         case 0:
             strcpy(instr->OPCODE,"str");
             break;
@@ -123,8 +120,8 @@ void printMultiply(MULTIPLY_INSTR* mp) {
 
 void printSDT(SIN_DATA_TRAN_INSTR* sdt) {
     printf("%s ",sdt->OPCODE);
-    printf("%d ", sdt->REG);
-    printf("%d\n", sdt->ADDRESS);
+    printf("%d ", sdt->REGD);
+    printf("%d\n", sdt->OFFSET);
 }
 
 void printBranch(BRANCH_INSTR* br) {

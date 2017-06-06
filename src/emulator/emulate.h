@@ -172,8 +172,13 @@ typedef struct sdt{
     u32 INSTRUCTION;
     u32 COND: 4;
     char OPCODE[4];
-    u32 REG;
-    u32 ADDRESS;
+    u32 REGD;
+    u32 REGN;
+    u32 OFFSET;
+    u32 I: 1;
+    u32 P: 1;
+    u32 U: 1;
+    u32 L: 1;
 }SIN_DATA_TRAN_INSTR;
 
 typedef struct br{
