@@ -1,6 +1,9 @@
 #include "tokenizer.h"
 #include "assemble.h"
 
+//Convert the line read in into tokens stored in a structure
+//PRE: Pointer to the token structure and the line as a string
+//POST: Change the values inside the tokens to what the line specifies
 void LineToTokens(LINE_TOKEN* line_token, char line[]) {
     char *token;
     char *rest = line;
@@ -24,6 +27,9 @@ void LineToTokens(LINE_TOKEN* line_token, char line[]) {
     line_token->numOfOperands = pos - 1;
 }
 
+//Print the token structure
+//PRE: the pointer to the token structure
+//POST: Whether the line is a label or an opcode and all it's oprands separated
 void printToken(LINE_TOKEN* line_token) {
     switch(line_token->type) {
         case label:
