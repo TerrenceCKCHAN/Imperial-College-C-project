@@ -8,7 +8,7 @@ u32 assembleInstructions(INSTRUCTION* instr) {
         instruction += instr->instr.dp->DEST << 11;
         instruction += instr->instr.dp->SRC << 15;
         instruction += instr->instr.dp->S << 19;
-//        instruction = lookUpValue(table, instr->instr.dp->OPCODE) << 20;
+        instruction += instr->instr.dp->OPCODEBIN << 20;
         instruction += instr->instr.dp->I << 24;
         instruction += instr->instr.dp->COND << 27;
     } else if(strcmp(instr->type, "multiply") == 0) {
