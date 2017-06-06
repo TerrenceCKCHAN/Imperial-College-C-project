@@ -16,17 +16,50 @@
     u32 OPERAND2;
 }DATAPROCESSING_INSTR;*/
 
+
+//assume there is a field OPCODEBIN in struct DATAPROCESSING
+void setOpCodeBin (INSTRUCTION* instr) {
+    switch (instr->instr.dp->OPCODE) {
+        case "and" :
+            instr->instr.dp->OPCODEBIN = 0000;
+        case "eor" :
+            instr->instr.dp->OPCODEBIN = 0001;
+        case "sub" :
+            instr->instr.dp->OPCODEBIN = 0010;
+        case "rsb" :
+            instr->instr.dp->OPCODEBIN = 0011;
+        case "add" :
+            instr->instr.dp->OPCODEBIN = 0100;
+        case "orr" :
+            instr->instr.dp->OPCODEBIN = 1100;
+        case "mov" :
+            instr->instr.dp->OPCODEBIN = 1101;
+        case "tst" :
+            instr->instr.dp->OPCODEBIN = 1000;
+        case "teq" :
+            instr->instr.dp->OPCODEBIN = 1001;
+        case "cmp" :
+            instr->instr.dp->OPCODEBIN = 1010;
+    }
+}
+
+//assume the operand 2 is an immediate value for now. can be ammend to support shifting
+//helper method to avoid duplication
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
     instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
+    instr->instr.dp->I        = 1;
+    instr->instr.dp->S        = 0;
     instr->instr.dp->COND     = 1110;
+    //instr->instr.dp->OPCODE must be set before using setOpCodeBin
+    setOpCodeBin (instr);
+
 }
 
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->OPCODE   = "add";
     assemble_instr_that_compute_results(line_token, instr);
-
 }
 
 void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr) {
@@ -58,12 +91,15 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
     instr->instr.dp->COND     = 1110;
+    instr->instr.dp->S        = 0;
+    setOpCodeBin (instr);
 }
-
+//helper method to avoid duplication
 void assemble_set_flag_instructions(LINE_TOKEN* line_token, INTSRUCTION* instr) {
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
     instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
     instr->instr.dp->S        = 1;
+    setOpCodeBin (instr);
 }
 
 void assembleTst(LINE_TOKEN* line_token, INSTRUCTION* instr) {
