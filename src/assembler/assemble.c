@@ -1,5 +1,6 @@
 #include "assemble.h"
 #include "tokenizer.h"
+#include "firstpass.h"
 
 void binaryFileWriter(u32 instr[], char ** argv){
     FILE *ofp = fopen(argv[1],"wb");
@@ -11,63 +12,49 @@ void binaryFileWriter(u32 instr[], char ** argv){
     fwrite(instr,sizeof(instr),1,ofp);
 }
 
+struct Linkedlist* getNewlist(void) {
+    struct Linkedlist *list = malloc(sizeof(struct Linkedlist));
+    if (list == NULL) {
+        perror("getNewList");
+        exit(EXIT_FAILURE);
+    }
+}
 
+u32 sourceFileReader(char* lines[], char* filename){
+    FILE * pFile;
+    char buffer[512];
+    u32 index = 0;
+
+    pFile = fopen (filename , "r");
+    if (pFile == NULL) {
+        perror("Error opening file");
+    } else {
+        while (fgets(buffer, sizeof(buffer), pFile)) {
+            int length = (int)strlen(buffer);
+            buffer[length - 1] = '\0';
+            lines[index] = malloc(sizeof(buffer));
+            strcpy(lines[index], buffer);
+            index++;
+        }
+        fclose (pFile);
+    }
+    return index;
+}
 
 int main(int argc, char **argv){
-   // struct Linkedlist* list = getNewlist();
-   // list = insertElementInNode(list, "kokok",3);
+    char* lines[100];
+    LINE_TOKEN* line_tokens[100];
+    u32 numOfLines;
+    numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/add01.s");
+    printf("%d\n", numOfLines);
+    for(int i = 0; i < numOfLines; i++) {
+        printf("%s\n",lines[i]);
+    }
+    fileToTokens(line_tokens, lines, numOfLines);
+    printTokens(line_tokens, numOfLines);
+
 
     return EXIT_SUCCESS;
 }
 
-struct Linkedlist* getNewlist(void){
-    struct Linkedlist* list = malloc(sizeof(struct Linkedlist));
-    if(list == NULL){
-        perror("getNewList");
-        exit(EXIT_FAILURE);
-    }
-    list->value =NULL;
-    list->key =NULL;
-    list->next =NULL;
-    return list;
-}
 
-struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key,void* value){     //insert element in the head return the new linked list
-    struct Linkedlist* newlist = getNewlist();
-    newlist->key = key;
-    newlist->value = value;
-    if(list==NULL){
-        return newlist;
-    }else{
-        newlist->next = list;
-        list = newlist;
-    }
-    return list;
-};
-
-
-
-
-void* lookUpValue(struct Linkedlist *list, char *key){
-    struct Linkedlist* current =list;
-    while(strcmp(current->key,key)!=0){
-        current = current->next;
-        if(current==NULL){
-            printf("No such key");
-            return NULL;
-        }
-    }
-    return current->value;
-}
-
-char* lookUpkey(struct Linkedlist *list, void* value){
-    struct Linkedlist* current =list;
-    while(current->value!=value){
-        current = current->next;
-        if(current==NULL){
-            printf("No such value");
-            return NULL;
-        }
-    }
-    return current->key;
-}
