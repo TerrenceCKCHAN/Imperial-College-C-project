@@ -14,7 +14,7 @@ set(SOURCE_FILES
         src/emulator/emu_io.c
         src/emulator/emu_util.c
         src/emulator/multiply.c
-        src/emulator/single_data_tran.c src/assembler/assemble.h src/assembler/tokenizer.c src/assembler/tokenizer.h src/assembler/parser.c src/assembler/parser.h)
+        src/emulator/single_data_tran.c src/assembler/assemble.h src/assembler/tokenizer.c src/assembler/tokenizer.h src/assembler/parser.c src/assembler/parser.h src/assembler/sin_data_transfer.c src/assembler/branch.c)
 
 
 
