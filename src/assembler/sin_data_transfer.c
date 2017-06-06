@@ -8,26 +8,40 @@ INSTRUCTION* sin_data_transfer(LINE_TOKEN* token ){
     SIN_DATA_TRAN_INSTR* sdtr = malloc (sizeof(SIN_DATA_TRAN_INSTR));
     sdtr->OPCODE = token->operands[0];
     sdtr->REGD = token->operands[1];
-    int isinrect=0;
-    for (int i = 2; i < token->numOfOperands+1; i++) {
-        isinexp=0;
-        isinrect=0;
-        if (token->*(operands+i)[0]=='='){
-            isinexp=1;
-        }
-        else if (token->*(operands+i)[0]=='['){
-            isinrect=1;
+
+    //if it is a load command
+    if (token->operands[0] == "ldr") {
+        //set L flag
+        sdtr->L = 1;
+    }
+
+    //if it is a store command
+    else if( token->operands[0] == "str" ){
+
+        //clear L flag
+        sdtr->L = 1;
+
+    }
+
+    int isinrect = 0;
+    for (int i = 2; i < token->numOfOperands + 1; i++) {
+        isinexp = 0;
+        isinrect = 0;
+        if (token->*(operands + i)[0] == '=') {
+            isinexp = 1;
+        } else if (token->*(operands + i)[0] == '[') {
+            isinrect = 1;
         }
 
-        if(isinexp){
-            if(token->operands[0] == "ldr"){
+        if (isinexp) {
 
-            }
-            else{
+            //numeric expression is for ldr only
+            if (token->operands[0] == "ldr") {
+
+            } else {
                 printf("Error: str with an numeric expression");
             }
-        }
-        else if (isinrect){
+        } else if (isinrect) {
 
         }
     }
