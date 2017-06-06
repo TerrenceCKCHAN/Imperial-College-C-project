@@ -23,7 +23,7 @@ EXP_IN_RECT* parseExpressioninrect(char* operand[]){
     int j = 0;
     int k = 0;
     while(operand[i] != null){
-        if (*(operand+i)[0]=='[' | *(operand+i)[*(operand+i).length-1]==']'){
+        if (*(operand+i)[0]=='[' | *(operand+i)[strlen(*(operand+i))-1]==']'){
             expinrect->expinrect[j] = operand[i];
             j++;
         }
