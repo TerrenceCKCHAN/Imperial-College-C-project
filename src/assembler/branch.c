@@ -1,6 +1,7 @@
 //
 // Created by Timothy Cheuk on 06/06/2017.
 //
+/*
 INSTRUCTION* branch (LINE_TOKEN* token){
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
     BRANCH_INSTR* br = malloc (sizeof(BRANCH_INSTR));
@@ -41,9 +42,44 @@ INSTRUCTION* branch (LINE_TOKEN* token){
 
 
 
+
+
     instr->type = "branch";
     instr->instr = br;
     return instr;
+}
+*/
+
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr)
+{
+    instr->instr.br->OPCODE = "beq";
+    instr->instr.br->COND = 0x0;
+
+}
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OPCODE = "bne";
+    instr->instr.br->COND = 0x1;
+}
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr)
+{
+    instr->instr.br->OPCODE = "bge";
+    instr->instr.br->COND = 0xA;
+}
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OPCODE = "blt";
+    instr->instr.br->COND = 0xB;
+}
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OPCODE = "bgt";
+    instr->instr.br->COND = 0xC;
+}
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OPCODE = "ble";
+    instr->instr.br->COND = 0xD;
+}
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OPCODE = "b";
+    instr->instr.br->COND = 0xE;
 }
 
 /*typedef struct br{

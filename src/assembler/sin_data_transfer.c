@@ -2,8 +2,10 @@
 // Created by Timothy Cheuk on 06/06/2017.
 //
 #include "assemble.h"
+#include "tokenizer.h"
+#include "parser.h"
 
-INSTRUCTION* sin_data_transfer(LINE_TOKEN* token ){
+/*INSTRUCTION* sin_data_transfer(LINE_TOKEN* token ){
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
     SIN_DATA_TRAN_INSTR* sdtr = malloc (sizeof(SIN_DATA_TRAN_INSTR));
     sdtr->OPCODE = token->operands[0];
@@ -23,27 +25,13 @@ INSTRUCTION* sin_data_transfer(LINE_TOKEN* token ){
 
     }
 
-    int isinrect = 0;
-    for (int i = 2; i < token->numOfOperands + 1; i++) {
-        isinexp = 0;
-        isinrect = 0;
-        if (token->*(operands + i)[0] == '=') {
-            isinexp = 1;
-        } else if (token->*(operands + i)[0] == '[') {
-            isinrect = 1;
+    if (token->numOfOperands= 1) {
+        if (token->*(operands+2)[0]== '='){
+
         }
+        else if (token->*(operands+2)[0]== '['){
 
-        if (isinexp) {
-
-            //numeric expression is for ldr only
-            if (token->operands[0] == "ldr") {
-
-            } else {
-                printf("Error: str with an numeric expression");
             }
-        } else if (isinrect) {
-
-        }
     }
 
     instr->instr = *sdtr;
@@ -52,4 +40,65 @@ INSTRUCTION* sin_data_transfer(LINE_TOKEN* token ){
 
     return instr;
 
+}*/
+
+u32* assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+
+    u32* address= NULL;
+
+    //set opcode, destination register and also L flag
+    instr->instr.sdt->OPCODE="ldr";
+    instr->instr.sdt->REGD = parseRegister( line_token->operands[0] );
+    instr->instr.sdt->L = 1;
+    int i = 1;
+    while(link_token->operands[i]!= NULL) {
+        if (line_token->*(operands + 1)[0] == '='){
+            if(line_token->operands[1]<=0xFF){
+                line_token->opcode='mov';
+                assembleMov(line_token,instr);
+            }
+            else{
+
+                assembleLdr(line_token,instr);
+            }
+        } else if (line_token->*(operands + 1)[0] == '[') {
+            if(line_token->numOfOperands=1){
+                instr->instr.sdt->REGN=parseRegister(line_token->operands[i]);
+            } else{
+
+            }
+        }
+        i++;
+    }
+    return address;
 }
+u32* assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+
+    u32* address;
+
+    //set opcode, destination register and also L flag
+    instr->instr.sdt->OPCODE="str";
+    instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
+    instr->instr.sdt->L=0;
+
+
+
+    return address;
+}
+
+
+
+/*
+ * typedef struct sdt{
+    u32 INSTRUCTION;
+    char OPCODE[4];
+    u32 COND: 4;
+    u32 REGD;
+    u32 REGN;
+    u32 OFFSET;
+    u32 I: 1;
+    u32 P: 1;
+    u32 U: 1;
+    u32 L: 1;
+}SIN_DATA_TRAN_INSTR;
+ */
