@@ -4,7 +4,6 @@
 
 #include "assemble.h";
 #include "tokenizer.h"
-#include "../emulator/emulate.h"
 
 void dataProcessing(LINE_TOKEN *line_token) {
     INSTRUCTION *instr = malloc(sizeof(INSTRUCTION));
