@@ -1,5 +1,6 @@
 #include "assemble.h"
 
+
 struct Linkedlist* getNewlist(void){
     struct Linkedlist* list = malloc(sizeof(struct Linkedlist));
     if(list == NULL){
@@ -12,18 +13,17 @@ struct Linkedlist* getNewlist(void){
     return list;
 }
 
-struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key,void* value){     //insert element in the head return the new linked list
+
+
+
+
+void insertElement(struct Linkedlist** list, char *key, void* value){
     struct Linkedlist* newlist = getNewlist();
     newlist->key = key;
     newlist->value = value;
-    if(list==NULL){
-        return newlist;
-    }else{
-        newlist->next = list;
-        list = newlist;
-    }
-    return list;
-};
+    newlist->next = *list;
+    *list = newlist;
+}
 
 
 

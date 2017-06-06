@@ -18,7 +18,7 @@ struct Linkedlist{
     struct Linkedlist *next;
     void* value;
     char *key;
-};
+}*head;
 
 typedef struct table{
     char* opcode;
@@ -50,10 +50,10 @@ void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 */
 struct Linkedlist* getNewlist(void);
-struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
 void* lookUpValue(struct Linkedlist *list, char *key);
 char* lookUpkey(struct Linkedlist *list, void* value);
 void printLinkedList(struct Linkedlist* linkedlist);
+void insertElement(struct Linkedlist** list, char *key, void* value);
 
 
 #endif //ARM11_06_ASSEMBLE_H

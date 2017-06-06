@@ -37,15 +37,16 @@ int main(int argc, char **argv){
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
     u32 numOfLines;
-    numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/add01.s");
-    printf("%d\n", numOfLines);
+    numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/loop02.s");
+/*    printf("%d\n", numOfLines);
     for(int i = 0; i < numOfLines; i++) {
         printf("%s\n",lines[i]);
-    }
+    }*/
     fileToTokens(line_tokens, lines, numOfLines);
-    printTokens(line_tokens, numOfLines);
-
-
+    //printTokens(line_tokens, numOfLines);
+    struct Linkedlist* symbolTable = getNewlist();
+    firstpass(line_tokens, &symbolTable, numOfLines);
+    printLinkedList(symbolTable);
     return EXIT_SUCCESS;
 }
 

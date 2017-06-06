@@ -5,12 +5,13 @@
 #include "assemble.h"
 #include "tokenizer.h"
 
-void firstpass(LINE_TOKEN* line_tokens[], struct Linkedlist* symbolTable) {
+void firstpass(LINE_TOKEN* line_tokens[], struct Linkedlist** symbolTable, int numOfLines) {
     u32 index = 0;
-    for(int pos = 0; pos < sizeof(line_tokens); pos++) {
+    for(int pos = 0; pos < numOfLines; pos++) {
         if(line_tokens[pos]->type == label) {
             u32 address = index * 4;
-            symbolTable = insertElementInNode(symbolTable, line_tokens[pos]->str.label, address);
+            //printf("%s %d\n", line_tokens[pos]->str.label, address);
+            insertElement(symbolTable, line_tokens[pos]->str.label, address);
         } else {
             index++;
         }
