@@ -8,24 +8,22 @@
 void dataProcessing(LINE_TOKEN *line_token) {
     INSTRUCTION *instr = malloc(sizeof(INSTRUCTION));
 
-    u32 Cond;
-    u32 I;
-    char OpCode;
-    u32 S;
-    u32 Rn;
-    u32 Rd;
-    u32 Operand2;
 
     // This is the case for Instructions that do not compute results
-    if (operands[0] == NULL) {
+    if (line_token->operands[0] == NULL) {
 
     }
         // This is the case for Single operand assignment:mov
-    else if (operands[1] == NULL) {
+    else if (line_token->operands[1] == NULL) {
 
     }
         // This is the case for instructions that compute results
     else {
-        instr->instr.dp->OPCODE == line_token->opcode;
-    }
+        instr->instr.dp->OPCODE   = line_token->opcode;
+        instr->instr.dp->DEST     = line_token->operands[0];
+        instr->instr.dp->SRC      = line_token->operands[1];
+        instr->instr.dp->OPERAND2 = line_token->operands[2];
+        instr->instr.dp->COND     = 1110 << 28;
+
+     }
 }
