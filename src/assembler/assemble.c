@@ -11,35 +11,64 @@ void binaryFileWriter(u32 instr[], char ** argv){
     fwrite(instr,sizeof(instr),1,ofp);
 }
 
-int main1(int argc, char **argv){
-    LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    char line[] = "str r0, [r3, r2]";
-    LineToTokens(line_token, line);
-    printToken(line_token);
+
+
+int main(int argc, char **argv){
+   // struct Linkedlist* list = getNewlist();
+   // list = insertElementInNode(list, "kokok",3);
+
+
   return EXIT_SUCCESS;
 }
 
-/*
-BST_Node* allocBST_Node(void){
-    BST_Node *node = malloc(sizeof(BST_Node));
-    if(node ==NULL){
-        perror("allocBSTNode");
+struct Linkedlist* getNewlist(void){
+    struct Linkedlist* list = malloc(sizeof(struct Linkedlist));
+    if(list == NULL){
+        perror("getNewList");
         exit(EXIT_FAILURE);
     }
-    return node;
+    list->value =NULL;
+    list->key =NULL;
+    list->next =NULL;
+    return list;
 }
 
-void freeBST_Node(BST_Node* node){
-    free(node);
+struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key,void* value){     //insert element in the head return the new linked list
+    struct Linkedlist* newlist = getNewlist();
+    newlist->key = key;
+    newlist->value = value;
+    if(list==NULL){
+        return newlist;
+    }else{
+        newlist->next = list;
+        list = newlist;
+    }
+    return list;
+};
+
+
+
+
+void* lookUpValue(struct Linkedlist *list, char *key){
+    struct Linkedlist* current =list;
+    while(strcmp(current->key,key)!=0){
+        current = current->next;
+        if(current==NULL){
+            printf("No such key");
+            return NULL;
+        }
+    }
+    return current->value;
 }
 
-BST* BST_init(BST* tree, bst_compare_t compare){
-    tree->compare = compare;
-    tree->root = NULL;
-    return tree;
+char* lookUpkey(struct Linkedlist *list, void* value){
+    struct Linkedlist* current =list;
+    while(current->value!=value){
+        current = current->next;
+        if(current==NULL){
+            printf("No such value");
+            return NULL;
+        }
+    }
+    return current->key;
 }
-
-
-BST* insert_Node(BST* tree,char* key, u32 value ){
-    
-}*/

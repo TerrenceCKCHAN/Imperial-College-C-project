@@ -9,24 +9,15 @@
 #include <string.h>
 
 typedef uint32_t u32;
-/*
-typedef int (bst_compare_t) (void* , void*);
 
 
-struct BST_Node{
-    char* key;
-    u32 value;
-    struct BST_Node* left;
-    struct BST_Node* right;
+
+struct Linkedlist{
+    struct Linkedlist *next;
+    void* value;
+    char *key;
 };
 
-typedef struct BST_Node BST_Node;
-
-typedef struct {
-    bst_compare_t compare;
-    BST_Node *root;
-}BST;
-*/
 
 typedef struct dp{
     u32 INSTRUCTION;
@@ -80,5 +71,10 @@ typedef struct {
         BRANCH_INSTR* br;
     }instr;
 }INSTRUCTION;
+
+struct Linkedlist* getNewlist(void);
+struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
+void* lookUpValue(struct Linkedlist *list, char *key);
+char* lookUpkey(struct Linkedlist *list, void* value);
 
 #endif //ARM11_06_ASSEMBLE_H
