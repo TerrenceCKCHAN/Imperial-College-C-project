@@ -9,7 +9,7 @@
 #include <string.h>
 
 typedef uint32_t u32;
-
+/*
 typedef int (bst_compare_t) (void* , void*);
 
 
@@ -26,7 +26,7 @@ typedef struct {
     bst_compare_t compare;
     BST_Node *root;
 }BST;
-
+*/
 
 
 
