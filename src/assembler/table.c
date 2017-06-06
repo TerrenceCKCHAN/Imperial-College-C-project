@@ -2,7 +2,7 @@
 #include "parser.h"
 #include "../emulator/emulate.h"
 #include "tokenizer.h"
-
+/*
 void createTable() {
     struct table instrarray[] = {
             {"add",&assembleAdd},
@@ -30,7 +30,7 @@ void createTable() {
             {"andeq", &assembleAndeq}
     };
 
-}
+}*/
 
 
 
