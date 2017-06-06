@@ -28,11 +28,11 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
 
         char* opcode = datapro_I->OPCODE;
         u32 Rd = datapro_I->DEST;
-        u32 carry  =0;
+        u32 carry  = 0;
         u32 updatedoprand2;
         u32 valueofRm = NULL;
 
-        if (GETBITS(datapro_I->INSTRUCTION, 25, 25)) { //if I flag = 1
+        if (datapro_I->I) { //if I flag = 1
             //If operand2 is a immediate value
             u32 rotateValue = 2*GETBITS(datapro_I->INSTRUCTION, 8, 11);
             u32 Imm = GETBITS(datapro_I->INSTRUCTION, 0, 7);
