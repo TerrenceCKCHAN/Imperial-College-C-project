@@ -3,8 +3,9 @@
 //
 u32 branch (LINE_TOKEN* token){
     u32 temp;
+    u32 offset;
 
 
-    temp = cond <<
+    temp = cond << 27 + 0x5 << 24 + offset;
     return temp;
 }
