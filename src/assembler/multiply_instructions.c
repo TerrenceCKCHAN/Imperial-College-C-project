@@ -2,9 +2,9 @@
 // Created by admin on 6/6/2017.
 //
 
-#include parser.h;
-#include assemble.h;
-#include tokenizer.h;
+#include "parser.h";
+#include "assemble.h";
+#include "tokenizer.h";
 
 
 

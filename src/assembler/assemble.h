@@ -24,36 +24,39 @@ typedef struct table{
     char* opcode;
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
-/*
+
+
+//void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleAnd(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleEor(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleTst(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
+//void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleAnd(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleEor(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleTst(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
-*/
 struct Linkedlist* getNewlist(void);
 struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
 void* lookUpValue(struct Linkedlist *list, char *key);
 char* lookUpkey(struct Linkedlist *list, void* value);
 void printLinkedList(struct Linkedlist* linkedlist);
+u32 assembleInstructions(INSTRUCTION* instr);
+void printBit1(uint32_t x);
 
 
 #endif //ARM11_06_ASSEMBLE_H
