@@ -14,7 +14,7 @@ void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.mp->REGS = parseRegister(line_token->operands[2]);
     instr->instr.mp->A    = 0;
     instr->instr.mp->S    = 0;
-    instr->instr.mp->COND = 1110 << 28;
+    instr->instr.mp->COND = 1110;
 }
 
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr) {
@@ -23,5 +23,5 @@ void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.mp->REGS = parseRegister(line_token->operands[2]);
     instr->instr.mp->ACC  = parseRegister(line_token->operands[3]);
     instr->instr.mp->S    = 0;
-    instr->instr.mp->COND = 1110 << 28;
+    instr->instr.mp->COND = 1110;
 }
