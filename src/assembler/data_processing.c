@@ -20,13 +20,12 @@ void dataProcessing(LINE_TOKEN *line_token) {
     if (operands[0] == NULL) {
 
     }
-    // This is the case for Single operand assignment:mov
+        // This is the case for Single operand assignment:mov
     else if (operands[1] == NULL) {
 
     }
-    // This is the case for instructions that compute results
+        // This is the case for instructions that compute results
     else {
         instr->instr.dp->OPCODE == line_token->opcode;
     }
-
 }
