@@ -8,7 +8,7 @@
 #include <limits.h>
 #include <string.h>
 #include "tokenizer.h"
-#include "../emulator/emulate.h"
+#include "../emulator/instruction.h"
 
 typedef uint32_t u32;
 
