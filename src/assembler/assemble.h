@@ -7,6 +7,8 @@
 #include <string.h>
 #include <limits.h>
 #include <string.h>
+#include "tokenizer.h"
+#include "../emulator/emulate.h"
 
 typedef uint32_t u32;
 
@@ -18,8 +20,36 @@ struct Linkedlist{
     char *key;
 };
 
+typedef struct table{
+    char* opcode;
+    void (*func)(LINE_TOKEN*, INSTRUCTION*);
+};
 
-typedef struct dp{
+void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleAnd(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleEor(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleTst(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+
+typedef struct {
     u32 INSTRUCTION;
     char OPCODE[4];
     u32 COND: 4;
@@ -30,7 +60,7 @@ typedef struct dp{
     u32 OPERAND2;
 }DATAPROCESSING_INSTR;
 
-typedef struct mp{
+typedef struct {
     u32 INSTRUCTION;
     char OPCODE[4];
     u32 COND: 4;
@@ -42,7 +72,7 @@ typedef struct mp{
     u32 ACC;
 }MULTIPLY_INSTR;
 
-typedef struct sdt{
+typedef struct {
     u32 INSTRUCTION;
     char OPCODE[4];
     u32 COND: 4;
@@ -55,7 +85,7 @@ typedef struct sdt{
     u32 L: 1;
 }SIN_DATA_TRAN_INSTR;
 
-typedef struct br{
+typedef struct {
     u32 INSTRUCTION;
     char OPCODE[4];
     u32 COND: 4;
@@ -76,5 +106,6 @@ struct Linkedlist* getNewlist(void);
 struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
 void* lookUpValue(struct Linkedlist *list, char *key);
 char* lookUpkey(struct Linkedlist *list, void* value);
+
 
 #endif //ARM11_06_ASSEMBLE_H
