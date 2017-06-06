@@ -2,7 +2,7 @@
 #include "decode.h"
 
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
-    if(satisfyCondition(ARM,sin_I->INSTRUCTION)){
+    if(satisfyCondition(ARM,sin_I->COND)){
 
         u32 offset = sin_I->OFFSET;
         u32 carry  = 0;

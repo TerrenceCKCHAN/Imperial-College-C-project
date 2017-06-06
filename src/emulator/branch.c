@@ -5,7 +5,7 @@
 //PRE: Pointer to the machine and the structure of the branch instruction
 //POST: Modified the contents of the machine through the pointer
 void branch(MACHINE* ARM, BRANCH_INSTR* br) {
-    if(satisfyCondition(ARM, br->INSTRUCTION)) {
+    if(satisfyCondition(ARM, br->COND)) {
         u32 offset  = br->OFFSET;
         //Left shifting the offset by two bits
         offset = LShiftL(offset,2);

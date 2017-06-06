@@ -92,7 +92,7 @@ int main(int argc,  char **argv) {
                 decodedEmpty = 0;
             }
         } else {
-            if(strcmp(decodedInstr->type, "branch") == 0 && satisfyCondition(ARM, decodedInstr->instr.br->INSTRUCTION)) {
+            if(strcmp(decodedInstr->type, "branch") == 0 && satisfyCondition(ARM, decodedInstr->instr.br->COND)) {
                 executeInstruction(ARM, decodedInstr);
                 decodedEmpty = 1;
             } else {

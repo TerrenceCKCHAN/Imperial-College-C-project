@@ -4,14 +4,13 @@
 //Checking if the state of the machine satisfy the condition by checking the CPSR flags of the machine
 //PRE: State of the machine, the 4 bytes instruction
 //POST: Return 1 for true (satisfy condition) or return 0 for false (not satisfy condition)
-int satisfyCondition(MACHINE* ARM, u32 instruction) {
+int satisfyCondition(MACHINE* ARM, u32 condition) {
     int NFlag = GETBITS(ARM->REGISTER[16], 31, 31);
     int ZFlag = GETBITS(ARM->REGISTER[16], 30, 30);
     int CFlag = GETBITS(ARM->REGISTER[16], 29, 29);
     int VFlag = GETBITS(ARM->REGISTER[16], 28, 28);
-    u32 cond = GETBITS(instruction, 28, 31);
     int bool;
-    switch(cond) {
+    switch(condition) {
         case 0x0:
             bool = (ZFlag == 1) ? 1 : 0; break;
         case 0x1:
