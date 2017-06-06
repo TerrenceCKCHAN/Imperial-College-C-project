@@ -7,6 +7,8 @@
 #include <string.h>
 #include <limits.h>
 #include <string.h>
+#include "tokenizer.h"
+#include "../emulator/emulate.h"
 
 typedef uint32_t u32;
 
@@ -27,8 +29,33 @@ char* lookUpkey(struct Linkedlist *list, void* value);
 
 
 
+typedef struct table{
+    char* opcode;
+    void (*func)(LINE_TOKEN*, INSTRUCTION*);
+};
 
-
-
+void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleAnd(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleEor(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleTst(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 
 #endif //ARM11_06_ASSEMBLE_H
