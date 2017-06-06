@@ -11,7 +11,7 @@ u32* assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr){
     u32* address= NULL;
 
     //set opcode, destination register and also L flag
-    instr->instr.sdt->OPCODE="ldr";
+    strcopy(instr->instr.sdt->OPCODE,"ldr");;
     instr->instr.sdt->REGD = parseRegister( line_token->operands[0] );
     instr->instr.sdt->L = 1;
     if (line_token->*(operands + 1)[0] == '='){
@@ -35,7 +35,7 @@ u32* assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr){
     u32* address;
 
     //set opcode, destination register and also L flag
-    instr->instr.sdt->OPCODE="str";
+    strcopy(instr->instr.sdt->OPCODE,"str");
     instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
     instr->instr.sdt->L=0;
 

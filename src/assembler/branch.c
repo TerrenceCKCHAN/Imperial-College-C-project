@@ -52,33 +52,33 @@ INSTRUCTION* branch (LINE_TOKEN* token){
 
 void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr)
 {
-    instr->instr.br->OPCODE = "beq";
+    strcopy(instr->instr.br->OPCODE,"beq");
     instr->instr.br->COND = 0x0;
 
 }
 void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OPCODE = "bne";
+    strcopy(instr->instr.br->OPCODE,"bne");
     instr->instr.br->COND = 0x1;
 }
 void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr)
 {
-    instr->instr.br->OPCODE = "bge";
+    strcopy(instr->instr.br->OPCODE,"bge");
     instr->instr.br->COND = 0xA;
 }
 void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OPCODE = "blt";
+    strcopy(instr->instr.br->OPCODE,"blt");
     instr->instr.br->COND = 0xB;
 }
 void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OPCODE = "bgt";
+    strcopy(instr->instr.br->OPCODE,"bgt");
     instr->instr.br->COND = 0xC;
 }
 void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OPCODE = "ble";
+    strcopy(instr->instr.br->OPCODE,"ble");
     instr->instr.br->COND = 0xD;
 }
 void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OPCODE = "b";
+    strcopy(instr->instr.br->OPCODE,"by");
     instr->instr.br->COND = 0xE;
 }
 
