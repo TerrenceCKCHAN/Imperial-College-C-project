@@ -1,8 +1,11 @@
 #include "decode.h"
 #include "emulate.h"
 
+//Execution of the multiply instruction
+//PRE: Pointer to the machine and the structure of the multiply instruction
+//POST: Modified the contents of the machine through the pointer
 void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr) {
-    if(satisfyCondition(ARM, multiInstr->INSTRUCTION)) {
+    if(satisfyCondition(ARM, multiInstr->COND)) {
         // Get the index of the registers for ease of manipulation
         u32 rd = multiInstr->DEST;
         u32 rm = multiInstr->REGM;
