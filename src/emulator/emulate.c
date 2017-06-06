@@ -88,18 +88,11 @@ int main1(int argc,  char **argv) {
                 fetchedEmpty = 0;
             } else {
                 decodeInstruction(decodedInstr, fetchedInstr);
-//                printf("Decoded ");
-//                printDecodedInstruction(decodedInstr);
                 fetchedInstr = fetchInstruction(ARM, ARM->REGISTER[15]);
-               // printf("%x %d\n", fetchedInstr, IS_BRANCH(fetchedInstr));
-//                printf("TRIGGERED %x\n", fetchedInstr);
                 decodedEmpty = 0;
             }
         } else {
-            //printf("%s\n", decodedInstr->type);
-//            printf("%x\n", satisfyCondition(ARM, decodedInstr->instr.br->INSTRUCTION));
             if(strcmp(decodedInstr->type, "branch") == 0 && satisfyCondition(ARM, decodedInstr->instr.br->INSTRUCTION)) {
-                //printf("HI\n");
                 executeInstruction(ARM, decodedInstr);
                 decodedEmpty = 1;
             } else {
@@ -107,17 +100,12 @@ int main1(int argc,  char **argv) {
                     execute = 0;
                     break;
                 }
-                //printf("Execute %s %x\n", decodedInstr->type, decodedInstr->instr.dp->INSTRUCTION);
                 executeInstruction(ARM, decodedInstr);
-//                printf("Hi\n");
-                decodeInstruction(decodedInstr, fetchedInstr);
-                //printf("Decoded %x\n", fetchedInstr);
+                decodeInstruction(decodedInstr, fetchedInstr);;
             }
             fetchedInstr = fetchInstruction(ARM, ARM->REGISTER[15]);
-            //printf("%x %d\n", fetchedInstr, IS_BRANCH(fetchedInstr));
         }
         ARM->REGISTER[15] += 4;
-//        printMachineState(ARM);
     }
     printMachineState(ARM);
     return EXIT_SUCCESS;
