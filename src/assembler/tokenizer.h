@@ -14,6 +14,7 @@ typedef struct{
 }LINE_TOKEN;
 
 void LineToTokens(LINE_TOKEN* line_token, char line[]);
+void FiletoTokens(LINE_TOKEN* line_tokens[], char* line[]);
 void printToken(LINE_TOKEN* line_token);
-
+void printTokens(LINE_TOKEN* line_token[]);
 #endif //ARM11_06_TOKENIZER_H
