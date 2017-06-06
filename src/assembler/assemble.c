@@ -12,9 +12,11 @@ void binaryFileWriter(u32 instr[], char ** argv){
 }
 
 
+
 int main(int argc, char **argv){
    // struct Linkedlist* list = getNewlist();
    // list = insertElementInNode(list, "kokok",3);
+
 
   return EXIT_SUCCESS;
 }

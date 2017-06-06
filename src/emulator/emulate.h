@@ -149,9 +149,10 @@ typedef struct{
 */
 typedef struct dp{
     u32 INSTRUCTION;
+    char OPCODE[4];
     u32 COND: 4;
     u32 S:1;
-    char OPCODE[4];
+    u32 I:1;
     u32 DEST;
     u32 SRC;
     u32 OPERAND2;
@@ -159,9 +160,10 @@ typedef struct dp{
 
 typedef struct mp{
     u32 INSTRUCTION;
+    char OPCODE[4];
     u32 COND: 4;
     u32 S:1;
-    char OPCODE[4];
+    u32 A:1;
     u32 DEST;
     u32 REGM;
     u32 REGS;
@@ -170,16 +172,21 @@ typedef struct mp{
 
 typedef struct sdt{
     u32 INSTRUCTION;
-    u32 COND: 4;
     char OPCODE[4];
-    u32 REG;
-    u32 ADDRESS;
+    u32 COND: 4;
+    u32 REGD;
+    u32 REGN;
+    u32 OFFSET;
+    u32 I: 1;
+    u32 P: 1;
+    u32 U: 1;
+    u32 L: 1;
 }SIN_DATA_TRAN_INSTR;
 
 typedef struct br{
     u32 INSTRUCTION;
-    u32 COND: 4;
     char OPCODE[4];
+    u32 COND: 4;
     u32 OFFSET;
 }BRANCH_INSTR;
 

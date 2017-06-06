@@ -10,7 +10,6 @@
 
 typedef uint32_t u32;
 
-typedef int (bst_compare_t) (void* , void*);
 
 
 struct Linkedlist{
@@ -18,6 +17,7 @@ struct Linkedlist{
     void* value;
     char *key;
 };
+
 
 
 struct Linkedlist* getNewlist(void);

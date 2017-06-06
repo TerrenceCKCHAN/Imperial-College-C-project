@@ -4,15 +4,15 @@
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
     if(satisfyCondition(ARM,sin_I->INSTRUCTION)){
 
-        u32 offset = GETBITS(sin_I->INSTRUCTION,0,11);
-        u32 carry  =0;
+        u32 offset = sin_I->OFFSET;
+        u32 carry  = 0;
         u32 result;
         u32 valueofRm = NULL;
-        u32 Rn = GETBITS(sin_I->INSTRUCTION,16,19);
+        u32 Rn = sin_I->REGN;
         u32 address;
-        u32 Rd = GETBITS(sin_I->INSTRUCTION,12,15);
+        u32 Rd = sin_I->REGD;
 
-        if (GETBITS(sin_I->INSTRUCTION, 25, 25)) { //if I flag = 1 opposite to Data Processing
+        if (sin_I->I) { //if I flag = 1 opposite to Data Processing
             //offset is a shift reg
             u32 shiftType = GETBITS(sin_I->INSTRUCTION, 5, 6);
             u32 Rm = GETBITS(sin_I->INSTRUCTION, 0, 3);
@@ -37,14 +37,14 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
         }
 
 
-        if (GETBITS(sin_I->INSTRUCTION,24,24)) {  //P flag
+        if (sin_I->P) {  //P flag
             //pre indexing
-            if (GETBITS(sin_I->INSTRUCTION,23,23)) { //U flag
+            if (sin_I->U) { //U flag
                 address = ARM->REGISTER[Rn] + result;
             } else {
                 address = ARM->REGISTER[Rn] - result;
             }
-            if (GETBITS(sin_I->INSTRUCTION,20,20)) { //L flag
+            if (sin_I->L) { //L flag
                 if(address > 0xffff) {
                     printf("Error: Out of bounds memory access at address 0x%08x\n", address);
                 } else {
@@ -64,7 +64,7 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
             }
 
         } else {
-            if (GETBITS(sin_I->INSTRUCTION,20,20)){ //L flag
+            if (sin_I->L){ //L flag
                 if(ARM->REGISTER[Rd] > 0xffff) {
                     printf("Error: Out of bounds memory access at address 0x%08x\n", ARM->REGISTER[Rd]);
                 } else {
@@ -82,7 +82,7 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
                     end += 8;
                 }
             }
-            if (GETBITS(sin_I->INSTRUCTION,23,23)) {    //U flag
+            if (sin_I->U) {    //U flag
                 ARM->REGISTER[Rn] = ARM->REGISTER[Rn] + result;
             } else {
                 ARM->REGISTER[Rn] = ARM->REGISTER[Rn] - result;
