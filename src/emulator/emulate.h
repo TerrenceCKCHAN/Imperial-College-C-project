@@ -205,7 +205,7 @@ typedef struct{
     u32 MEMORY[MAX_MEMORY];
 }MACHINE;
 
-int satisfyCondition(MACHINE* ARM, u32 instruction);
+int satisfyCondition(MACHINE* ARM, u32 condition);
 void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* instruction);
 void printBit(uint32_t x);
 u32 generateDataFromHex(char hex[]);

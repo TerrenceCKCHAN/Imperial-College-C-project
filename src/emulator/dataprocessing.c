@@ -24,7 +24,7 @@ u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value){
 }
 
 void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
-    if(satisfyCondition(ARM,datapro_I->INSTRUCTION)){
+    if(satisfyCondition(ARM,datapro_I->COND)){
 
         char* opcode = datapro_I->OPCODE;
         u32 Rd = datapro_I->DEST;
