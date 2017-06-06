@@ -89,4 +89,5 @@ u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
 void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
 
+
 #endif //ARM11_06_EMULATE_H

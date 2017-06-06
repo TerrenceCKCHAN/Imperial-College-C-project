@@ -52,3 +52,12 @@ char* lookUpkey(struct Linkedlist *list, void* value) {
     return current->key;
 }
 
+
+void printLinkedList(struct Linkedlist* linkedlist){
+    while(linkedlist->next != NULL){
+        printf("key = %s \t", linkedlist->key);
+        printf("value = %d \n", (u32) linkedlist->value);
+        linkedlist = linkedlist->next;
+    }
+}
+

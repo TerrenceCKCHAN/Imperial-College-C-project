@@ -33,7 +33,7 @@ u32 sourceFileReader(char* lines[], char* filename){
     return index;
 }
 
-int main1(int argc, char **argv){
+int main(int argc, char **argv){
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
     u32 numOfLines;
@@ -44,6 +44,8 @@ int main1(int argc, char **argv){
     }
     fileToTokens(line_tokens, lines, numOfLines);
     printTokens(line_tokens, numOfLines);
+
+
     return EXIT_SUCCESS;
 }
 

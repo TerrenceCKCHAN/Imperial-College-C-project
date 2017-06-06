@@ -53,6 +53,7 @@ struct Linkedlist* getNewlist(void);
 struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
 void* lookUpValue(struct Linkedlist *list, char *key);
 char* lookUpkey(struct Linkedlist *list, void* value);
+void printLinkedList(struct Linkedlist* linkedlist);
 
 
 #endif //ARM11_06_ASSEMBLE_H
