@@ -127,10 +127,23 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[1]);
+        u32 val = parseExpression(line_token->operands[1]);
+        u32 rotate_value = 0;
+        while((val&0x3) == 0 && rotate_value>0){
+            val = val>>2;
+            rotate_value+=1;
+        }
+        if (val>0xff){
+            printf("Error: imm value too big for a 8 bit field\n");
+        }
+        else{
+            val+=rotate_value<<8;
+            instr->instr.dp->OPERAND2 = val;
+        }
     }
     else{
         instr->instr.dp->I=0;
+        instr->instr.dp->OPERAND2=shifting(line_token,1);
     }
     instr->instr.dp->COND     = 0xe;
     instr->instr.dp->S        = 0;
