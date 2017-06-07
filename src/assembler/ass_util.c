@@ -5,6 +5,14 @@
 u32 assembleInstructions(INSTRUCTION* instr) {
     u32 instruction = 0;
     if(strcmp(instr->type, "dataprocessing") == 0) {
+        printf("%s\n", instr->instr.dp->OPCODE);
+        printf("OPERAND 2 = %d\n", instr->instr.dp->OPERAND2);
+        printf("DEST = %d\n", instr->instr.dp->DEST);
+        printf("SRC = %d\n", instr->instr.dp->SRC);
+        printf("S = %d\n", instr->instr.dp->S);
+        printf("OPCODEBIN = %d\n", instr->instr.dp->OPCODEBIN);
+        printf("I = %d\n", instr->instr.dp->I);
+        printf("COND = %d\n\n", instr->instr.dp->COND);
         instruction |= instr->instr.dp->OPERAND2;
         instruction |= instr->instr.dp->DEST << 12;
         instruction |= instr->instr.dp->SRC << 16;

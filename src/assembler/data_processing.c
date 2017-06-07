@@ -171,6 +171,7 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
 //helper method to avoid duplication
 void assemble_set_flag_instructions(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->SRC      = parseRegister(line_token->operands[0]);
+    instr->instr.dp->DEST = 0;
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
         instr->instr.dp->OPERAND2 = calculate(line_token,1);
