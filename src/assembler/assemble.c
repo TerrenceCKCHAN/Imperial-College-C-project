@@ -19,7 +19,7 @@ void printBit1(u32 x){
     for(i = 0;i < 32;++i){
         printf("%i", (x & mask) != 0);
         x<<=1;
-        if(i == 19 | i == 15 | i == 11 | i == 10 |  i == 6 | i == 5 |i==3) {
+        if(i == 19 | i == 15 | i == 11 | i == 10 |  i == 6 | i == 5 | i == 3 ) {
             printf(" ");
         }
     }

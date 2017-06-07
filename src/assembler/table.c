@@ -18,17 +18,21 @@ struct table instrarray[] = {
         {"mla",&assembleMla}/*,
             {"ldr",&assembleLdr},
             {"str",&assembleStr},
-            {"beq",&assembleBeq},
-            {"bne",&assembleBne},
-            {"bge",&assembleBge},
-            {"blt",&assembleBlt},
-            {"bgt",&assembleBgt},
-            {"ble",&assembleBle},
-            {"b",&assembleB},
             {"lsl",&assembleLsl},
             {"andeq", &assembleAndeq}*/
 };
 
+/*
+struct branchelem brinstrarray[]={
+        {"beq",&assembleBeq},
+        {"bne",&assembleBne},
+        {"bge",&assembleBge},
+        {"blt",&assembleBlt},
+        {"bgt",&assembleBgt},
+        {"ble",&assembleBle},
+        {"b",&assembleB},
+};
+*/
 assemblefunction lookUpfunction(char* instr) {
 //    printf("Hi\n");
 //    printf("Opcode: %s\n", instrarray->opcode);

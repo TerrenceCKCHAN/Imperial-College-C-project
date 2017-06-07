@@ -25,6 +25,11 @@ typedef struct table{
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
 
+struct branchelem{
+    char* opcode;
+    void (*func)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*);
+};
+
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
