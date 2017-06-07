@@ -25,19 +25,22 @@ u32 calculate(LINE_TOKEN* line_token, int i){
     u32 rotate_value = 0;
     while(val>0xff){
         if(rotate_value>0xff){
-            printf("Error: can fit the number in 8 bit");
+            printf("Error: can fit the number in 8 bit\n");
             break;
         }
-
+        printf("Before ");
+        printBit(val);
         val = RotateR(val,30);
         rotate_value+=1;
+        printf("After  ");
+        printBit(val);
+        printf("\n");
     }
     while((val&3)==0){
         val = RotateR(val,30);
         rotate_value+=1;
     }
     operand2+=val;
-    rotate_value=RotateR(rotate_value,32);
     operand2+=rotate_value<<8;
     return operand2;
 }

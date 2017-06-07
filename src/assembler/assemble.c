@@ -62,7 +62,7 @@ int main(int argc, char **argv){
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
     instr->instr.dp = malloc(sizeof (DATAPROCESSING_INSTR));
     LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    char line[] = "mov r2, #4128768";
+    char line[] = "mov r2, #163840";
     lineToTokens(line_token, line);
     strcpy(instr->type,"dataprocessing");
     assembleMov(line_token, instr);
