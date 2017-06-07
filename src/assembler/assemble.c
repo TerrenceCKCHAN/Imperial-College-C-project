@@ -80,10 +80,10 @@ int main(int argc, char **argv){
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
     instr->instr.dp = malloc(sizeof (DATAPROCESSING_INSTR));
     LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    char line[] = "tst r1, #0x0E";
+    char line[] = "Add r1, #0xff00";
     lineToTokens(line_token, line);
     strcpy(instr->type,"dataprocessing");
-    assembleTst(line_token, instr);
+    assembleAdd(line_token, instr);
     printBit1(assembleInstructions(instr));
 */
     return EXIT_SUCCESS;
