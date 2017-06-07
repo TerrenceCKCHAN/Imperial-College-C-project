@@ -15,13 +15,13 @@ u32 assembleInstructions(INSTRUCTION* instr) {
         instruction += instr->instr.dp->COND << 28;
     } else if(strcmp(instr->type, "multiply") == 0) {
         instruction += instr->instr.mp->REGM;
-        instruction += 9 << 3;
-        instruction += instr->instr.mp->REGS << 7;
-        instruction += instr->instr.mp->ACC << 11;
-        instruction += instr->instr.mp->DEST << 15;
-        instruction += instr->instr.mp->S << 19;
-        instruction += instr->instr.mp->A << 20;
-        instruction += instr->instr.mp->COND << 27;
+        instruction += 9 << 4;
+        instruction += instr->instr.mp->REGS << 8;
+        instruction += instr->instr.mp->ACC << 12;
+        instruction += instr->instr.mp->DEST << 16;
+        instruction += instr->instr.mp->S << 20;
+        instruction += instr->instr.mp->A << 21;
+        instruction += instr->instr.mp->COND << 28;
     } else if(strcmp(instr->type, "singledatatransfer") == 0) {
         instruction += instr->instr.sdt->OFFSET;
         instruction += instr->instr.sdt->REGD << 11;

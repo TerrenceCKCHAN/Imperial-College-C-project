@@ -19,7 +19,7 @@ void printBit1(u32 x){
     for(i = 0;i < 32;++i){
         printf("%i", (x & mask) != 0);
         x<<=1;
-        if(i == 11 | i == 15 | i == 19) {
+        if(i == 27 | i == 23 | i == 19 | i == 15 | i == 11 | i == 10 | i == 9 |i==3) {
             printf(" ");
         }
     }
@@ -60,12 +60,12 @@ int main(int argc, char **argv){
 //    fileToTokens(line_tokens, lines, numOfLines);
 //    printTokens(line_tokens, numOfLines);
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
-    instr->instr.dp = malloc(sizeof (DATAPROCESSING_INSTR));
+    instr->instr.mp = malloc(sizeof (MULTIPLY_INSTR));
     LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    char line[] = "add r2, r4, r3";
+    char line[] = "mla r1, r2, r3, r4";
     lineToTokens(line_token, line);
-    strcpy(instr->type,"dataprocessing");
-    assembleAdd(line_token, instr);
+    strcpy(instr->type,"multiply");
+    assembleMla(line_token, instr);
     printBit1(assembleInstructions(instr));
     return EXIT_SUCCESS;
 }
