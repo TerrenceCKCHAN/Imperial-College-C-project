@@ -1,4 +1,5 @@
 #include "assemble.h"
+#include "../emulator/instruction.h"
 
 //Return a 32bit instruction after getting the instruction structure pointer
 u32 assembleInstructions(INSTRUCTION* instr) {
@@ -9,11 +10,12 @@ u32 assembleInstructions(INSTRUCTION* instr) {
         instruction += instr->instr.dp->SRC << 16;
         instruction += instr->instr.dp->S << 20;
         instruction += instr->instr.dp->OPCODEBIN << 21;
+//        instruction = lookUpValue(table, instr->instr.dp->OPCODE) << 20;
         instruction += instr->instr.dp->I << 25;
         instruction += instr->instr.dp->COND << 28;
     } else if(strcmp(instr->type, "multiply") == 0) {
         instruction += instr->instr.mp->REGM;
-        instruction += 9 << 3;
+        instruction += 9 << 4;
         instruction += instr->instr.mp->REGS << 8;
         instruction += instr->instr.mp->ACC << 12;
         instruction += instr->instr.mp->DEST << 16;

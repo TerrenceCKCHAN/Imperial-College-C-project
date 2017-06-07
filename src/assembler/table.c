@@ -3,20 +3,19 @@
 #include "../emulator/emulate.h"
 #include "tokenizer.h"
 
-struct table* createTable() {
-    struct table instrarray[] = {
-            {"add",&assembleAdd},
-            {"sub",&assembleSub},
-            {"rsb",&assembleRsb},
-            {"and",&assembleAnd},
-            {"eor",&assembleEor},
-            {"orr",&assembleOrr},
-            {"mov",&assembleMov},
-            {"tst",&assembleTst},
-            {"teq",&assembleTeq},
-            {"cmp",&assembleCmp},
-            {"mul",&assembleMul},
-            {"mla",&assembleMla}/*,
+struct table instrarray[] = {
+        {"add",&assembleAdd},
+        {"sub",&assembleSub},
+        {"rsb",&assembleRsb},
+        {"and",&assembleAnd},
+        {"eor",&assembleEor},
+        {"orr",&assembleOrr},
+        {"mov",&assembleMov},
+        {"tst",&assembleTst},
+        {"teq",&assembleTeq},
+        {"cmp",&assembleCmp},
+        {"mul",&assembleMul},
+        {"mla",&assembleMla}/*,
             {"ldr",&assembleLdr},
             {"str",&assembleStr},
             {"beq",&assembleBeq},
@@ -28,17 +27,17 @@ struct table* createTable() {
             {"b",&assembleB},
             {"lsl",&assembleLsl},
             {"andeq", &assembleAndeq}*/
-    };
-    return instrarray;
-
-}
+};
 
 assemblefunction lookUpfunction(char* instr) {
-    struct table* array =createTable();
-    while(strcmp(array->opcode, instr)!=0){
-        array++;
+//    printf("Hi\n");
+//    printf("Opcode: %s\n", instrarray->opcode);
+    u32 index = 0;
+    while(strcmp(instrarray[index].opcode, instr) != 0 && index < 12){
+//        printf("%s\n", instrarray[index].opcode);
+        index++;
     }
-    return array->func;
+    return instrarray[index].func;
 }
 
 
