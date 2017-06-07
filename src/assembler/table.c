@@ -16,7 +16,7 @@ struct table* createTable() {
             {"teq",&assembleTeq},
             {"cmp",&assembleCmp},
             {"mul",&assembleMul},
-            {"mla",&assembleMla},
+            {"mla",&assembleMla}/*,
             {"ldr",&assembleLdr},
             {"str",&assembleStr},
             {"beq",&assembleBeq},
@@ -27,12 +27,11 @@ struct table* createTable() {
             {"ble",&assembleBle},
             {"b",&assembleB},
             {"lsl",&assembleLsl},
-            {"andeq", &assembleAndeq}
+            {"andeq", &assembleAndeq}*/
     };
     return instrarray;
 
 }
-typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
 
 assemblefunction lookUpfunction(char* instr) {
     struct table* array =createTable();
