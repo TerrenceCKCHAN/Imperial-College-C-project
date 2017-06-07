@@ -28,13 +28,13 @@ u32 calculate(LINE_TOKEN* line_token, int i){
             printf("Error: can fit the number in 8 bit\n");
             break;
         }
-        printf("Before ");
-        printBit(val);
+        /*printf("Before ");
+        printBit(val);*/
         val = RotateR(val,30);
         rotate_value+=1;
-        printf("After  ");
+        /*printf("After  ");
         printBit(val);
-        printf("\n");
+        printf("\n");*/
     }
     while((val&3)==0){
         val = RotateR(val,30);
