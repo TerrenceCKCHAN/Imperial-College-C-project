@@ -2,8 +2,8 @@
 #include "parser.h"
 #include "../emulator/emulate.h"
 #include "tokenizer.h"
-/*
-void createTable() {
+
+struct table* createTable() {
     struct table instrarray[] = {
             {"add",&assembleAdd},
             {"sub",&assembleSub},
@@ -29,8 +29,19 @@ void createTable() {
             {"lsl",&assembleLsl},
             {"andeq", &assembleAndeq}
     };
+    return instrarray;
 
-}*/
+}
+typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
+
+assemblefunction lookUpfunction(char* instr) {
+    struct table* array =createTable();
+    while(strcmp(array->opcode, instr)!=0){
+        array++;
+    }
+    return array->func;
+}
+
 
 
 
