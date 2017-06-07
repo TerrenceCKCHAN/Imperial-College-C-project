@@ -16,9 +16,9 @@ u32 secondpass(LINE_TOKEN* line_tokens[], u32* instructions,struct Linkedlist **
                 assemble = lookUpfunction(line_tokens[pos]->str.opcode);
                 assemble(line_tokens[pos], instr);
             } else {
-                void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable);
+                void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*);
                 assembleBr = lookUpBranch(line_tokens[pos]->str.opcode);
-                assembleBr(line_tokens[pos], instr, &symbolTable);
+                assembleBr(line_tokens[pos], instr, *symbolTable);
             }
 //            printf("Type = %s\n", instr->type);
 //            printDecodedInstruction(instr);

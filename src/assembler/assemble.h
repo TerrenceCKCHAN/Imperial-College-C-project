@@ -63,7 +63,7 @@ char* lookUpkey(struct Linkedlist *list, void* value);
 void printLinkedList(struct Linkedlist* linkedlist);
 void insertElement(struct Linkedlist** list, char *key, void* value);
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
-typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symboleTable);
+typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable);
 assemblefunction lookUpfunction(char* instr);
 assembleBranch lookUpBranch(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
