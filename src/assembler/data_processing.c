@@ -160,10 +160,11 @@ void assemble_set_flag_instructions(LINE_TOKEN* line_token, INSTRUCTION* instr) 
     instr->instr.dp->SRC      = parseRegister(line_token->operands[0]);
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[1]);
+        instr->instr.dp->OPERAND2 = calculate(line_token,1);
     }
     else{
         instr->instr.dp->I=0;
+        instr->instr.dp->OPERAND2=shifting(line_token,1);
     }
     instr->instr.dp->S        = 1;
     instr->instr.dp->COND     = 0xe;
