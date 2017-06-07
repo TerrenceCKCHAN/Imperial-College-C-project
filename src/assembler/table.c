@@ -51,7 +51,7 @@ assembleBranch lookUpBranch(char* instr) {
 //        printf("%s\n", instrarray[index].opcode);
         index++;
     }
-    return brinstrarray[index].func;
+    return brinstrarray[index].br;
 }
 
 

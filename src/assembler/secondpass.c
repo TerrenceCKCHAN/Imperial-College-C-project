@@ -12,9 +12,9 @@ u32 secondpass(LINE_TOKEN* line_tokens[], u32* instructions,struct Linkedlist **
         INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
         if(line_tokens[pos]->type == operands) {
             if(line_tokens[pos]->str.opcode[0] == 'b') {
-                void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*);
+                void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*, u32);
                 assembleBr = lookUpBranch(line_tokens[pos]->str.opcode);
-                assembleBr(line_tokens[pos], instr, *symbolTable);
+                assembleBr(line_tokens[pos], instr, *symbolTable, memoryIndex * 4);
             } else {
                 void (*assemble)(LINE_TOKEN*, INSTRUCTION*);
                 assemble = lookUpfunction(line_tokens[pos]->str.opcode);
