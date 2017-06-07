@@ -20,6 +20,7 @@ u32 transformnum(u32 num){
 void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     u32 i = (u32) lookUpValue(symboltable, line_token->operands[0]);
     instr->instr.br->OFFSET = transformnum(i);
+    strcpy(instr->type, "branch");
 }
 
 
