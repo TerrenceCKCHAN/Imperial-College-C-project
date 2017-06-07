@@ -16,7 +16,7 @@ u32 transformnum(u32 num){
 
 //as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
 void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
-    u32 i = (u32) lookUpValue(symboltable,line_token->operands[0]);
+    u32 i = (u32) lookUpValue(symboltable, line_token->operands[0]);
     instr->instr.br->OFFSET = transformnum(i);
 }
 

@@ -56,8 +56,8 @@ int main(int argc, char **argv){
     u32* instruction = malloc(sizeof(instruction));
     u32 numOfLines;
     u32 numOfInstructions;
-    numOfLines = sourceFileReader(lines, argv[1]);
-//    numOfLines = sourceFileReader(lines, "C:/Users/Timothy Cheuk/arm11_1617_testsuite/test_cases/add01.s");
+//    numOfLines = sourceFileReader(lines, argv[1]);
+  numOfLines = sourceFileReader(lines, "C:/Users/Timothy Cheuk/arm11_1617_testsuite/test_cases/b01.s");
 /*    printf("%d\n", numOfLines);
     for(int i = 0; i < numOfLines; i++) {
         printf("%s\n",lines[i]);
@@ -71,8 +71,8 @@ int main(int argc, char **argv){
     for(int i = 0; i < numOfInstructions; i++) {
         printf("Instruction %d = %x\n", i, instruction[i]);
     }
-//    binaryFileWriter(instruction, "C:/Users/Timothy Cheuk/Documents/out.bin", numOfInstructions);
-    binaryFileWriter(instruction, argv[2], numOfInstructions);
+     binaryFileWriter(instruction, "C:/Users/Timothy Cheuk/Documents/out.bin", numOfInstructions);
+//    binaryFileWriter(instruction, argv[2], numOfInstructions);
     free(symbolTable);
 /*
 //    fileToTokens(line_tokens, lines, numOfLines);
