@@ -8,7 +8,7 @@
 #include <limits.h>
 #include <string.h>
 #include "tokenizer.h"
-#include "../emulator/emulate.h"
+#include "../emulator/instruction.h"
 
 typedef uint32_t u32;
 
@@ -24,7 +24,7 @@ typedef struct table{
     char* opcode;
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
-
+/*
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
@@ -48,11 +48,12 @@ void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
-
+*/
 struct Linkedlist* getNewlist(void);
 struct Linkedlist* insertElementInNode(struct Linkedlist* list,char *key, void* value);
 void* lookUpValue(struct Linkedlist *list, char *key);
 char* lookUpkey(struct Linkedlist *list, void* value);
+void printLinkedList(struct Linkedlist* linkedlist);
 
 
 #endif //ARM11_06_ASSEMBLE_H
