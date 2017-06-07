@@ -62,10 +62,10 @@ int main(int argc, char **argv){
     INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
     instr->instr.dp = malloc(sizeof (DATAPROCESSING_INSTR));
     LINE_TOKEN* line_token = malloc(sizeof(LINE_TOKEN));
-    char line[] = "and r3, r1, r2";
+    char line[] = "add r4, r3, #4";
     lineToTokens(line_token, line);
     strcpy(instr->type,"dataprocessing");
-    assembleAnd(line_token, instr);
+    assembleAdd(line_token, instr);
     printBit1(assembleInstructions(instr));
     return EXIT_SUCCESS;
 }

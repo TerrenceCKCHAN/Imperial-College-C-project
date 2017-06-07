@@ -35,11 +35,15 @@ u32 calculate(LINE_TOKEN* line_token, int i){
         /*printf("After  ");
         printBit(val);
         printf("\n");*/
+        while((val&3)==0){
+            val = RotateR(val,30);
+            rotate_value+=1;
+        }
     }
-    while((val&3)==0){
+    /*while((val&3)==0){
         val = RotateR(val,30);
         rotate_value+=1;
-    }
+    }*/
     operand2+=val;
     operand2+=rotate_value<<8;
     return operand2;
