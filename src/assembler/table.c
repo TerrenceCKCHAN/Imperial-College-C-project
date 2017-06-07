@@ -22,7 +22,7 @@ struct table instrarray[] = {
             {"andeq", &assembleAndeq}*/
 };
 
-/*
+
 struct branchelem brinstrarray[]={
         {"beq",&assembleBeq},
         {"bne",&assembleBne},
@@ -30,9 +30,10 @@ struct branchelem brinstrarray[]={
         {"blt",&assembleBlt},
         {"bgt",&assembleBgt},
         {"ble",&assembleBle},
-        {"b",&assembleB},
+        {"bal",&assembleB},
+        {"b",&assembleB}
 };
-*/
+
 assemblefunction lookUpfunction(char* instr) {
 //    printf("Hi\n");
 //    printf("Opcode: %s\n", instrarray->opcode);
@@ -44,6 +45,14 @@ assemblefunction lookUpfunction(char* instr) {
     return instrarray[index].func;
 }
 
+assembleBranch lookUpBranch(char* instr) {
+    u32 index = 0;
+    while(strcmp(brinstrarray[index].opcode, instr) != 0 && index < 7){
+//        printf("%s\n", instrarray[index].opcode);
+        index++;
+    }
+    return brinstrarray[index].func;
+}
 
 
 

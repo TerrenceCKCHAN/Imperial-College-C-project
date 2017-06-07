@@ -28,6 +28,8 @@ set(SOURCE_FILES
         src/emulator/instruction.h
         src/assembler/secondpass.c
         src/assembler/data_processing.c
-        src/assembler/multiply_instructions.c)
+        src/assembler/multiply_instructions.c
+        src/assembler/branch.c
+        )
 
 add_executable(arm11_06 ${SOURCE_FILES})
