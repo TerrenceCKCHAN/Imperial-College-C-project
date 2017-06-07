@@ -1,86 +1,67 @@
 //
 // Created by Timothy Cheuk on 06/06/2017.
 //
-/*
-INSTRUCTION* branch (LINE_TOKEN* token){
-    INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
-    BRANCH_INSTR* br = malloc (sizeof(BRANCH_INSTR));
 
-    switch(token->opcode){
-
-        case "beq":
-            br->cond= 0x0;
-            break;
-        case "bne":
-            br->cond= 0x1;
-            break;
-        case "bge":
-            br->cond= 0xA;
-            break;
-        case "blt":
-            br->cond= 0xB;
-            break;
-        case "bgt":
-            br->cond= 0xC;
-            break;
-        case "ble":
-            br->cond= 0xD;
-            break;
-        case "bal":
-            br->cond= 0xE;
-            break;
-        case "b":
-            br->cond= 0xE;
-            break;
-        default:
-            printf("Error: no suffix found");
-            break;
-
+u32 transformnum(u32 num){
+    u32 val;
+    if ( num >0 ){
+        val+=(num>>2);
     }
-
-
-
-
-
-
-
-    instr->type = "branch";
-    instr->instr = br;
-    return instr;
+    else if(num<0){
+        val+=1<<24;
+        val+=~(num>>2);
+    }
+    returm val;
 }
-*/
 
-void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr)
-{
+//as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
+void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    instr->instr.br->OFFSET = transformnum();
+}
+
+
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr){
     strcopy(instr->instr.br->OPCODE,"beq");
     instr->instr.br->COND = 0x0;
-
+    generalbr(line_token, instr);
 }
 void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr){
     strcopy(instr->instr.br->OPCODE,"bne");
     instr->instr.br->COND = 0x1;
+    generalbr(line_token, instr);
 }
-void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr)
-{
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     strcopy(instr->instr.br->OPCODE,"bge");
     instr->instr.br->COND = 0xA;
+    generalbr(line_token, instr);
 }
 void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr){
     strcopy(instr->instr.br->OPCODE,"blt");
     instr->instr.br->COND = 0xB;
+    generalbr(line_token, instr);
 }
 void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr){
     strcopy(instr->instr.br->OPCODE,"bgt");
     instr->instr.br->COND = 0xC;
+    generalbr(line_token, instr);
 }
 void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr){
     strcopy(instr->instr.br->OPCODE,"ble");
     instr->instr.br->COND = 0xD;
+    generalbr(line_token, instr);
 }
 void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    strcopy(instr->instr.br->OPCODE,"by");
+    strcopy(instr->instr.br->OPCODE,"bal");
     instr->instr.br->COND = 0xE;
+    generalbr(line_token, instr);
 }
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
+    strcopy(instr->instr.br->OPCODE,"b");
+    instr->instr.br->COND = 0xE;
+    generalbr(line_token, instr);
+}
+
+
 
 /*typedef struct br{
 u32 INSTRUCTION;
