@@ -30,6 +30,8 @@ struct branchelem{
     void (*func)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*);
 };
 
+
+
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleSub(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleRsb(LINE_TOKEN* line_token, INSTRUCTION* instr);
@@ -44,13 +46,13 @@ void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 
