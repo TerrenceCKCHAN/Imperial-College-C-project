@@ -49,35 +49,31 @@ u32 calculate(LINE_TOKEN* line_token, int i){
 u32 shifting(LINE_TOKEN* line_token, int i){
     u32 operand2=0;
     operand2+=parseRegister(line_token->operands[i]);
-    printf(line_token->operands[i+1]);
-    printf("\n");
-    if (strcmp(line_token->operands[i+1],"lsl")==0){
+    /*printf(line_token->operands[i+1]);
+    printf("\n");*/
+    if(line_token->numOfOperands>i+1) {
+        if (strcmp(line_token->operands[i + 1], "lsl") == 0) {
 
-    }
-    else if(strcmp(line_token->operands[i+1],"lsr")==0) {
-        operand2+=1<<5;
-    }
-    else if(strcmp(line_token->operands[i+1],"asr")==0){
-        operand2+=2<<5;
-    }
-    else if(strcmp(line_token->operands[i+1],"ror")==0){
-        operand2+=3<<5;
-    }
-    else{
-        printf("Error: shift type not found\n");
-    }
+        } else if (strcmp(line_token->operands[i + 1], "lsr") == 0) {
+            operand2 += 1 << 5;
+        } else if (strcmp(line_token->operands[i + 1], "asr") == 0) {
+            operand2 += 2 << 5;
+        } else if (strcmp(line_token->operands[i + 1], "ror") == 0) {
+            operand2 += 3 << 5;
+        } else {
+            printf("Error: shift type not found\n");
+        }
 
-    if (line_token->operands[i+2][0]=='#'){
-        if (parseExpression(line_token->operands[i+2])>0x1F){
-            printf("Error: shift integer too large\n");
+        if (line_token->operands[i + 2][0] == '#') {
+            if (parseExpression(line_token->operands[i + 2]) > 0x1F) {
+                printf("Error: shift integer too large\n");
+            } else {
+                operand2 += parseExpression(line_token->operands[i + 2]) << 7;
+            }
+        } else {
+            operand2 += parseRegister(line_token->operands[i + 2]) << 8;
+            operand2 += 1 << 4;
         }
-        else{
-            operand2+=parseExpression(line_token->operands[i+2])<<7;
-        }
-    }
-    else{
-        operand2+=parseRegister(line_token->operands[i+2])<<8;
-        operand2+=1<<4;
     }
     return operand2;
 }
@@ -94,7 +90,8 @@ void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* in
     }
     else{
         instr->instr.dp->I=0;
-        instr->instr.dp->OPERAND2=shifting(line_token,2);
+        instr->instr.dp->OPERAND2 = shifting(line_token, 2);
+
     }
     instr->instr.dp->S        = 0;
     instr->instr.dp->COND     = 0xe;
