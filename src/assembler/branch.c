@@ -15,50 +15,50 @@ u32 transformnum(u32 num){
 }
 
 //as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
-void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr){
-    instr->instr.br->OFFSET = transformnum();
+void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
+    instr->instr.br->OFFSET = transformnum(lookUpValue(symboltable,line_token->operands[0]));
 }
 
 
-void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"beq");
     instr->instr.br->COND = 0x0;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"bne");
     instr->instr.br->COND = 0x1;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr) {
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable) {
     strcopy(instr->instr.br->OPCODE,"bge");
     instr->instr.br->COND = 0xA;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"blt");
     instr->instr.br->COND = 0xB;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"bgt");
     instr->instr.br->COND = 0xC;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"ble");
     instr->instr.br->COND = 0xD;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"bal");
     instr->instr.br->COND = 0xE;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
     strcopy(instr->instr.br->OPCODE,"b");
     instr->instr.br->COND = 0xE;
-    generalbr(line_token, instr);
+    generalbr(line_token, instr,symboltable);
 }
 
 
