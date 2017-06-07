@@ -85,7 +85,12 @@ int main(int argc, char **argv){
     strcpy(instr->type,"dataprocessing");
     assembleTst(line_token, instr);
     printBit1(assembleInstructions(instr));
+
+
 */
+    char* opcode;
+    struct Linkedlist *table;
+    u32 =lookUpValue(&table, opcode);
     return EXIT_SUCCESS;
 }
 
