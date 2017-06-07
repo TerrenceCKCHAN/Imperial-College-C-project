@@ -48,6 +48,8 @@ u32 sourceFileReader(char* lines[], char* filename){
     return index;
 }
 
+
+
 int main(int argc, char **argv){
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
