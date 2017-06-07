@@ -1,6 +1,7 @@
 #include "assemble.h"
 #include "tokenizer.h"
 #include "firstpass.h"
+#include "../emulator/instruction.h"
 
 void binaryFileWriter(u32 instr[], char ** argv){
     FILE *ofp = fopen(argv[1],"wb");
@@ -43,10 +44,12 @@ int main(int argc, char **argv){
         printf("%s\n",lines[i]);
     }*/
     fileToTokens(line_tokens, lines, numOfLines);
-    //printTokens(line_tokens, numOfLines);
+//    printTokens(line_tokens, numOfLines);
     struct Linkedlist* symbolTable = getNewlist();
     firstpass(line_tokens, &symbolTable, numOfLines);
     printLinkedList(symbolTable);
+    free(symbolTable);
+
     return EXIT_SUCCESS;
 }
 

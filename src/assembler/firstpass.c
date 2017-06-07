@@ -1,17 +1,16 @@
-//
-// Created by klc116 on 6/6/17.
-//
-
 #include "assemble.h"
 #include "tokenizer.h"
 
 void firstpass(LINE_TOKEN* line_tokens[], struct Linkedlist** symbolTable, int numOfLines) {
     u32 index = 0;
     for(int pos = 0; pos < numOfLines; pos++) {
+//        printToken(line_tokens[pos]);
+//        printf("%d\n", line_tokens[pos]->type);
         if(line_tokens[pos]->type == label) {
+//            printf("%s\n", line_tokens[pos]->str.label);
             u32 address = index * 4;
-            //printf("%s %d\n", line_tokens[pos]->str.label, address);
-            insertElement(symbolTable, line_tokens[pos]->str.label, address);
+//            printf("%s %d\n", line_tokens[pos]->str.label, address);
+            insertElement(symbolTable, line_tokens[pos]->str.label, (u32*)address);
         } else {
             index++;
         }

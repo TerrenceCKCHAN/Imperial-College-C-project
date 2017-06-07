@@ -54,10 +54,11 @@ char* lookUpkey(struct Linkedlist *list, void* value) {
 
 
 void printLinkedList(struct Linkedlist* linkedlist){
-    while(linkedlist->next != NULL){
-        printf("key = %s \t", linkedlist->key);
-        printf("value = %d \n", (u32) linkedlist->value);
-        linkedlist = linkedlist->next;
+    struct Linkedlist*iter =linkedlist;
+    while(iter->next != NULL){
+        printf("key = %s \t", iter->key);
+        printf("value = %d \n", (u32) iter->value);
+        iter = iter->next;
     }
 }
 
