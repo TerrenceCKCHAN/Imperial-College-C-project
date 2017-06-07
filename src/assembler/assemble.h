@@ -77,4 +77,11 @@ void printBit1(uint32_t x);
 u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbolTable, int numOfLines);
 
 
+typedef struct{
+    int expinrect;
+    int expnotinrect;
+    char *expinrect[2];
+    char *expnotinrect[1];
+}EXP_IN_RECT;
+
 #endif //ARM11_06_ASSEMBLE_H
