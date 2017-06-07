@@ -5,6 +5,7 @@
 #include "assemble.h"
 #include "tokenizer.h"
 #include "parser.h"
+#include "../emulator/instruction.h"
 
 /*typedef struct {
     u32 INSTRUCTION;
@@ -73,7 +74,10 @@ void assembleOrr(LINE_TOKEN* line_token, INSTRUCTION* instr) {
 
 void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
-    instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
+    if (line_token->operands[1][0]=='#') {
+        instr->instr.dp->I=1;
+        instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[1]);
+    }
     instr->instr.dp->COND     = 0xe;
     instr->instr.dp->S        = 0;
     instr->instr.dp->OPCODEBIN = 0xd;
