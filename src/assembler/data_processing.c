@@ -27,8 +27,13 @@
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
-    instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[2]);
-    instr->instr.dp->I        = 1;
+    if (line_token->operands[1][0]=='#') {
+        instr->instr.dp->I=1;
+        instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[1]);
+    }
+    else{
+        instr->instr.dp->I=0;
+    }
     instr->instr.dp->S        = 0;
     instr->instr.dp->COND     = 0xe;
 
