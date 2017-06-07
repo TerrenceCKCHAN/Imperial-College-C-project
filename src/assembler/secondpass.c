@@ -11,14 +11,15 @@ u32 secondpass(LINE_TOKEN* line_tokens[], u32* instructions,struct Linkedlist **
     for(int pos = 0; pos < numOfLines; pos++) {
         INSTRUCTION* instr = malloc(sizeof(INSTRUCTION));
         if(line_tokens[pos]->type == operands) {
-            void (*assemble)(LINE_TOKEN*, INSTRUCTION*);
-//            printf("%s\n", line_tokens[pos]->str.opcode);
-            assemble = lookUpfunction(line_tokens[pos]->str.opcode);
-//            printf("hi2\n");
-//            if(assemble == &assembleMov) {
-//                printf("Got it\n");
-//            }
-            assemble(line_tokens[pos], instr);
+            if(line_tokens[pos]->str.opcode[0] == 'b') {
+                void (*assemble)(LINE_TOKEN*, INSTRUCTION*);
+                assemble = lookUpfunction(line_tokens[pos]->str.opcode);
+                assemble(line_tokens[pos], instr);
+            } else {
+                void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable);
+                assembleBr = lookUpBranch(line_tokens[pos]->str.opcode);
+                assembleBr(line_tokens[pos], instr, &symbolTable);
+            }
 //            printf("Type = %s\n", instr->type);
 //            printDecodedInstruction(instr);
 //            printf("hi4\n");

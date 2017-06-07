@@ -50,7 +50,7 @@ u32 sourceFileReader(char* lines[], char* filename){
 
 
 
-int main(int argc, char **argv){
+int main1(int argc, char **argv){
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
     u32* instruction = malloc(sizeof(instruction));
@@ -88,9 +88,6 @@ int main(int argc, char **argv){
 
 
 */
-    char* opcode;
-    struct Linkedlist *table;
-    u32 =lookUpValue(&table, opcode);
     return EXIT_SUCCESS;
 }
 

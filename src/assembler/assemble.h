@@ -46,13 +46,13 @@ void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+/*void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
 void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);*/
 void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 
@@ -63,7 +63,9 @@ char* lookUpkey(struct Linkedlist *list, void* value);
 void printLinkedList(struct Linkedlist* linkedlist);
 void insertElement(struct Linkedlist** list, char *key, void* value);
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
+typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symboleTable);
 assemblefunction lookUpfunction(char* instr);
+assembleBranch lookUpBranch(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
 void printBit1(uint32_t x);
 u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbolTable, int numOfLines);
