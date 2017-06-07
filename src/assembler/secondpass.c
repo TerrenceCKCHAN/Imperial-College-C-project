@@ -15,7 +15,11 @@ u32 secondpass(LINE_TOKEN* line_tokens[], u32* instructions,struct Linkedlist **
                 void (*assembleBr)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*, u32);
                 assembleBr = lookUpBranch(line_tokens[pos]->str.opcode);
                 assembleBr(line_tokens[pos], instr, *symbolTable, memoryIndex * 4);
-            } else {
+            } else if(strcmp(line_tokens[pos]->str.opcode,"str") == 0 || strcmp(line_tokens[pos]->str.opcode,"ldr") == 0){
+                void (*assembleSdt)(LINE_TOKEN*, INSTRUCTION*, u32);
+                assembleSdt = lookUpSdt(line_tokens[pos]->str.opcode);
+                assembleSdt(line_tokens[pos], instr, memoryIndex * 4);
+            } else{
                 void (*assemble)(LINE_TOKEN*, INSTRUCTION*);
                 assemble = lookUpfunction(line_tokens[pos]->str.opcode);
                 assemble(line_tokens[pos], instr);

@@ -30,6 +30,10 @@ typedef struct branchelem{
     void (*br)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*, u32 currAddress);
 };
 
+typedef struct sdtelem{
+    char* opcode;
+    void (*sdt)(LINE_TOKEN*, INSTRUCTION*, u32 currAddress);
+};
 
 
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
@@ -44,8 +48,8 @@ void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
+void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 currAddress);
+void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 currAddress);
 void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
 void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
 void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
@@ -64,8 +68,10 @@ void printLinkedList(struct Linkedlist* linkedlist);
 void insertElement(struct Linkedlist** list, char *key, void* value);
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
 typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable, u32 currentAddress);
+typedef void(*assembleSdt)(LINE_TOKEN*, INSTRUCTION*, u32 currentAddress);
 assemblefunction lookUpfunction(char* instr);
 assembleBranch lookUpBranch(char* instr);
+assembleSdt lookUpSdt(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
 void printBit1(uint32_t x);
 u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbolTable, int numOfLines);

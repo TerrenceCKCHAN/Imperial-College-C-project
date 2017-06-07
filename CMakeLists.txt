@@ -30,6 +30,7 @@ set(SOURCE_FILES
         src/assembler/data_processing.c
         src/assembler/multiply_instructions.c
         src/assembler/branch.c
+        src/assembler/sin_data_transfer.c
         )
 
 add_executable(arm11_06 ${SOURCE_FILES})
