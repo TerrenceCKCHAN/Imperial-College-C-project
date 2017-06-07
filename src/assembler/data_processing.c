@@ -18,8 +18,20 @@
     u32 OPERAND2;
 }DATAPROCESSING_INSTR;*/
 
+void shifting(LINE_TOKEN* line_token, INSTRUCTION* instr){
 
+}
 
+//counting how many bits are 1 to see can it fit in a 8 bit field after shifting
+int bitCount (u32 value) {
+    int count = 0;
+    while (value > 0) {           // until all bits are zero
+        if ((value & 1) == 1)     // check lower bit
+            count++;
+        value >>= 1;              // shift bits, removing lower bit
+    }
+    return count;
+}
 
 
 //assume the operand 2 is an immediate value for now. can be ammend to support shifting
@@ -29,7 +41,19 @@ void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* in
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2 = parseExpression(line_token->operands[1]);
+        u32 val = parseExpression(line_token->operands[1]);
+        u32 rotate_value = 12;
+        while((val&0x3) == 0 && rotate_value>0){
+            val = val>>2;
+            rotate_value-=1;
+        }
+        if (val>0xff){
+            printf("Error: imm value too big for a 8 bit field\n");
+        }
+        else{
+            val+=rotate_value<<8;
+            instr->instr.dp->OPERAND2 = val;
+        }
     }
     else{
         instr->instr.dp->I=0;
