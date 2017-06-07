@@ -1,6 +1,11 @@
 
     main:
                  ldr r4, =0x0
+
+    //Setting pin 16 as an output pin
+                 ldr r2, =0x40000
+                 str r2, =0x20200004
+
     for_LED:
                  cmp r4, #0x100
                  bge end_LED
@@ -42,10 +47,8 @@
     endfor:
     //end of delay
 
-    //Setting pin 16
-                 ldr r2, =0x40000
-                 str r2, =0x20200004
     // turning on pin 16
+                 ldr r2, =0x40000
                  str r2, =0x2020001C
 
        // Delay LED switching
