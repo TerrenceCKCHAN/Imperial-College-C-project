@@ -16,7 +16,8 @@ u32 transformnum(u32 num){
 
 //as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
 void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
-    instr->instr.br->OFFSET = transformnum(lookUpValue(symboltable,line_token->operands[0]));
+    u32 i = (u32) lookUpValue(symboltable,line_token->operands[0]);
+    instr->instr.br->OFFSET = transformnum(i);
 }
 
 
@@ -56,6 +57,7 @@ void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *sym
     generalbr(line_token, instr,symboltable);
 }
 void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable){
+    printf("hi");
     strcopy(instr->instr.br->OPCODE,"b");
     instr->instr.br->COND = 0xE;
     generalbr(line_token, instr,symboltable);
