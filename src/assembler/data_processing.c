@@ -164,6 +164,7 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
         instr->instr.dp->I=0;
         instr->instr.dp->OPERAND2=shifting(line_token,1);
     }
+    instr->instr.dp->SRC      = 0;
     instr->instr.dp->COND     = 0xe;
     instr->instr.dp->S        = 0;
     instr->instr.dp->OPCODEBIN = 0xd;
