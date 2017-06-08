@@ -209,6 +209,19 @@ void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     assemble_set_flag_instructions(line_token, instr);
 }
 
+void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr) {
+    strcpy(instr->type, "dataprocessing");
+    instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
+    strcpy(instr->instr.dp->OPCODE, "stp");
+    instr->instr.dp->COND = 0;
+    instr->instr.dp->DEST = 0;
+    instr->instr.dp->I = 0;
+    instr->instr.dp->OPCODEBIN = 0;
+    instr->instr.dp->OPERAND2 = 0;
+    instr->instr.dp->S = 0;
+    instr->instr.dp->SRC = 0;
+}
+
 //This is the implementation for one single dataProcessing function that cover all the cases.
 /*
 INSTRUCTION *dataProcessing(LINE_TOKEN *line_token) {

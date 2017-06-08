@@ -48,16 +48,15 @@ u32 sourceFileReader(char* lines[], char* filename){
     return index;
 }
 
-
-
 int main(int argc, char **argv){
+    memoryPos = 0;
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
-    u32* instruction = malloc(sizeof(instruction));
+    u32 instruction[100];
     u32 numOfLines;
     u32 numOfInstructions;
     numOfLines = sourceFileReader(lines, argv[1]);
-//  numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/beq01.s");
+//    numOfLines = sourceFileReader(lines, "/homes/ckc116/arm11_1617_testsuite/test_cases/ldr07.s");
 /*    printf("%d\n", numOfLines);
     for(int i = 0; i < numOfLines; i++) {
         printf("%s\n",lines[i]);
@@ -65,15 +64,24 @@ int main(int argc, char **argv){
     fileToTokens(line_tokens, lines, numOfLines);
     printTokens(line_tokens, numOfLines);
     struct Linkedlist* symbolTable = getNewlist();
-    firstpass(line_tokens, &symbolTable, numOfLines);
+    numOfInstructions = firstpass(line_tokens, &symbolTable, numOfLines);
 //    printLinkedList(symbolTable);
-    numOfInstructions = secondpass(line_tokens, instruction, &symbolTable, numOfLines);
-    for(int i = 0; i < numOfInstructions; i++) {
+    secondpass(line_tokens, instruction, &symbolTable, numOfLines, numOfInstructions);
+/*    for(int i = 0; i < numOfInstructions; i++) {
         printf("Instruction %d = %x\n", i, instruction[i]);
     }
+    for(int i = 0; i < memoryPos; i++) {
+        printf("Instruction %d = %x\n", i + numOfInstructions, Memory[i]);
+    }*/
+    u32* allInstructions = malloc(sizeof(instruction) + sizeof(Memory));
+    memcpy(allInstructions, instruction, sizeof(instruction));
+    memcpy(allInstructions + numOfInstructions, Memory, sizeof(Memory));
+    for(int i = 0; i < numOfInstructions + memoryPos; i++) {
+        printf("Instruction %d = %x\n", i, allInstructions[i]);
+    }
     printLinkedList(symbolTable);
-//     binaryFileWriter(instruction, "C:/Users/Timothy Cheuk/Documents/out.bin", numOfInstructions);
-    binaryFileWriter(instruction, argv[2], numOfInstructions);
+//    binaryFileWriter(allInstructions, "/homes/ckc116/out.bin", numOfInstructions);
+    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
     free(symbolTable);
 /*
 //    fileToTokens(line_tokens, lines, numOfLines);

@@ -1,7 +1,7 @@
 #include "assemble.h"
 #include "tokenizer.h"
 
-void firstpass(LINE_TOKEN* line_tokens[], struct Linkedlist** symbolTable, int numOfLines) {
+u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int numOfLines) {
     u32 index = 0;
     for(int pos = 0; pos < numOfLines; pos++) {
 //        printToken(line_tokens[pos]);
@@ -15,4 +15,5 @@ void firstpass(LINE_TOKEN* line_tokens[], struct Linkedlist** symbolTable, int n
             index++;
         }
     }
+    return index;
 }

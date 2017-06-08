@@ -15,7 +15,8 @@ struct table instrarray[] = {
         {"teq",&assembleTeq},
         {"cmp",&assembleCmp},
         {"mul",&assembleMul},
-        {"mla",&assembleMla}/*,
+        {"mla",&assembleMla},
+        {"andeq", &assembleAndeq}/*,
             {"lsl",&assembleLsl},
             {"andeq", &assembleAndeq}*/
 };
@@ -33,8 +34,8 @@ struct branchelem brinstrarray[]={
 };
 
 struct sdtelem sdtarray[]={
-        {"ldr",&assembleLdr},
-        {"str",&assembleStr}
+        {"ldr", &assembleLdr},
+        {"str", &assembleStr}
 };
 
 assemblefunction lookUpfunction(char* instr) {

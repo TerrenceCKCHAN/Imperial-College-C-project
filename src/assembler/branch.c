@@ -4,22 +4,22 @@
 #include "assemble.h"
 #include "../emulator/instruction.h"
 
-u32 transformnum(u32 num){
-    u32 val;
-    if ( num >0 ){
-        val+=(num>>2);
-    }
-    else if(num<0){
-        val+=1<<24;
-        val+=~(num>>2);
+u32 transformnum(int num){
+    u32 val = 0;
+    u32 MASK = 1 << 25 - 1;
+    if (num > 0){
+        val = (u32) (num >> 2);
+    } else if(num < 0) {
+        val = (u32) 1 << 24 + (~(num >> 2) & MASK);
     }
     return val;
 }
 
 //as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
 void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable,u32 curA){
-    u32 i = (u32) lookUpValue(symboltable, line_token->operands[0]);
-    i=i-curA-8;
+    int i = (int) lookUpValue(symboltable, line_token->operands[0]);
+    i -= curA + 8;
+    printf("OFFSET = %d\n", i);
     instr->instr.br->OFFSET = transformnum(i);
     strcpy(instr->type, "branch");
 }

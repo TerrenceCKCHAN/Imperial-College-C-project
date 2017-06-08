@@ -12,7 +12,9 @@
 
 typedef uint32_t u32;
 
-
+#define LShiftL(x,n)     x << n
+#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
 struct Linkedlist{
     struct Linkedlist *next;
@@ -48,8 +50,8 @@ void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 currAddress);
-void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 currAddress);
+void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 currAddress, u32 numOfInstructions);
+void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 currAddress, u32 numOfInstructions);
 void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
 void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
 void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
@@ -68,13 +70,14 @@ void printLinkedList(struct Linkedlist* linkedlist);
 void insertElement(struct Linkedlist** list, char *key, void* value);
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
 typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable, u32 currentAddress);
-typedef void(*assembleSdt)(LINE_TOKEN*, INSTRUCTION*, u32 currentAddress);
+typedef void(*assembleSdt)(LINE_TOKEN*, INSTRUCTION*, u32 currentAddress, u32 numOfInstructions);
 assemblefunction lookUpfunction(char* instr);
 assembleBranch lookUpBranch(char* instr);
 assembleSdt lookUpSdt(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
 void printBit1(uint32_t x);
-u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbolTable, int numOfLines);
+u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbolTable, int numOfLines,
+               u32 numOfInstructions);
 
 
 typedef struct{
@@ -84,4 +87,6 @@ typedef struct{
     char *exp_not_in_rect[1];
 }EXP_IN_RECT;
 
+u32 Memory[100];
+u32 memoryPos;
 #endif //ARM11_06_ASSEMBLE_H
