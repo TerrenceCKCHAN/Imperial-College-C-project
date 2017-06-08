@@ -76,6 +76,8 @@ assembleBranch lookUpBranch(char* instr);
 assembleSdt lookUpSdt(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
 void printBit1(uint32_t x);
+u32 transformnum(int num);
+void lsltoMov(LINE_TOKEN* line_token);
 u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbolTable, int numOfLines,
                u32 numOfInstructions);
 

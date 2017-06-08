@@ -44,7 +44,7 @@ u32 assembleInstructions(INSTRUCTION* instr) {
         printf("OFFSET %x\n", instr->instr.br->OFFSET);
         printf("COND = %d\n\n", instr->instr.br->COND);
         instruction |= instr->instr.br->OFFSET;
-        instruction |= 101 << 25;
+        instruction |= 0xa << 24;
         instruction |= instr->instr.br->COND << 28;
     } else if(strcmp(instr->type, "halt") == 0) {
         instruction = 0;

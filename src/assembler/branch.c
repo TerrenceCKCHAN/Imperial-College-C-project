@@ -5,14 +5,16 @@
 #include "../emulator/instruction.h"
 
 u32 transformnum(int num){
-    u32 val = 0;
-    u32 MASK = 1 << 25 - 1;
-    if (num > 0){
-        val = (u32) (num >> 2);
-    } else if(num < 0) {
-        val = (u32) 1 << 24 + (~(num >> 2) & MASK);
+    u32 val;
+    u32 valMASK = (1 << 24) - 1;
+    if(num<0){
+        int tmp = -num;
+        val = (u32) ~(tmp-1);
+    }else{
+        val = (u32) num;
     }
-    return val;
+    val >>= 2;
+    return val & valMASK;
 }
 
 //as by the time i finish this part we still not able to get current address, create this helper so we can amend easier

@@ -56,7 +56,7 @@ int main(int argc, char **argv){
     u32 numOfLines;
     u32 numOfInstructions;
     numOfLines = sourceFileReader(lines, argv[1]);
-//    numOfLines = sourceFileReader(lines, "/homes/ckc116/arm11_1617_testsuite/test_cases/ldr07.s");
+//    numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/lsl01.s");
 /*    printf("%d\n", numOfLines);
     for(int i = 0; i < numOfLines; i++) {
         printf("%s\n",lines[i]);
@@ -80,7 +80,7 @@ int main(int argc, char **argv){
         printf("Instruction %d = %x\n", i, allInstructions[i]);
     }
     printLinkedList(symbolTable);
-//    binaryFileWriter(allInstructions, "/homes/ckc116/out.bin", numOfInstructions);
+//    binaryFileWriter(allInstructions, "/homes/klc116/out.bin", numOfInstructions + memoryPos);
     binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
     free(symbolTable);
 /*
@@ -97,6 +97,7 @@ int main(int argc, char **argv){
 
 
 */
+    printBit1(transformnum(-3));
 
     char* opcode;
     struct Linkedlist *table;

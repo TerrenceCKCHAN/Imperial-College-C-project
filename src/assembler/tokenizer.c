@@ -41,6 +41,7 @@ void fileToTokens(LINE_TOKEN **line_tokens, char **line, int numOfLines) {
 //        printToken(line_tokens[index]);
         line_tokens[index] = malloc(sizeof(LINE_TOKEN));
         lineToTokens(line_tokens[index], line[index]);
+        lsltoMov(line_tokens[index]);
     }
 }
 
@@ -68,5 +69,28 @@ void printToken(LINE_TOKEN* line_token) {
 void printTokens(LINE_TOKEN* line_token[], int numOfLines) {
     for(int index = 0; index < numOfLines; index++) {
         printToken(line_token[index]);
+    }
+}
+
+void lsltoMov(LINE_TOKEN* line_token) {
+    if(line_token->type == operands) {
+        if(strcmp(line_token->str.opcode, "lsl") == 0) {
+            printf("%s\n", line_token->str.opcode);
+            char* reg = malloc(sizeof(line_token->operands[0]));
+            char* expr = malloc(sizeof(line_token->operands[1]));
+            for(int i = 0; i < line_token->numOfOperands; i++) {
+                printf("Operand %d = %s\n", i, line_token->operands[i]);
+            }
+            strcpy(reg, line_token->operands[0]);
+            strcpy(expr, line_token->operands[1]);
+            strcpy(line_token->str.opcode, "mov");
+            strcpy(line_token->operands[0], reg);
+            strcpy(line_token->operands[1], reg);
+            line_token->operands[2] = malloc(sizeof("lsl"));
+            line_token->operands[3] = malloc(sizeof(line_token->operands[1]));
+            strcpy(line_token->operands[2], "lsl");
+            strcpy(line_token->operands[3], expr);
+            line_token->numOfOperands = 4;
+        }
     }
 }
