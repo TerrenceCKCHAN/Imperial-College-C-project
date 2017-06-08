@@ -4,19 +4,22 @@
 #include "assemble.h"
 #include "tokenizer.h"
 #include "parser.h"
+#define LShiftL(x,n)     x << n
+#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
 EXP_IN_RECT* parseExpressioninrect(LINE_TOKEN* line_token){
     EXP_IN_RECT* exp_in_rect = malloc(sizeof(EXP_IN_RECT));
     int i = 1;
     int j = 0;
     int k = 0;
-    while(operand[i] != NULL){
-        if (*(operand+i)[0]=='[' | *(operand+i)[strlen(*(operand+i))-1]==']'){
-            exp_in_rect->exp_in_rect[j] = operand[i];
+    while(line_token->operands[i] != NULL){
+        if (*(line_token->operands+i)[0]=='[' | *(line_token->operands+i)[strlen(*(line_token->operands+i))-1]==']'){
+            exp_in_rect->exp_in_rect[j] = line_token->operands[i];
             j++;
         }
         else{
-            exp_in_rect->exp_in_rect[k] = operand[k];
+            exp_in_rect->exp_in_rect[k] = line_token->operands[k];
             k++;
         }
         i++;
