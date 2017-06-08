@@ -109,3 +109,65 @@ void printMachineState(MACHINE* ARM) {
     printf("Non-zero memory:\n");
     printMemory(ARM);
 }
+
+u32 readMemory(MACHINE* ARM, u32 address) {
+    u32 memToRegister = 0;
+    switch(address) {
+        case 0x20200000:
+            printf("One GPIO pin from 0 to 9 has been accessed\n");
+            return address;
+        case 0x20200004:
+            printf("One GPIO pin from 10 to 19 has been accessed\n");
+            return address;
+        case 0x20200008:
+            printf("One GPIO pin from 20 to 29 has been accessed\n");
+            return address;
+        case 0x2020001c:
+            printf("PIN ON\n");
+            return address;
+        case 0x20200028:
+            printf("PIN OFF\n");
+            return address;
+        default:
+            if(address > 0xffff) {
+                printf("Error: Out of bounds memory access at address 0x%08x\n", address);
+                return 0;
+            } else {
+                for (int byte = 0; byte < 4; byte++) {
+                    memToRegister += ARM->MEMORY[address + byte] << (byte * 8);
+                }
+                return memToRegister;
+            }
+    }
+}
+
+void writeMemory(MACHINE* ARM, u32 address, u32 content) {
+    u32 start = 0, end = 7;
+    switch(address) {
+        case 0x20200000:
+            printf("One GPIO pin from 0 to 9 has been accessed\n");
+            break;
+        case 0x20200004:
+            printf("One GPIO pin from 10 to 19 has been accessed\n");
+            break;
+        case 0x20200008:
+            printf("One GPIO pin from 20 to 29 has been accessed\n");
+            break;
+        case 0x2020001c:
+            printf("PIN ON\n");
+            break;
+        case 0x20200028:
+            printf("PIN OFF\n");
+            break;
+        default:
+            if(address > 0xffff) {
+                printf("Error: Out of bounds memory access at address 0x%08x\n", address);
+            } else {
+                for (int byte = 0; byte < 4; byte++) {
+                    ARM->MEMORY[address + byte] = GETBITS(content, start, end);
+                    start += 8;
+                    end += 8;
+                }
+            }
+    }
+}
