@@ -88,6 +88,8 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
 u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
 void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
+u32 readMemory(MACHINE* ARM, u32 address);
+void writeMemory(MACHINE* ARM, u32 address, u32 content);
 
 
 #endif //ARM11_06_EMULATE_H

@@ -45,42 +45,23 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
                 address = ARM->REGISTER[Rn] - result;
             }
             if (sin_I->L) { //L flag
-                if(address > 0xffff) {
-                    printf("Error: Out of bounds memory access at address 0x%08x\n", address);
-                } else {
-                    u32 memToRegister = 0;
-                    for(int byte = 0; byte < 4; byte++) {
-                        memToRegister += ARM->MEMORY[address + byte] << (byte * 8);
-                    }
-                    ARM->REGISTER[Rd] = memToRegister;
+                u32 content;
+                content = readMemory(ARM, address);
+                if (content != 0) {
+                    ARM->REGISTER[Rd] = content;
                 }
             } else {
-                u32 start = 0, end = 7;
-                for(int byte = 0; byte < 4; byte++) {
-                    ARM->MEMORY[address + byte] = GETBITS(ARM->REGISTER[Rd], start ,end);
-                    start += 8;
-                    end += 8;
-                }
+                writeMemory(ARM, address, ARM->REGISTER[Rd]);
             }
-
         } else {
             if (sin_I->L){ //L flag
-                if(ARM->REGISTER[Rd] > 0xffff) {
-                    printf("Error: Out of bounds memory access at address 0x%08x\n", ARM->REGISTER[Rd]);
-                } else {
-                    u32 memToRegister = 0;
-                    for (int byte = 0; byte < 4; byte++) {
-                        memToRegister += ARM->MEMORY[ARM->REGISTER[Rn] + byte] << (byte * 8);
-                    }
-                    ARM->REGISTER[Rd] = memToRegister;
+                u32 content;
+                content = readMemory(ARM, ARM->REGISTER[Rn]);
+                if (content != 0) {
+                    ARM->REGISTER[Rd] = content;
                 }
             } else {
-                u32 start = 0, end = 7;
-                for(int byte = 0; byte < 4; byte++) {
-                    ARM->MEMORY[ARM->REGISTER[Rn] + byte] = GETBITS(ARM->REGISTER[Rd], start ,end);
-                    start += 8;
-                    end += 8;
-                }
+                writeMemory(ARM, ARM->REGISTER[Rn], ARM->REGISTER[Rd]);
             }
             if (sin_I->U) {    //U flag
                 ARM->REGISTER[Rn] = ARM->REGISTER[Rn] + result;
