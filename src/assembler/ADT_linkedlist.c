@@ -24,6 +24,33 @@ void insertElement(struct Linkedlist** list, char *key, void* value){
     newlist->next = *list;
     *list = newlist;
 }
+/*TO be done
+void insertElementLast(struct Linkedlist** list, char *key, void* value){
+    struct Linkedlist* newlist = getNewlist();
+    newlist->value = value;
+    newlist->key = key;
+    struct Linkedlist* current = *list;
+    while(current->next->next != NULL){
+        current = current->next;
+    }
+    current = newlist;
+
+}
+ */
+
+void removeLast(struct Linkedlist **list){
+    struct Linkedlist *current = *list;
+    while(current->next->next!=NULL){
+        current = current->next;
+    }
+    free(current);
+}
+
+void removeFirst(struct Linkedlist **list){
+    struct Linkedlist* temp = *list;
+    *list = temp->next;
+    free(temp);
+}
 
 
 
@@ -60,5 +87,20 @@ void printLinkedList(struct Linkedlist* linkedlist){
         printf("value = %d \n", (u32) iter->value);
         iter = iter->next;
     }
+    printf("\n");
 }
 
+/*
+int main(){
+    struct Linkedlist* list = malloc(sizeof(struct Linkedlist));
+    insertElement(&list,"a",3);
+    insertElement(&list, "b",8);
+    insertElement(&list, "c",4);
+    insertElement(&list, "d",9);
+    insertElement(&list, "e",7);
+
+    printLinkedList(list);
+
+}
+
+*/

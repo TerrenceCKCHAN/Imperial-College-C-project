@@ -61,7 +61,7 @@ int stringcmp(char* s1, char* s2){
 }
 
 
-
+//////////Printing the post-order of BST////////////////////////
 void printBST_node(BST_node* node){
     if(node == NULL){
         return;
@@ -78,6 +78,18 @@ void printBST(struct BST* tree){
     printBST_node(tree->root);
 }
 
+void printBSTLevel(struct BST_node* root){
+    struct Linkedlist * queue = malloc(sizeof(struct Linkedlist));
+    insertElement(&queue,root->key,root->value);
+    while(queue->value !=NULL){
+        BST_node *node = malloc(sizeof(BST_node));
+        node->value = queue->value;
+        node->key = queue->key;
+        printf("Key = %s, value = %d",node->key,(u32) node->value);
+    }
+
+}
+
 void bst_destroy_elem(struct BST_node * node){
     if(node==NULL){
         return;
@@ -91,15 +103,18 @@ void bst_destroy(struct BST* tree){
     bst_destroy_elem(tree->root);
 }
 
+
 /*
+
 int main(){
     struct BST * tree =getNewinitTree((void*) stringcmp);
     insertElem(tree,"hi",1,(void*) stringcmp);
     insertElem(tree,"yo",2,(void*) stringcmp);
     insertElem(tree, "ko",5,(void*) stringcmp);
     insertElem(tree, "po",99,(void*) stringcmp);
-    printBST(tree);
-    printf("%d",(u32) bst_lookUpValue(tree,"po",stringcmp));
+//    printBST(tree);
+//    printf("%d",(u32) bst_lookUpValue(tree,"po",stringcmp));
+    printBSTLevel(tree->root);
 }
 */
 
