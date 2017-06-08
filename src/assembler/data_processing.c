@@ -83,7 +83,7 @@ u32 shifting(LINE_TOKEN* line_token, int i){
 }
 
 
-//assume the operand 2 is an immediate value for now. can be ammend to support shifting
+//assume the operand 2 is an immediate value for now. can be ammended to support shifting
 //helper method to avoid duplication
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));

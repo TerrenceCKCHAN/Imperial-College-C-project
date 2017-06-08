@@ -61,10 +61,13 @@ u32 calculate1(LINE_TOKEN* line_token, int i){
 
 void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 address){
 
-    address= NULL;
+    address = NULL;
+
+    //allocate memory for instr->instr.sdt
+    instr->instr.sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
 
     //set opcode, destination register and also L flag
-    strcpy(instr->instr.sdt->OPCODE,"ldr");;
+    strcpy(instr->instr.sdt->OPCODE,"ldr");
     instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
     instr->instr.sdt->L = 1;
 
@@ -101,6 +104,8 @@ void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 address){
 //finish the parts which is not optional
 void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 address){
 
+    //allocate memory for instr->instr.sdt
+    instr->instr.sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
 
     //set opcode, destination register and also L flag
     strcpy(instr->instr.sdt->OPCODE,"str");
