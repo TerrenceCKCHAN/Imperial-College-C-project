@@ -78,10 +78,10 @@ u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbol
 
 
 typedef struct{
-    int expinrect;
-    int expnotinrect;
-    char *expinrect[2];
-    char *expnotinrect[1];
+    int exp_in_rect_int;
+    int exp_not_in_rect_int;
+    char *exp_in_rect[2];
+    char *exp_not_in_rect[1];
 }EXP_IN_RECT;
 
 #endif //ARM11_06_ASSEMBLE_H

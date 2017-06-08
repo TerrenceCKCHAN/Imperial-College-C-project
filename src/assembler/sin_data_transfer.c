@@ -6,24 +6,24 @@
 #include "parser.h"
 
 EXP_IN_RECT* parseExpressioninrect(LINE_TOKEN* line_token){
-    EXP_IN_RECT* expinrect = malloc(sizeof(EXP_IN_RECT));
+    EXP_IN_RECT* exp_in_rect = malloc(sizeof(EXP_IN_RECT));
     int i = 1;
     int j = 0;
     int k = 0;
     while(operand[i] != NULL){
         if (*(operand+i)[0]=='[' | *(operand+i)[strlen(*(operand+i))-1]==']'){
-            expinrect->expinrect[j] = operand[i];
+            exp_in_rect->exp_in_rect[j] = operand[i];
             j++;
         }
         else{
-            expinrect->expinrect[k] = operand[k];
+            exp_in_rect->exp_in_rect[k] = operand[k];
             k++;
         }
         i++;
     }
-    expinrect->expinrect=j;
-    expinrect->expnotinrect=k;
-    return expinrect;
+    exp_in_rect->exp_in_rect_int=j;
+    exp_in_rect->exp_not_in_rect_int=k;
+    return exp_in_rect;
 }
 
 u32 calculate(LINE_TOKEN* line_token, int i){
@@ -77,17 +77,17 @@ void assemble_Ldr(LINE_TOKEN* line_token, INSTRUCTION* instr){
     }
     else{
         EXP_IN_RECT *exp_in_rect = parseExpressioninrect(line_token);
-        if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==1){
+        if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
             instr->instr.sdt->OFFSET=0;
             instr->instr.sdt->P=1;
         }
-        else if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==2){
+        else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
             instr->instr.sdt->OFFSET = calculate(line_token->operands[2], 2);
             instr->instr.sdt->P=1;
         }
-        else if(exp_in_rect->expnotinrect==1 && exp_in_rect->expinrect==1){
+        else if(exp_in_rect->exp_not_in_rect_int==1 && exp_in_rect->exp_in_rect_int==1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
             instr->instr.sdt->OFFSET = calculate(line_token->operands[2], 2);
             instr->instr.sdt->P=0;
@@ -105,17 +105,17 @@ void assemble_Str(LINE_TOKEN* line_token, INSTRUCTION* instr){
     instr->instr.sdt->L=0;
 
     EXP_IN_RECT *exp_in_rect = parseExpressioninrect(line_token);
-    if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==1){
+    if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         instr->instr.sdt->OFFSET=0;
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==2){
+    else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         instr->instr.sdt->OFFSET=calculate(line_token->operands[2], 2);
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect->expnotinrect==1 && exp_in_rect->expinrect==1){
+    else if(exp_in_rect->exp_not_in_rect_int==1 && exp_in_rect->exp_in_rect_int==1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         instr->instr.sdt->OFFSET=calculate(line_token->operands[2], 2);
         instr->instr.sdt->P=0;
