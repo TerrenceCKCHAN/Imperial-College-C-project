@@ -1,20 +1,5 @@
 #include "assemble.h"
 
-typedef int (*bst_compare_t)(void*, void*);
-
-typedef struct BST_node{
-    char * key;
-    void * value;
-    struct BST_node* left;
-    struct BST_node* right;
-}BST_node;
-
-
-typedef struct BST{
-    bst_compare_t compare;
-    BST_node *root;
-}BST;
-
 struct BST* getNewinitTree(bst_compare_t compare){
     struct BST* tree = malloc(sizeof(struct BST));
     if(tree == NULL){
@@ -91,21 +76,35 @@ void printBST(struct BST* tree){
         return;
     }
     printBST_node(tree->root);
-
 }
+
+void bst_destroy_elem(struct BST_node * node){
+    if(node==NULL){
+        return;
+    }
+    bst_destroy_elem(node->left);
+    bst_destroy_elem(node->right);
+    free(node);
+}
+
+void bst_destroy(struct BST* tree){
+    bst_destroy_elem(tree->root);
+}
+
 /*
 int main(){
     struct BST * tree =getNewinitTree((void*) stringcmp);
-    insertElem(tree,"hi",1,stringcmp);
-    insertElem(tree,"yo",2,stringcmp);
-    insertElem(tree, "ko",5,stringcmp);
+    insertElem(tree,"hi",1,(void*) stringcmp);
+    insertElem(tree,"yo",2,(void*) stringcmp);
+    insertElem(tree, "ko",5,(void*) stringcmp);
+    insertElem(tree, "po",99,(void*) stringcmp);
     printBST(tree);
-    printf("%d",(u32) bst_lookUpValue(tree,"yo",stringcmp));
+    printf("%d",(u32) bst_lookUpValue(tree,"po",stringcmp));
 }
-
-
-
 */
+
+
+
 
 
 

@@ -11,16 +11,52 @@
 #include "../emulator/instruction.h"
 
 typedef uint32_t u32;
-
-
-
+////////////////////ADT's to store symbol in branching///////////////
+/////////////////////////////////////////////////////////////////////
+///////////////////////////Linked List//////////////////////////////
 struct Linkedlist{
     struct Linkedlist *next;
     void* value;
     char *key;
 }*head;
 
-typedef struct table{
+struct Linkedlist* getNewlist(void);
+void* lookUpValue(struct Linkedlist *list, char *key);
+char* lookUpkey(struct Linkedlist *list, void* value);
+void printLinkedList(struct Linkedlist* linkedlist);
+void insertElement(struct Linkedlist** list, char *key, void* value);
+///////////////////////////////////////////////////////////////////////
+//////////////////////Binary Search tree///////////////////////////////
+typedef int (*bst_compare_t)(void*, void*);
+
+typedef struct BST_node{
+    char * key;
+    void * value;
+    struct BST_node* left;
+    struct BST_node* right;
+}BST_node;
+
+
+typedef struct BST{
+    bst_compare_t compare;
+    BST_node *root;
+}BST;
+
+struct BST* getNewinitTree(bst_compare_t compare);
+struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compare_t compare);
+void insertElem(struct BST* tree, char* key, void* value, bst_compare_t compare);
+void* bst_lookUpValue_elem(BST_node* node, char* key, bst_compare_t compare);
+void* bst_lookUpValue(struct BST* tree, char* key,bst_compare_t compare);
+int stringcmp(char* s1, char* s2);
+void printBST_node(BST_node* node);
+void printBST(struct BST* tree);
+void bst_destroy_elem(struct BST_node * node);
+void bst_destroy(struct BST* tree);
+/////////////////////////////////////////////////////////////////////////
+
+
+
+struct table{
     char* opcode;
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
@@ -57,11 +93,7 @@ void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 
 
-struct Linkedlist* getNewlist(void);
-void* lookUpValue(struct Linkedlist *list, char *key);
-char* lookUpkey(struct Linkedlist *list, void* value);
-void printLinkedList(struct Linkedlist* linkedlist);
-void insertElement(struct Linkedlist** list, char *key, void* value);
+
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
 typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable);
 assemblefunction lookUpfunction(char* instr);

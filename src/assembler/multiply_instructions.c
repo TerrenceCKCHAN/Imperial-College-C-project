@@ -2,7 +2,7 @@
 // Created by admin on 6/6/2017.
 //
 
-#include "parser.h";
+#include "parser.h"
 
 
 void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr) {
