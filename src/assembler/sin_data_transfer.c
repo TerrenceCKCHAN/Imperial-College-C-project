@@ -29,7 +29,7 @@ EXP_IN_RECT* parseExpressioninrect(LINE_TOKEN* line_token){
     return exp_in_rect;
 }
 
-u32 calculate(LINE_TOKEN* line_token, int i){
+u32 calculate1(LINE_TOKEN* line_token, int i){
     u32 operand2=0;
     u32 val = parseExpression(line_token->operands[i]);
     u32 rotate_value = 0;
@@ -59,9 +59,9 @@ u32 calculate(LINE_TOKEN* line_token, int i){
     return operand2;
 }
 
-void assemble_Ldr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 address){
 
-    u32* address= NULL;
+    address= NULL;
 
     //set opcode, destination register and also L flag
     strcpy(instr->instr.sdt->OPCODE,"ldr");;
@@ -74,7 +74,7 @@ void assemble_Ldr(LINE_TOKEN* line_token, INSTRUCTION* instr){
             assembleMov(line_token, instr);
         }
         else{
-            instr->instr.sdt->OFFSET=calculate(line_token,1);
+            instr->instr.sdt->OFFSET=calculate1(line_token,1);
             instr->instr.sdt->P=1;
         }
     }
@@ -87,19 +87,19 @@ void assemble_Ldr(LINE_TOKEN* line_token, INSTRUCTION* instr){
         }
         else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-            instr->instr.sdt->OFFSET = calculate(line_token, 2);
+            instr->instr.sdt->OFFSET = calculate1(line_token, 2);
             instr->instr.sdt->P=1;
         }
         else if(exp_in_rect->exp_not_in_rect_int==1 && exp_in_rect->exp_in_rect_int==1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-            instr->instr.sdt->OFFSET = calculate(line_token, 2);
+            instr->instr.sdt->OFFSET = calculate1(line_token, 2);
             instr->instr.sdt->P=0;
         }
     }
 }
 
 //finish the parts which is not optional
-void assemble_Str(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr, u32 address){
 
 
     //set opcode, destination register and also L flag
@@ -115,12 +115,12 @@ void assemble_Str(LINE_TOKEN* line_token, INSTRUCTION* instr){
     }
     else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        instr->instr.sdt->OFFSET=calculate(line_token, 2);
+        instr->instr.sdt->OFFSET=calculate1(line_token, 2);
         instr->instr.sdt->P=1;
     }
     else if(exp_in_rect->exp_not_in_rect_int==1 && exp_in_rect->exp_in_rect_int==1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        instr->instr.sdt->OFFSET=calculate(line_token, 2);
+        instr->instr.sdt->OFFSET=calculate1(line_token, 2);
         instr->instr.sdt->P=0;
     }
 
