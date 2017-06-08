@@ -56,18 +56,19 @@ u32 calculate(LINE_TOKEN* line_token, int i){
     return operand2;
 }
 
-void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assemble_Ldr(LINE_TOKEN* line_token, INSTRUCTION* instr){
 
     u32* address= NULL;
 
     //set opcode, destination register and also L flag
-    strcopy(instr->instr.sdt->OPCODE,"ldr");;
-    instr->instr.sdt->REGD = parseRegister( line_token->operands[0] );
+    strcpy(instr->instr.sdt->OPCODE,"ldr");;
+    instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
     instr->instr.sdt->L = 1;
+
     if (line_token->operands[1][0] == '='){
         if(line_token->operands[1]<=0xFF){
-            line_token->opcode='mov';
-            assembleMov(line_token,instr);
+            strcpy(line_token->str.opcode, "mov");
+            assembleMov(line_token, instr);
         }
         else{
             instr->instr.sdt->OFFSET=calculate(line_token,1);
@@ -75,48 +76,48 @@ void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr){
         }
     }
     else{
-        EXP_IN_RECT exp_in_rect = parseExpressioninrect(line_token);
-        if(exp_in_rect.expnotinrect==0 && exp_in_rect.expinrect==1){
+        EXP_IN_RECT *exp_in_rect = parseExpressioninrect(line_token);
+        if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
             instr->instr.sdt->OFFSET=0;
             instr->instr.sdt->P=1;
         }
-        else if(exp_in_rect.expnotinrect==0 && exp_in_rect.expinrect==2){
+        else if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==2){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-            instr->instr.sdt->OFFSET=calculate(line_token->operands[2]);
+            instr->instr.sdt->OFFSET = calculate(line_token->operands[2], 2);
             instr->instr.sdt->P=1;
         }
-        else if(exp_in_rect.expnotinrect==1 && exp_in_rect.expinrect==1){
+        else if(exp_in_rect->expnotinrect==1 && exp_in_rect->expinrect==1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-            instr->instr.sdt->OFFSET=calculate(line_token->operands[2]);
+            instr->instr.sdt->OFFSET = calculate(line_token->operands[2], 2);
             instr->instr.sdt->P=0;
         }
     }
 }
 
 //finish the parts which is not optional
-void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr){
+void assemble_Str(LINE_TOKEN* line_token, INSTRUCTION* instr){
 
 
     //set opcode, destination register and also L flag
-    strcopy(instr->instr.sdt->OPCODE,"str");
+    strcpy(instr->instr.sdt->OPCODE,"str");
     instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
     instr->instr.sdt->L=0;
 
-    EXP_IN_RECT exp_in_rect = parseExpressioninrect(line_token);
-    if(exp_in_rect.expnotinrect==0 && exp_in_rect.expinrect==1){
+    EXP_IN_RECT *exp_in_rect = parseExpressioninrect(line_token);
+    if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         instr->instr.sdt->OFFSET=0;
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect.expnotinrect==0 && exp_in_rect.expinrect==2){
+    else if(exp_in_rect->expnotinrect==0 && exp_in_rect->expinrect==2){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        instr->instr.sdt->OFFSET=calculate(line_token->operands[2]);
+        instr->instr.sdt->OFFSET=calculate(line_token->operands[2], 2);
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect.expnotinrect==1 && exp_in_rect.expinrect==1){
+    else if(exp_in_rect->expnotinrect==1 && exp_in_rect->expinrect==1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        instr->instr.sdt->OFFSET=calculate(line_token->operands[2]);
+        instr->instr.sdt->OFFSET=calculate(line_token->operands[2], 2);
         instr->instr.sdt->P=0;
     }
 
