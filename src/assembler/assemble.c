@@ -55,10 +55,10 @@ int main(int argc, char **argv){
     u32 instruction[100];
     u32 numOfLines;
     u32 numOfInstructions;
-    numOfLines = sourceFileReader(lines, argv[1]);
-//    numOfLines = sourceFileReader(lines, "/homes/klc116/arm11_1617_testsuite/test_cases/lsl01.s");
+//    numOfLines = sourceFileReader(lines, argv[1]);
+    numOfLines = sourceFileReader(lines, "C:/Users/Timothy Cheuk/arm11_1617_testsuite/test_cases/ldr16.s");
 /*    printf("%d\n", numOfLines);
-    for(int i = 0; i < numOfLines; i++) {
+    for(int i = 0; i < numOfLines; i++)
         printf("%s\n",lines[i]);
     }*/
     fileToTokens(line_tokens, lines, numOfLines);
@@ -80,8 +80,8 @@ int main(int argc, char **argv){
         printf("Instruction %d = %x\n", i, allInstructions[i]);
     }
     printLinkedList(symbolTable);
-//    binaryFileWriter(allInstructions, "/homes/klc116/out.bin", numOfInstructions + memoryPos);
-    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
+    binaryFileWriter(allInstructions, "C:/Users/Timothy Cheuk/arm11_1617_testsuite", numOfInstructions + memoryPos);
+//    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
     free(symbolTable);
 /*
 //    fileToTokens(line_tokens, lines, numOfLines);

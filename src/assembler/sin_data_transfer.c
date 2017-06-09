@@ -6,34 +6,123 @@
 #include "parser.h"
 #include "../emulator/instruction.h"
 
+//void parseExpressioninrect(EXP_IN_RECT* exp_in_rect, LINE_TOKEN* line_token){
+//    int i = 1;
+//    int expinrect = 0;
+//    int expnotinrect = 0;
+//    while(line_token->operands[i] != NULL){
+//        if (line_token->operands[i][0]=='[' ){
+//            line_token->operands[i] ++;
+//            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+//            expinrect++;
+//        }else if(line_token->operands[i][strlen(line_token->operands[i])-1]==']'){
+//            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+//            expinrect++;
+//        }
+//        else {
+//            exp_in_rect->exp_in_rect[expnotinrect] = line_token->operands[expnotinrect];
+//            expnotinrect++;
+//        }
+//        i++;
+//    }
+//    exp_in_rect->exp_in_rect_int=expinrect;
+//    exp_in_rect->exp_not_in_rect_int=expnotinrect;
+//}
+
 void parseExpressioninrect(EXP_IN_RECT* exp_in_rect, LINE_TOKEN* line_token){
     int i = 1;
-    int j = 0;
-    int k = 0;
+    int expinrect = 0;
+    int expnotinrect = 0;
+    int inrect=1;
     while(line_token->operands[i] != NULL){
-        if (line_token->operands[i][0]=='[' ){
+        if (line_token->operands[i][0]=='[' && line_token->operands[i][strlen(line_token->operands[i])-1]==']'){
+            inrect=0;
             line_token->operands[i] ++;
-            exp_in_rect->exp_in_rect[j] = line_token->operands[i];
-            j++;
-        }else if(line_token->operands[i][strlen(line_token->operands[i])-1]==']'){
-            exp_in_rect->exp_in_rect[j] = line_token->operands[i];
-            j++;
+            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+            expinrect++;
+        } else if (line_token->operands[i][0]=='[' ){
+            inrect=1;
+            line_token->operands[i] ++;
+            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+            expinrect++;
+        } else if(line_token->operands[i][strlen(line_token->operands[i])-1]==']'){
+            inrect=0;
+            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+            expinrect++;
+        }
+        else if(inrect){
+            exp_in_rect->exp_in_rect[expinrect] = line_token->operands[i];
+            expinrect++;
         }
         else {
-            exp_in_rect->exp_in_rect[k] = line_token->operands[k];
-            k++;
+            exp_in_rect->exp_in_rect[expnotinrect] = line_token->operands[expnotinrect];
+            expnotinrect++;
         }
         i++;
     }
-    exp_in_rect->exp_in_rect_int=j;
-    exp_in_rect->exp_not_in_rect_int=k;
-    printf("%d\n",j);
-    printf("%d\n",k);
+    exp_in_rect->exp_in_rect_int=expinrect;
+    exp_in_rect->exp_not_in_rect_int=expnotinrect;
+}
+u32 shifting1(LINE_TOKEN* line_token, int i){
+    u32 operand2=0;
+    operand2+=parseRegister(line_token->operands[i]);
+    /*printf(line_token->operands[i+1]);
+    printf("\n");*/
+    if(line_token->numOfOperands>i+1) {
+        if (strcmp(line_token->operands[i + 1], "lsl") == 0) {
+
+        } else if (strcmp(line_token->operands[i + 1], "lsr") == 0) {
+            operand2 += 1 << 5;
+        } else if (strcmp(line_token->operands[i + 1], "asr") == 0) {
+            operand2 += 2 << 5;
+        } else if (strcmp(line_token->operands[i + 1], "ror") == 0) {
+            operand2 += 3 << 5;
+        }
+
+        if (line_token->operands[i + 2][0] == '#') {
+            if (parseExpression(line_token->operands[i + 2]) > 0x1F) {
+                printf("Error: shift integer too large\n");
+            } else {
+                operand2 += parseExpression(line_token->operands[i + 2]) << 7;
+            }
+        } else {
+            operand2 += parseRegister(line_token->operands[i + 2]) << 8;
+            operand2 += 1 << 4;
+        }
+    }
+    return operand2;
+}
+
+void calculate2(LINE_TOKEN *line_token, int i, INSTRUCTION *instr) {
+
+    if(line_token->operands[i][0] == '+' | line_token->operands[i][0] == '-'){
+        if(line_token->operands[i][0] == '+'){
+            instr->instr.sdt->U=1;
+        }
+        else{
+            instr->instr.sdt->U=0;
+        }
+        line_token->operands[i]++;
+        instr->instr.sdt->OFFSET=shifting1(line_token,i);
+    }
+    else{
+        instr->instr.sdt->U=1;
+        instr->instr.sdt->OFFSET=shifting1(line_token,i);
+    }
 }
 
 void calculate1(LINE_TOKEN *line_token, int i, INSTRUCTION *instr, u32 address, u32 numofinstr) {
     u32 operand2=0;
-    u32 val = parseExpression(line_token->operands[i]);
+    u32 val;
+    if(line_token -> operands[i][1] == '-'){
+        line_token->operands[i]++;
+        val = parseExpression(line_token->operands[i]);
+        instr->instr.sdt->U = 0;
+    }
+    else {
+        val = parseExpression(line_token->operands[i]);
+        instr->instr.sdt->U = 1;
+    }
     u32 rotate_value = 0;
     while(val>0xff){
         if(rotate_value>0xff){
@@ -44,7 +133,6 @@ void calculate1(LINE_TOKEN *line_token, int i, INSTRUCTION *instr, u32 address, 
             rotate_value = 0;
             printf("Error: can fit the number in 8 bit\n");
             break;
-
         }
         /*printf("Before ");
         printBit(val);*/
@@ -78,7 +166,6 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
     instr->instr.sdt->COND = 0xe;
     instr->instr.sdt->REGD = parseRegister(line_token->operands[0]);
     instr->instr.sdt->L = 1;
-    instr->instr.sdt->U = 1;
 
     if (line_token->operands[1][0] == '='){
 
@@ -102,10 +189,26 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
             instr->instr.sdt->OFFSET = 0;
             instr->instr.sdt->P      = 1;
         } else if(exp_in_rect->exp_not_in_rect_int == 0 && exp_in_rect->exp_in_rect_int == 2){
-            calculate1(line_token, 2, instr, address, numOfInstructions);
+            if(line_token->operands[2][0]=='#') {
+                printf("hi");
+                instr->instr.sdt->I=0;
+                calculate1(line_token, 2, instr, address, numOfInstructions);
+            }
+            else{
+                instr->instr.sdt->I=1;
+                calculate2(line_token, 2, instr);
+            }
             instr->instr.sdt->P      = 1;
         } else if(exp_in_rect->exp_not_in_rect_int == 1 && exp_in_rect->exp_in_rect_int == 1){
-            calculate1(line_token, 2, instr, address, numOfInstructions);
+            instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
+            if(line_token->operands[2][0]=='#') {
+                instr->instr.sdt->I=0;
+                calculate1(line_token, 2, instr, address, numOfInstructions);
+            }
+            else{
+                instr->instr.sdt->I=1;
+                calculate2(line_token, 2,instr);
+            }
             instr->instr.sdt->P      = 0;
         }
     }
@@ -126,19 +229,35 @@ void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
     EXP_IN_RECT *exp_in_rect = malloc(sizeof(EXP_IN_RECT));
     parseExpressioninrect(exp_in_rect, line_token);
     if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==1){
+        instr->instr.sdt->I = 1;
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         instr->instr.sdt->OFFSET=0;
         instr->instr.sdt->P=1;
     }
     else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
+        instr->instr.sdt->I = 1;
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        calculate1(line_token, 2, instr, address, numOfInstructions);
+        if(line_token->operands[2][0]=='#') {
+            instr->instr.sdt->I=0;
+            calculate1(line_token, 2, instr, address, numOfInstructions);
+        }
+        else{
+            instr->instr.sdt->I=1;
+            calculate2(line_token, 2, instr);
+        }
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect->exp_not_in_rect_int==1 && exp_in_rect->exp_in_rect_int==1){
+    else if(exp_in_rect->exp_not_in_rect_int == 1 && exp_in_rect->exp_in_rect_int == 1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
-        calculate1(line_token, 2, instr, address, numOfInstructions);
-        instr->instr.sdt->P=0;
+        if(line_token->operands[2][0]=='#') {
+            instr->instr.sdt->I=0;
+            calculate1(line_token, 2, instr, address, numOfInstructions);
+        }
+        else{
+            instr->instr.sdt->I=1;
+            calculate2(line_token, 2, instr);
+        }
+        instr->instr.sdt->P      = 0;
     }
 
 }

@@ -31,6 +31,14 @@ u32 assembleInstructions(INSTRUCTION* instr) {
         instruction |= instr->instr.mp->A << 21;
         instruction |= instr->instr.mp->COND << 28;
     } else if(strcmp(instr->type, "singledatatransfer") == 0) {
+        printf("OFFSET = %d\n", instr->instr.sdt->OFFSET);
+        printf("REGD = %d\n", instr->instr.sdt->REGD);
+        printf("REGN = %d\n", instr->instr.sdt->REGN);
+        printf("L = %d\n", instr->instr.sdt->L);
+        printf("U = %d\n", instr->instr.sdt->U);
+        printf("I = %d\n", instr->instr.sdt->I);
+        printf("P = %d\n", instr->instr.sdt->P);
+        printf("COND = %d\n\n", instr->instr.sdt->COND);
         instruction |= instr->instr.sdt->OFFSET;
         instruction |= instr->instr.sdt->REGD << 12;
         instruction |= instr->instr.sdt->REGN << 16;
