@@ -44,8 +44,8 @@
     endfor:
 
                  mov r5, #0x40000
-                 ldr r6, =0x2020001C
-                 str r5, [r6]
+                 ldr r7, =0x2020001C
+                 str r5, [r7]
 
     for_loop_x:
                  ldr r1, =0x0
