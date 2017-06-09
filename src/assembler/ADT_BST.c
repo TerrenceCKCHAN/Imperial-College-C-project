@@ -17,6 +17,7 @@ struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compar
     BST_node * newNode = malloc(sizeof(BST_node));
     newNode->key = key;
     newNode->value = value;
+    newNode->right=newNode->left =NULL;
     if(node == NULL){
         return newNode;
     }else{
@@ -34,6 +35,62 @@ struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compar
 void insertElem(struct BST* tree, char* key, void* value, bst_compare_t compare){
     tree->root = insertToNode(tree->root,key,value,compare);
 }
+
+void * getLeftmost(BST_node* node){
+    if(node->left ==NULL){
+        return node->value;
+    } else{
+        return getLeftmost(node->left);
+    }
+
+}
+BST_node* deleteLeftMost(BST_node* node){
+    if(node->left == NULL){
+        return node->right;
+    }else{
+        BST_node* newchild = deleteLeftMost(node->left);
+        node->left = newchild;
+        return node;
+    }
+}
+
+BST_node* deleteNode(BST_node* node){
+    if(node->right == NULL && node->left == NULL){  //the node is a leaf
+        return NULL;
+    }else{
+        if(node->right == NULL) {       //it has only left child
+            return node->left;
+        } else if(node->left == NULL){     //it has only right child
+            return node->right;
+        } else{
+            void* tmpitem = getLeftmost(node->right);
+            BST_node* newright = deleteLeftMost(node->right);
+            node->value = tmpitem;
+            node->right = newright;
+            return node;
+        }
+    }
+}
+
+
+
+struct BST_node *deleteKey(BST_node * node,char* key, bst_compare_t compare){
+    if(node == NULL){
+        return node;
+    }else{
+        if(compare(node->key,key)==0){
+            node = deleteNode(node);
+            return node;
+        }else if(compare(node->key,key)<=0){
+            node->left = deleteKey(node->left,key,compare);
+            return node;
+        } else{
+            node->right = deleteKey(node->right,key,compare);
+            return node;
+        }
+    }
+}
+
 
 
 
@@ -61,7 +118,7 @@ int stringcmp(char* s1, char* s2){
 }
 
 
-//////////Printing the post-order of BST////////////////////////
+
 void printBST_node(BST_node* node){
     if(node == NULL){
         return;
@@ -70,7 +127,7 @@ void printBST_node(BST_node* node){
     printBST_node(node->right);
     printf("key = %s, value = %u\n", node->key, (u32) node->value);
 }
-
+//////////Printing the post-order of BST////////////////////////
 void printBST(struct BST* tree){
     if(tree->root ==NULL){
         return;
