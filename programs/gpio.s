@@ -18,28 +18,6 @@
     next_x:
                  cmp r1, #0x2710
                  bge endfor
-
-    for_loop_y:
-                 ldr r2, =0x0
-
-    next_y:
-                 cmp r2, #0x2710
-                 bge increment_x
-
-    for_loop_z:
-                 ldr r3, =0x0
-    next_z:
-                 cmp r3, #0x2710
-                 bge increment_y
-
-    increment_z:
-                 add r3, r3, #0x1
-                 b next_z
-
-    increment_y:
-                 add r2, r2, #0x1
-                 b next_y
-
     increment_x:
                  add r1, r1, #0x1
                  b next_x
@@ -50,39 +28,18 @@
                  ldr r7, =0x2020001C
                  str r5, [r7]
 
-    for_loop_x:
+    for_loop_x1:
                  ldr r1, =0x0
 
-    next_x:
+    next_x1:
                  cmp r1, #0x2710
-                 bge endfor
+                 bge endfor1
 
-    for_loop_y:
-                 ldr r2, =0x0
-
-    next_y:
-                 cmp r2, #0x2710
-                 bge increment_x
-
-    for_loop_z:
-                 ldr r3, =0x0
-    next_z:
-                 cmp r3, #0x2710
-                 bge increment_y
-
-    increment_z:
-                 add r3, r3, #0x1
-                 b next_z
-
-    increment_y:
-                 add r2, r2, #0x1
-                 b next_y
-
-    increment_x:
+    increment_x1:
                  add r1, r1, #0x1
-                 b next_x
+                 b next_x1
 
-    endfor:
+    endfor1:
                  add r4, r4, #1
                  b for_LED
     end_LED:
