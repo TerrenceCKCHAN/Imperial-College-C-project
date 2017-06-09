@@ -1,4 +1,5 @@
 #include "assemble.h"
+#include "parser.h"
 
 u32 parseRegister(char* operand) {
     u32 val;
@@ -15,3 +16,7 @@ u32 parseExpression(char* operand) {
     }
     return val;
 }
+
+
+
+

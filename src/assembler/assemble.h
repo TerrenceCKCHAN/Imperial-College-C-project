@@ -16,7 +16,11 @@
 #include "tokenizer.h"
 #include "../emulator/instruction.h"
 
+typedef uint32_t u32;
 
+#define LShiftL(x,n)     x << n
+#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
 typedef uint32_t u32;
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,11 +74,15 @@ struct table{
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
 
-struct branchelem{
+typedef struct branchelem{
     char* opcode;
-    void (*func)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*);
+    void (*br)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*, u32 currAddress);
 };
 
+typedef struct sdtelem{
+    char* opcode;
+    void (*sdt)(LINE_TOKEN*, INSTRUCTION*, u32 currAddress, u32 numOfInstructions);
+};
 
 
 void assembleAdd(LINE_TOKEN* line_token, INSTRUCTION* instr);
@@ -89,27 +97,41 @@ void assembleTeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleMla(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleLdr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-void assembleStr(LINE_TOKEN* line_token, INSTRUCTION* instr);
-/*void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);
-void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable);*/
+void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 currAddress, u32 numOfInstructions);
+void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 currAddress, u32 numOfInstructions);
+void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleBne(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleBge(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleBlt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleBgt(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleBle(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
+void assembleB(LINE_TOKEN* line_token, INSTRUCTION* instr, struct Linkedlist *symboltable, u32 currAddress);
 void assembleLsl(LINE_TOKEN* line_token, INSTRUCTION* instr);
 void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr);
 
 
 
 typedef void(*assemblefunction)(LINE_TOKEN*, INSTRUCTION*);
-typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable);
+typedef void(*assembleBranch)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist* symbolTable, u32 currentAddress);
+typedef void(*assembleSdt)(LINE_TOKEN*, INSTRUCTION*, u32 currentAddress, u32 numOfInstructions);
 assemblefunction lookUpfunction(char* instr);
 assembleBranch lookUpBranch(char* instr);
+assembleSdt lookUpSdt(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
 void printBit1(uint32_t x);
-u32 secondpass(LINE_TOKEN* line_tokens[], u32* Memory,struct Linkedlist **symbolTable, int numOfLines);
+u32 transformnum(int num);
+void lsltoMov(LINE_TOKEN* line_token);
+u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbolTable, int numOfLines,
+               u32 numOfInstructions);
 
 
+typedef struct{
+    int numOfPreIndexingExpr;
+    int numOfPostIndexingExpr;
+    char *preIndexingExpr[2];
+    char *postIndexingExpr[1];
+}EXP_IN_RECT;
+
+u32 Memory[100];
+u32 memoryPos;
 #endif //ARM11_06_ASSEMBLE_H

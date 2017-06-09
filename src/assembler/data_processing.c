@@ -83,7 +83,7 @@ u32 shifting(LINE_TOKEN* line_token, int i){
 }
 
 
-//assume the operand 2 is an immediate value for now. can be ammend to support shifting
+//assume the operand 2 is an immediate value for now. can be ammended to support shifting
 //helper method to avoid duplication
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
@@ -164,6 +164,7 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
         instr->instr.dp->I=0;
         instr->instr.dp->OPERAND2=shifting(line_token,1);
     }
+    instr->instr.dp->SRC      = 0;
     instr->instr.dp->COND     = 0xe;
     instr->instr.dp->S        = 0;
     instr->instr.dp->OPCODEBIN = 0xd;
@@ -171,6 +172,7 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
 //helper method to avoid duplication
 void assemble_set_flag_instructions(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->SRC      = parseRegister(line_token->operands[0]);
+    instr->instr.dp->DEST = 0;
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
         instr->instr.dp->OPERAND2 = calculate(line_token,1);
@@ -205,6 +207,19 @@ void assembleCmp(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     strcpy(instr->instr.dp->OPCODE, "cmp");
     instr->instr.dp->OPCODEBIN = 0xa;
     assemble_set_flag_instructions(line_token, instr);
+}
+
+void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr) {
+    strcpy(instr->type, "dataprocessing");
+    instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
+    strcpy(instr->instr.dp->OPCODE, "stp");
+    instr->instr.dp->COND = 0;
+    instr->instr.dp->DEST = 0;
+    instr->instr.dp->I = 0;
+    instr->instr.dp->OPCODEBIN = 0;
+    instr->instr.dp->OPERAND2 = 0;
+    instr->instr.dp->S = 0;
+    instr->instr.dp->SRC = 0;
 }
 
 //This is the implementation for one single dataProcessing function that cover all the cases.

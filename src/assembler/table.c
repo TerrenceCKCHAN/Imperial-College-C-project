@@ -15,22 +15,27 @@ struct table instrarray[] = {
         {"teq",&assembleTeq},
         {"cmp",&assembleCmp},
         {"mul",&assembleMul},
-        {"mla",&assembleMla}/*,
-            {"ldr",&assembleLdr},
-            {"str",&assembleStr},
+        {"mla",&assembleMla},
+        {"andeq", &assembleAndeq}/*,
             {"lsl",&assembleLsl},
             {"andeq", &assembleAndeq}*/
 };
 
 
 struct branchelem brinstrarray[]={
-        /*{"beq",&assembleBeq},
+        {"beq",&assembleBeq},
         {"bne",&assembleBne},
         {"bge",&assembleBge},
         {"blt",&assembleBlt},
         {"bgt",&assembleBgt},
         {"ble",&assembleBle},
-        {"b",&assembleB},*/
+        {"bal",&assembleB},
+        {"b",&assembleB}
+};
+
+struct sdtelem sdtarray[]={
+        {"ldr", &assembleLdr},
+        {"str", &assembleStr}
 };
 
 assemblefunction lookUpfunction(char* instr) {
@@ -50,9 +55,16 @@ assembleBranch lookUpBranch(char* instr) {
 //        printf("%s\n", instrarray[index].opcode);
         index++;
     }
-    return brinstrarray[index].func;
+    return brinstrarray[index].br;
 }
 
-
+assembleSdt lookUpSdt(char* instr) {
+    u32 index = 0;
+    while(strcmp(sdtarray[index].opcode, instr) != 0 && index < 2){
+//        printf("%s\n", instrarray[index].opcode);
+        index++;
+    }
+    return sdtarray[index].sdt;
+}
 
 
