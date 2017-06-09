@@ -78,6 +78,6 @@
     endfor:
                  add r4, r4, #1
     end_LED:
-                 bx lr
+                 andeq r0, r0, r0
 
 
