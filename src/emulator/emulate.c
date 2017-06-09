@@ -77,7 +77,7 @@ void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
     }
 }
 
-int main1(int argc,  char **argv) {
+int main(int argc,  char **argv) {
     //Creating the ARM machine with 0s in registers and memory
     MACHINE* ARM = createMachine();
     //Simulating the pipeline: fetchedInstr represents the Fetched state while
@@ -85,8 +85,8 @@ int main1(int argc,  char **argv) {
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
-    //loadBinaryFile(ARM, "/homes/hxm16/arm_1617_testsuite/test_cases/loop02");
-    loadBinaryFile(ARM, argv[1]);
+    loadBinaryFile(ARM, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img");
+//    loadBinaryFile(ARM, argv[1]);
     while(execute) {
         if(decodedEmpty) {
             if(fetchedEmpty) {
