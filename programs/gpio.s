@@ -8,7 +8,7 @@
     for_LED:
                  cmp r4, #0x100
                  bge end_LED
-                 mov r5, #0x40000
+                 mov r5, #0x10000
                  ldr r6, =0x20200028
                  str r5, [r6]
 
@@ -24,7 +24,7 @@
 
     endfor:
 
-                 mov r5, #0x40000
+                 mov r5, #0x0
                  ldr r7, =0x2020001C
                  str r5, [r7]
 
