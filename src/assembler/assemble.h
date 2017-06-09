@@ -34,7 +34,7 @@ typedef struct branchelem{
 
 typedef struct sdtelem{
     char* opcode;
-    void (*sdt)(LINE_TOKEN*, INSTRUCTION*, u32 currAddress);
+    void (*sdt)(LINE_TOKEN*, INSTRUCTION*, u32 currAddress, u32 numOfInstructions);
 };
 
 
@@ -83,10 +83,10 @@ u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbo
 
 
 typedef struct{
-    int exp_in_rect_int;
-    int exp_not_in_rect_int;
-    char *exp_in_rect[2];
-    char *exp_not_in_rect[1];
+    int numOfPreIndexingExpr;
+    int numOfPostIndexingExpr;
+    char *preIndexingExpr[2];
+    char *postIndexingExpr[1];
 }EXP_IN_RECT;
 
 u32 Memory[100];
