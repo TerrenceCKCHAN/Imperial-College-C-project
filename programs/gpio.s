@@ -19,27 +19,30 @@
                  cmp r1, #0x2710
                  bge endfor
 
-    increment_x:
-                 add r1, r1, #0x1
-                 b next_x
-
     for_loop_y:
-                 ldr r2, =0x2710
+                 ldr r2, =0x0
 
     next_y:
                  cmp r2, #0x2710
                  bge increment_x
 
+    for_loop_z:
+                 ldr r3, =0x0
+    next_z:
+                 cmp r3, #0x2710
+                 bge increment_y
+
+    increment_z:
+                 add r3, r3, #0x1
+                 b next_z
+
     increment_y:
                  add r2, r2, #0x1
                  b next_y
 
-    for_loop_z:
-                 ldr r3, =0x0
-                 cmp r3, #0x2710
-                 bge increment_y
-                 add r3, r3, #0x1
-                 b for_loop_z
+    increment_x:
+                 add r1, r1, #0x1
+                 b next_x
 
     endfor:
 
@@ -49,34 +52,39 @@
 
     for_loop_x:
                  ldr r1, =0x0
+
     next_x:
                  cmp r1, #0x2710
                  bge endfor
 
-    increment_x:
-                 add r1, r1, #0x1
-                 b next_x
-
     for_loop_y:
-                 ldr r2, =0x2710
+                 ldr r2, =0x0
 
     next_y:
                  cmp r2, #0x2710
                  bge increment_x
 
+    for_loop_z:
+                 ldr r3, =0x0
+    next_z:
+                 cmp r3, #0x2710
+                 bge increment_y
+
+    increment_z:
+                 add r3, r3, #0x1
+                 b next_z
+
     increment_y:
                  add r2, r2, #0x1
                  b next_y
 
-    for_loop_z:
-                 ldr r3, =0x0
-                 cmp r3, #0x2710
-                 bge increment_y
-                 add r3, r3, #0x1
-                 b for_loop_z
+    increment_x:
+                 add r1, r1, #0x1
+                 b next_x
 
     endfor:
                  add r4, r4, #1
+                 b for_LED
     end_LED:
                  andeq r0, r0, r0
 
