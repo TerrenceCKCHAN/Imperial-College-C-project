@@ -1,5 +1,18 @@
-#include "assemble.h"
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File.ADT_linkedlist.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//  Linked List Abstract Data Type
+//  key = labels in the assembler program
+//  value = address of the labels
+//  PRE: Valid label and its corresponding address is inserted in the head of linked list
+//  POST:labels can be searched and return its address using lookUpValue Function
+/////////////////////////////////////////////////////////////////////////////////////////
+#include "assemble.h"
 
 struct Linkedlist* getNewlist(void){
     struct Linkedlist* list = malloc(sizeof(struct Linkedlist));

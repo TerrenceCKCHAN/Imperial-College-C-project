@@ -1,15 +1,23 @@
-#include "decode.h"
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File:emu_util.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+////////////////////////////////////////////////////////////////////////////////////////
+#include "emu_decode.h"
 #include "emulate.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Checking if the state of the machine satisfy the condition by checking the CPSR flags of the machine
 //PRE: State of the machine, the 4 bytes instruction
 //POST: Return 1 for true (satisfy condition) or return 0 for false (not satisfy condition)
+/////////////////////////////////////////////////////////////////////////////////////////
 int satisfyCondition(MACHINE* ARM, u32 condition) {
     int NFlag = GETBITS(ARM->REGISTER[16], 31, 31);
     int ZFlag = GETBITS(ARM->REGISTER[16], 30, 30);
     int CFlag = GETBITS(ARM->REGISTER[16], 29, 29);
     int VFlag = GETBITS(ARM->REGISTER[16], 28, 28);
-    int bool;
+    int bool = NULL;
     switch(condition) {
         case 0x0:
             bool = (ZFlag == 1) ? 1 : 0; break;
@@ -29,9 +37,11 @@ int satisfyCondition(MACHINE* ARM, u32 condition) {
     return bool;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //This is the function to print bit of a unsigned 32 bit integer
 //PRE: An unsigned 32bit integer
 //POST: Print the bitwise representation of the integer
+/////////////////////////////////////////////////////////////////////////////////////////
 void printBit(u32 x){
     int i;
     u32 mask = (u32) 1 << 31;
@@ -59,9 +69,11 @@ u32 generateDataFromHex(char hex[]){
     return data;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Print all registers of the machine with a specific format
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the general registers including PC and CPSR register
+/////////////////////////////////////////////////////////////////////////////////////////
 void printRegisters(MACHINE* ARM) {
     for(int index = 0; index <= 12; index++) {
         printf("$%-3d: %10d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
@@ -84,9 +96,11 @@ MACHINE* createMachine() {
     return ARM;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Print the non-zero memory of the machine with a specific format
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the memory that are non-zero
+/////////////////////////////////////////////////////////////////////////////////////////
 void printMemory(MACHINE* ARM) {
 
     for(int index = 0; index < MAX_MEMORY; index+=4) {
@@ -100,9 +114,11 @@ void printMemory(MACHINE* ARM) {
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Print both the registers and the non-zero memory in the machine
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the machine including non-zero memory and registers
+/////////////////////////////////////////////////////////////////////////////////////////
 void printMachineState(MACHINE* ARM) {
     printf("Registers:\n");
     printRegisters(ARM);

@@ -1,5 +1,11 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File:emu_dp.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
 #include "emulate.h"
-#include "decode.h"
+#include "emu_decode.h"
 
 u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value){
     u32 result = 0;

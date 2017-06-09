@@ -4,7 +4,7 @@
 
 #include "assemble.h"
 #include "tokenizer.h"
-#include "../emulator/decode.h"
+#include "../emulator/emu_decode.h"
 
 u32 secondpass(LINE_TOKEN* line_tokens[], u32* instructions,struct Linkedlist **symbolTable, int numOfLines) {
     u32 memoryIndex = 0;

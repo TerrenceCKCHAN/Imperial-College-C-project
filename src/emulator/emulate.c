@@ -1,11 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File:emulate.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
 #include "emulate.h"
-#include "decode.h"
-
+#include "emu_decode.h"
+/////////////////////////////////////////////////////////////////////////////////////////
 // Fetch 4 bytes starting from the program counter(PC)
 // and assemble the instruction for decoding
 // Pre: State of the machine, program counter
 // Post: the instruction in 32bits
-
+/////////////////////////////////////////////////////////////////////////////////////////
 u32 fetchInstruction(MACHINE* ARM, u32 pc) {
     // Initialize instruction
     u32 instruction = 0;
@@ -15,12 +21,12 @@ u32 fetchInstruction(MACHINE* ARM, u32 pc) {
     }
     return instruction;
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////
 // Decode the instruction into structures for executing
 // Pre: Instruction pointer and the 32bits instruction
 // Post: The union of the instructions, showing the type and respective
 // instruction structures
-
+/////////////////////////////////////////////////////////////////////////////////////////
 void decodeInstruction(INSTRUCTION* instr, u32 instruction) {
     //printf("%x %d\n", instruction, IS_BRANCH(instruction));
     if (instruction == 0) {  // Represent the all-zero halt instruction
@@ -50,11 +56,11 @@ void decodeInstruction(INSTRUCTION* instr, u32 instruction) {
         exit(EXIT_FAILURE);
     }
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////
 // Execute the decoded function and change the state of the ARM machine
 // Pre: State of the current machine, instruction structure
 // Post: The modified state of the machine after each execution function
-
+/////////////////////////////////////////////////////////////////////////////////////////
 void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
 
     if(strcmp(instr->type, "dataprocessing") == 0) {
@@ -79,7 +85,7 @@ int main1(int argc,  char **argv) {
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
-//    loadBinaryFile(ARM, "/homes/hxm16/arm_1617_testsuite/test_cases/loop02");
+    //loadBinaryFile(ARM, "/homes/hxm16/arm_1617_testsuite/test_cases/loop02");
     loadBinaryFile(ARM, argv[1]);
     while(execute) {
         if(decodedEmpty) {

@@ -1,9 +1,16 @@
-#include "decode.h"
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File:emu_multiply.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
+#include "emu_decode.h"
 #include "emulate.h"
-
+/////////////////////////////////////////////////////////////////////////////////////////
 //Execution of the multiply instruction
 //PRE: Pointer to the machine and the structure of the multiply instruction
 //POST: Modified the contents of the machine through the pointer
+/////////////////////////////////////////////////////////////////////////////////////////
 void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr) {
     if(satisfyCondition(ARM, multiInstr->COND)) {
         // Get the index of the registers for ease of manipulation

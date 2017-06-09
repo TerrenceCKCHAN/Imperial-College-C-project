@@ -1,3 +1,19 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File.ADT_BST.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//  Binary Search Tree Abstract Data Type
+//  (Faster insertion and searching comparing to linked list)
+//  key = labels in the assembler program
+//  value = address of the labels
+//  compare = Function to compare labels alphabetically (using strcmp in  string.h)
+//  PRE: Valid label and its corresponding address is inserted in BST
+//  POST:labels can be searched and return its address using bst_lookUpValue Function
+/////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
 
 struct BST* getNewinitTree(bst_compare_t compare){

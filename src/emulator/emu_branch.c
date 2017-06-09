@@ -1,4 +1,10 @@
-#include "decode.h"
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File:emu_branch.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
+#include "emu_decode.h"
 #include "emulate.h"
 
 //Execution of the branch instruction
