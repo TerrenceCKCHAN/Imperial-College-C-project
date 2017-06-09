@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 //C Group Project - First Year (2016-2017)
-//File.ADT_BST.c
+//File: ADT_BST.c
 //Group: 6
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -38,11 +38,13 @@ struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compar
         return newNode;
     }else{
         int comparison = compare(key,node->key);
-        if(comparison <= 0){                                           //if the value insert is less than or equal to current node, insert to left
+        if(comparison <= 0){
+            //if the value insert is less than or equal to current node, insert to left
             node->left=insertToNode(node->left, key,value,compare);
             return node;
         }else{
-            node->right = insertToNode(node->right, key,value,compare); //if the value insert is larger to current node, insert to left
+            //if the value insert is larger to current node, insert to right
+            node->right = insertToNode(node->right, key,value,compare);
             return node;
         }
     }
@@ -143,7 +145,9 @@ void printBST_node(BST_node* node){
     printBST_node(node->right);
     printf("key = %s, value = %u\n", node->key, (u32) node->value);
 }
-//////////Printing the post-order of BST////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+//Printing the post-order of BST
+/////////////////////////////////////////////////////////////////////////////////////////
 void printBST(struct BST* tree){
     if(tree->root ==NULL){
         return;

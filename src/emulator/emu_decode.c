@@ -72,6 +72,8 @@ void DecodeMultiply(MULTIPLY_INSTR* instr, u32 instruction) {
             strcpy(instr->OPCODE,"mla");
             instr->ACC = GETBITS(instruction, 12, 15);
             break;
+        default:
+            break;
     }
 }
 
@@ -91,6 +93,8 @@ void DecodeSingleDataTransfer(SIN_DATA_TRAN_INSTR* instr, u32 instruction) {
             break;
         case 1:
             strcpy(instr->OPCODE,"ldr");
+            break;
+        default:
             break;
     }
 }
@@ -152,6 +156,8 @@ void printBranch(BRANCH_INSTR* br) {
             printf("le");
             break;
         case al:
+            break;
+        default:
             break;
     }
     printf(" %x\n",br->OFFSET);

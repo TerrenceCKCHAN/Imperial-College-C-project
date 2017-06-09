@@ -7,9 +7,11 @@
 #include "emu_decode.h"
 #include "emulate.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Execution of the branch instruction
 //PRE: Pointer to the machine and the structure of the branch instruction
 //POST: Modified the contents of the machine through the pointer
+/////////////////////////////////////////////////////////////////////////////////////////
 void branch(MACHINE* ARM, BRANCH_INSTR* br) {
     if(satisfyCondition(ARM, br->COND)) {
         u32 offset  = br->OFFSET;
