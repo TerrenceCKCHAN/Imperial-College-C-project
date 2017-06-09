@@ -2,13 +2,15 @@
     main:
                  ldr r4, =0x0
                  ldr r2, =0x40000
-                 str r2, =0x20200004
+                 ldr r3, =0x20200004
+                 str r2, [r3]
 
     for_LED:
                  cmp r4, #0x100
                  bge end_LED
                  ldr r2, =0x40000
-                 str r2, 0x20200028
+                 ldr r3, =0x20200028
+                 str r2, [r3]
 
     for_loop_x:
                  ldr r1, =0x0
@@ -42,7 +44,8 @@
     endfor:
 
                  ldr r2, =0x40000
-                 str r2, =0x2020001C
+                 ldr r3, =0x2020001C
+                 str r2, [r3]
 
     for_loop_x:
                  ldr r1, =0x0
@@ -73,7 +76,7 @@
                  b for_loop_z
 
     endfor:
-                 add r4, r4, #1;
+                 add r4, r4, #1
     end_LED:
                  bx lr
 
