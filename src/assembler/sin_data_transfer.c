@@ -189,7 +189,7 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
             instr->instr.sdt->OFFSET = 0;
             instr->instr.sdt->P      = 1;
             instr->instr.sdt->U      = 1;
-        } else if(exp_in_rect->exp_not_in_rect_int == 0 && exp_in_rect->exp_in_rect_int == 2){
+        } else if(exp_in_rect->exp_not_in_rect_int == 0 && exp_in_rect->exp_in_rect_int >= 2){
             if(line_token->operands[2][0]=='#') {
                 printf("hi");
                 instr->instr.sdt->I=0;
@@ -200,7 +200,7 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
                 calculate2(line_token, 2, instr);
             }
             instr->instr.sdt->P      = 1;
-        } else if(exp_in_rect->exp_not_in_rect_int == 1 && exp_in_rect->exp_in_rect_int == 1){
+        } else if(exp_in_rect->exp_not_in_rect_int >= 1 && exp_in_rect->exp_in_rect_int == 1){
             instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
             if(line_token->operands[2][0]=='#') {
                 instr->instr.sdt->I=0;
@@ -236,7 +236,7 @@ void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
         instr->instr.sdt->P      = 1;
         instr->instr.sdt->U      = 1;
     }
-    else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int==2){
+    else if(exp_in_rect->exp_not_in_rect_int==0 && exp_in_rect->exp_in_rect_int >= 2){
         instr->instr.sdt->I = 1;
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         if(line_token->operands[2][0]=='#') {
@@ -249,7 +249,7 @@ void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
         }
         instr->instr.sdt->P=1;
     }
-    else if(exp_in_rect->exp_not_in_rect_int == 1 && exp_in_rect->exp_in_rect_int == 1){
+    else if(exp_in_rect->exp_not_in_rect_int >= 1 && exp_in_rect->exp_in_rect_int == 1){
         instr->instr.sdt->REGN=parseRegister(line_token->operands[1]);
         if(line_token->operands[2][0]=='#') {
             instr->instr.sdt->I=0;
