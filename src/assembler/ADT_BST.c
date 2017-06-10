@@ -28,7 +28,9 @@ struct BST* getNewinitTree(bst_compare_t compare){
 }
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//Helper function for insertElem
+/////////////////////////////////////////////////////////////////////////////////////////
 struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compare_t compare){
     BST_node * newNode = malloc(sizeof(BST_node));
     newNode->key = key;
@@ -49,7 +51,11 @@ struct BST_node* insertToNode(BST_node* node, char* key, void* value, bst_compar
         }
     }
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//Insert new node into BST
+//PRE: The BST to be inserted , the key and value to be insert and the compare function
+//POST: A new node is inserted into the BST according to its key
+/////////////////////////////////////////////////////////////////////////////////////////
 void insertElem(struct BST* tree, char* key, void* value, bst_compare_t compare){
     tree->root = insertToNode(tree->root,key,value,compare);
 }
@@ -90,8 +96,6 @@ BST_node* deleteNode(BST_node* node){
     }
 }
 
-
-
 struct BST_node *deleteKey(BST_node * node,char* key, bst_compare_t compare){
     if(node == NULL){
         return node;
@@ -111,7 +115,9 @@ struct BST_node *deleteKey(BST_node * node,char* key, bst_compare_t compare){
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//Helper function for bst_lookUpValue
+/////////////////////////////////////////////////////////////////////////////////////////
 void* bst_lookUpValue_elem(BST_node* node, char* key, bst_compare_t compare){
     BST_node * current = node;
     if(current!= NULL) {
@@ -127,16 +133,26 @@ void* bst_lookUpValue_elem(BST_node* node, char* key, bst_compare_t compare){
     return NULL;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//Look up the value in BST when key is provided
+//PRE: The BST to be searched, the key and the compare function
+//POST: return a value (u32 address) by its key
+/////////////////////////////////////////////////////////////////////////////////////////
 void* bst_lookUpValue(struct BST* tree, char* key,bst_compare_t compare){
     return bst_lookUpValue_elem(tree->root,key,compare);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//Compare function to compare string
+/////////////////////////////////////////////////////////////////////////////////////////
 int stringcmp(char* s1, char* s2){
     return strcmp(s1,s2);
 }
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//Helper function for printBST
+/////////////////////////////////////////////////////////////////////////////////////////
 void printBST_node(BST_node* node){
     if(node == NULL){
         return;
@@ -167,7 +183,9 @@ void printBSTLevel(struct BST_node* root){
 
 }
  */
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//Helper function for bst_destory
+/////////////////////////////////////////////////////////////////////////////////////////
 void bst_destroy_elem(struct BST_node * node){
     if(node==NULL){
         return;
@@ -177,6 +195,9 @@ void bst_destroy_elem(struct BST_node * node){
     free(node);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//Function to free the memory used by BST's pointer
+/////////////////////////////////////////////////////////////////////////////////////////
 void bst_destroy(struct BST* tree){
     bst_destroy_elem(tree->root);
 }
