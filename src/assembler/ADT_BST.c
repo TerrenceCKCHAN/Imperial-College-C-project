@@ -154,7 +154,7 @@ void printBST(struct BST* tree){
     }
     printBST_node(tree->root);
 }
-
+/*
 void printBSTLevel(struct BST_node* root){
     struct Linkedlist * queue = malloc(sizeof(struct Linkedlist));
     insertElement(&queue,root->key,root->value);
@@ -166,6 +166,7 @@ void printBSTLevel(struct BST_node* root){
     }
 
 }
+ */
 
 void bst_destroy_elem(struct BST_node * node){
     if(node==NULL){

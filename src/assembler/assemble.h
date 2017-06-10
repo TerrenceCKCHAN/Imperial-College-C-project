@@ -74,12 +74,12 @@ struct table{
     void (*func)(LINE_TOKEN*, INSTRUCTION*);
 };
 
-typedef struct branchelem{
+struct branchelem{
     char* opcode;
     void (*br)(LINE_TOKEN*, INSTRUCTION*, struct Linkedlist*, u32 currAddress);
 };
 
-typedef struct sdtelem{
+struct sdtelem{
     char* opcode;
     void (*sdt)(LINE_TOKEN*, INSTRUCTION*, u32 currAddress, u32 numOfInstructions);
 };

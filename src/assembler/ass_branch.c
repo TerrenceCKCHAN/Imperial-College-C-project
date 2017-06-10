@@ -3,6 +3,7 @@
 //
 #include "assemble.h"
 #include "../emulator/instruction.h"
+#include "tokenizer.h"
 
 u32 transformnum(int num){
     u32 val;
@@ -25,6 +26,16 @@ void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *sym
     instr->instr.br->OFFSET = transformnum(i);
     strcpy(instr->type, "branch");
 }
+
+/*
+void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct BST *symboltable,u32 curA){
+    int i = (int) bst_lookUpValue(symboltable,line_token->operands[0],strcmp);
+    i -= curA + 8;
+    printf("OFFSET = %d\n", i);
+    instr->instr.br->OFFSET = transformnum(i);
+    strcpy(instr->type, "branch");
+}
+ */
 
 
 void assembleBeq(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable,u32 curA){

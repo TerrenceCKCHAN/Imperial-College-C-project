@@ -97,10 +97,22 @@ int main1(int argc, char **argv){
 
 
 */
-    printBit1(transformnum(-3));
-
-    char* opcode;
-    struct Linkedlist *table;
+    /*
+    ////////////TRY TO IMPLEMENT BST without destroying linked list////////////////
+    struct BST* symbolTable = getNewinitTree((void*)stringcmp);
+    numOfInstructions = firstpass(line_tokens, &symbolTable, numOfLines);
+    secondpass(line_tokens, instruction, &symbolTable, numOfLines, numOfInstructions);
+    u32* allInstructions = malloc(sizeof(instruction) + sizeof(Memory));
+    memcpy(allInstructions, instruction, sizeof(instruction));
+    memcpy(allInstructions + numOfInstructions, Memory, sizeof(Memory));
+    for(int i = 0; i < numOfInstructions + memoryPos; i++) {
+        printf("Instruction %d = %x\n", i, allInstructions[i]);
+    }
+    printBST(symbolTable);
+    binaryFileWriter(allInstructions, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img", numOfInstructions + memoryPos);
+//    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
+    free(symbolTable);
+     */
     return EXIT_SUCCESS;
 }
 
