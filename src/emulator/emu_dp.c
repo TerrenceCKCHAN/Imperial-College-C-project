@@ -6,7 +6,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "emulate.h"
 #include "emu_decode.h"
-
+/////////////////////////////////////////////////////////////////////////////////////////
+// Helper function for shifting numbers
+// Pre: the times to be shift, shift type and value to be shift
+// Post: return a unsigned 32 bit interger which is shifted
+/////////////////////////////////////////////////////////////////////////////////////////
 u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value){
     u32 result = 0;
     switch (shiftType){
@@ -36,7 +40,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
         u32 Rd = datapro_I->DEST;
         u32 carry  = 0;
         u32 updatedoprand2;
-        u32 valueofRm = NULL;
+        u32 valueofRm ;
 
         if (datapro_I->I) { //if I flag = 1
             //If operand2 is a immediate value
@@ -120,6 +124,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
         }
 
         if(datapro_I->S){
+            int Nflag =GETBITS(result,31,31);
             //seting CPSR flag
             if(result==0){
                 //set Z flag
@@ -131,7 +136,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
                 //set C flag
                 ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],29);
             }
-            if(GETBITS(result,31,31)){
+            if(Nflag){
                 //set N flag
                 ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],31);
             }

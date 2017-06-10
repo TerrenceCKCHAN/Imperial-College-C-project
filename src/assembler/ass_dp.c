@@ -1,7 +1,9 @@
-//
-// Created by admin on 6/6/2017.
-//
-
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File: ass_dp.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
 #include "tokenizer.h"
 #include "parser.h"

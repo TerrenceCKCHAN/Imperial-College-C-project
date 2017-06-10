@@ -25,9 +25,9 @@ typedef uint8_t u8;
 // Macro definition that help to extract and set bits in u32 binary code
 /////////////////////////////////////////////////////////////////////////////////////////
 //Generate a mask to extract the bits of position start to position end
-#define GENERATEMASK(start,end) (u32) ((1 << (end+1)) -1) - ((1<<start)-1)
+#define GENERATEMASK(start,end) (u32) ((1 << (end+1)) -1) - ((1 << start) - 1)
 //Change the bits from position start to position end
-#define GETBITS(input, start, end)   (u32) (GENERATEMASK(start, end) & input)>>start
+#define GETBITS(input, start, end)   (u32) ( GENERATEMASK(start, end) & input ) >> start
 //Change bit at position pos to 1
 #define SETBIT(input, pos)          (u32) (input | 1 << pos)
 //Change bit at position pos to 0

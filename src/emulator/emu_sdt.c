@@ -4,16 +4,14 @@
 //Group: 6
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
-#include "emulate.h";
+#include "emulate.h"
 #include "emu_decode.h"
 
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
     if(satisfyCondition(ARM,sin_I->COND)){
 
         u32 offset = sin_I->OFFSET;
-        u32 carry  = 0;
         u32 result;
-        u32 valueofRm = NULL;
         u32 Rn = sin_I->REGN;
         u32 address;
         u32 Rd = sin_I->REGD;
@@ -38,7 +36,6 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
             u32 rotateValue = 2*GETBITS(sin_I->INSTRUCTION, 8, 11);
             u32 Imm = GETBITS(sin_I->INSTRUCTION, 0, 7);
             u32 ImmAfterRotate = RotateR(Imm, rotateValue);
-            carry = GETBITS(ImmAfterRotate,rotateValue-1,rotateValue-1);
             result =  ImmAfterRotate;
         }
 
