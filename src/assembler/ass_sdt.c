@@ -184,7 +184,9 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
         } else {
             instr->instr.sdt->REGN=15;
             Memory[memoryPos] = parseExpression(line_token->operands[1]);
-            u32 val = (numOfInstructions + memoryPos)*4 - address - 8;
+            printf("numOfInstructions = %d, memoryPos = %d, address = %d", numOfInstructions, memoryPos, address);
+            instr->instr.sdt->U = 1;
+            u32 val = (numOfInstructions + memoryPos) * 4 - address - 8;
             if(val <= 0xff){
                 instr->instr.sdt->OFFSET = val;
             }

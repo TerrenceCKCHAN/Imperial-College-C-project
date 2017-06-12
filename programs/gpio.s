@@ -1,14 +1,14 @@
 
     main:
                  ldr r4, =0x0
-                 mov r5, #0x40000
+                 ldr r5, =0x40000
                  ldr r6, =0x20200004
                  str r5, [r6]
 
     for_LED:
                  cmp r4, #0x100
                  bge end_LED
-                 mov r5, #0x10000
+                 ldr r5, =0x10000
                  ldr r6, =0x20200028
                  str r5, [r6]
 
