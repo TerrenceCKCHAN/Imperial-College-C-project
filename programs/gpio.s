@@ -24,7 +24,7 @@
 
     endfor:
 
-                 mov r5, #0x10000
+                 mov r5, #0x0
                  ldr r7, =0x2020001C
                  str r5, [r7]
 
