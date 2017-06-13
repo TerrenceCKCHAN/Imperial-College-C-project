@@ -128,6 +128,7 @@ void printMachineState(MACHINE* ARM) {
 
 u32 readMemory(MACHINE* ARM, u32 address) {
     u32 memToRegister = 0;
+//    printf("%x\n", address);
     switch(address) {
         case 0x20200000:
             printf("One GPIO pin from 0 to 9 has been accessed\n");
@@ -159,6 +160,7 @@ u32 readMemory(MACHINE* ARM, u32 address) {
 
 void writeMemory(MACHINE* ARM, u32 address, u32 content) {
     u32 start = 0, end = 7;
+//    printf("%x\n", address);
     switch(address) {
         case 0x20200000:
             printf("One GPIO pin from 0 to 9 has been accessed\n");

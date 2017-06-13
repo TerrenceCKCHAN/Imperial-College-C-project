@@ -31,6 +31,6 @@ set(SOURCE_FILES
         src/assembler/ass_multiply.c
         src/assembler/ass_branch.c
         src/assembler/ass_sdt.c
-        src/assembler/ADT_BST.c)
+        src/assembler/ADT_BST.c programs/game.c)
 
 add_executable(arm11_06 ${SOURCE_FILES})
