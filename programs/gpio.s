@@ -1,48 +1,36 @@
 
-    main:
-                 ldr r4, =0x0
+    main_SETOUTPUTPIN:
+
                  ldr r5, =0x40000
                  ldr r6, =0x20200004
                  str r5, [r6]
 
-    for_LED:
-                 cmp r4, #0x100
-                 bge end_LED
+    LED_LOOP:
                  ldr r5, =0x10000
                  ldr r6, =0x20200028
                  str r5, [r6]
 
-    for_loop_x:
+                 ldr r3, =0x0
+                 ldr r4, =0x2020001c
+                 str r3, [r4]
                  ldr r1, =0x0
 
-    next_x:
-                 cmp r1, #0x2710
-                 bge endfor
-    increment_x:
+    DELAY:
                  add r1, r1, #0x1
-                 b next_x
+                 cmp r1, #0x2710
+                 bl  DELAY
 
-    endfor:
-
-                 mov r5, #0x0
-                 ldr r7, =0x2020001C
-                 str r5, [r7]
-
-    for_loop_x1:
+    PIN_ON:
+                 str r5, [r4]
                  ldr r1, =0x0
 
-    next_x1:
-                 cmp r1, #0x2710
-                 bge endfor1
-
-    increment_x1:
+    DELAY2:
                  add r1, r1, #0x1
-                 b next_x1
+                 cmp r1, #0x2710
+                 bl DELAY2
 
-    endfor1:
-                 add r4, r4, #1
-                 b for_LED
-    end_LED:
+    END:
+                 b LED_LOOP
                  andeq r0, r0, r0
 
 
