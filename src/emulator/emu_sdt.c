@@ -38,8 +38,8 @@ void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I){
             u32 ImmAfterRotate = RotateR(Imm, rotateValue);
             result =  ImmAfterRotate;
         }
-        printf("Register R%d = %x\n", Rn, ARM->REGISTER[Rn]);
-        printf("RESULT = %x\n", result);
+//        printf("Register R%d = %x\n", Rn, ARM->REGISTER[Rn]);
+//        printf("RESULT = %x\n", result);
 
 
         if (sin_I->P) {  //P flag
