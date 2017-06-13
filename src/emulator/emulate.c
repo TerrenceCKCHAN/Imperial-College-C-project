@@ -112,6 +112,7 @@ int main(int argc,  char **argv) {
             fetchedInstr = fetchInstruction(ARM, ARM->REGISTER[15]);
         }
         ARM->REGISTER[15] += 4;
+//        printMachineState(ARM);
     }
     printMachineState(ARM);
     return EXIT_SUCCESS;

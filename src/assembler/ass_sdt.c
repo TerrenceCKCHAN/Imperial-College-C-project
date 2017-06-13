@@ -182,7 +182,32 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
             strcpy(line_token->str.opcode, "mov");
             assembleMov(line_token, instr);
         } else {
-            calculate1(line_token, 1, instr, address, numOfInstructions);
+            instr->instr.sdt->REGN=15;
+            Memory[memoryPos] = parseExpression(line_token->operands[1]);
+            printf("numOfInstructions = %d, memoryPos = %d, address = %d", numOfInstructions, memoryPos, address);
+            instr->instr.sdt->U = 1;
+            u32 val = (numOfInstructions + memoryPos) * 4 - address - 8;
+            if(val <= 0xff){
+                instr->instr.sdt->OFFSET = val;
+            }
+            else{
+                u32 rotate_value = 0 ;
+                while(val > 0xff){
+                    if(rotate_value > 0xff){
+                        printf("Error: can fit the number in 8 bit\n");
+                        break;
+                    }
+                    val = RotateR(val,30);
+                    rotate_value+=1;
+                    while((val&3)==0){
+                        val = RotateR(val,30);
+                        rotate_value+=1;
+                    }
+                }
+                instr->instr.sdt->OFFSET = val;
+                instr->instr.sdt->OFFSET += rotate_value << 8;
+            }
+            memoryPos++;
             // Flag for pre-Indexing set
             instr->instr.sdt->P = 1;
         }
