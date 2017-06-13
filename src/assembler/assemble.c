@@ -54,15 +54,15 @@ u32 sourceFileReader(char* lines[], char* filename){
     return index;
 }
 
-int main1(int argc, char **argv){
+int main(int argc, char **argv){
     memoryPos = 0;
     char* lines[100];
     LINE_TOKEN* line_tokens[100];
     u32 instruction[100];
     u32 numOfLines;
     u32 numOfInstructions;
-//    numOfLines = sourceFileReader(lines, argv[1]);
-    numOfLines = sourceFileReader(lines, "/homes/klc116/CLionProjects/arm11_06/programs/gpio.s");
+    numOfLines = sourceFileReader(lines, argv[1]);
+//    numOfLines = sourceFileReader(lines, "/homes/klc116/CLionProjects/arm11_06/programs/gpio.s");
 /*    printf("%d\n", numOfLines);
     for(int i = 0; i < numOfLines; i++)
         printf("%s\n",lines[i]);
@@ -86,8 +86,8 @@ int main1(int argc, char **argv){
         printf("Instruction %d = %x\n", i, allInstructions[i]);
     }
     printLinkedList(symbolTable);
-    binaryFileWriter(allInstructions, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img", numOfInstructions + memoryPos);
-//    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
+  //  binaryFileWriter(allInstructions, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img", numOfInstructions + memoryPos);
+    binaryFileWriter(allInstructions, argv[2], numOfInstructions + memoryPos);
     free(symbolTable);
 /*
 //    fileToTokens(line_tokens, lines, numOfLines);
