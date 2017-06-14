@@ -77,7 +77,7 @@ void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
     }
 }
 
-int main(int argc,  char **argv) {
+int main3(int argc,  char **argv) {
     //Creating the ARM machine with 0s in registers and memory
     MACHINE* ARM = createMachine();
     //Simulating the pipeline: fetchedInstr represents the Fetched state while

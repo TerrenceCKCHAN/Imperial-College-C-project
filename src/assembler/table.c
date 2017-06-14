@@ -1,7 +1,6 @@
 #include "assemble.h"
-#include "parser.h"
 #include "../emulator/emulate.h"
-#include "tokenizer.h"
+
 
 struct table instrarray[] = {
         {"add",&assembleAdd},

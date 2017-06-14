@@ -5,8 +5,7 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "../emulator/instruction.h"
-#include "tokenizer.h"
+
 
 u32 transformnum(int num){
     u32 val;

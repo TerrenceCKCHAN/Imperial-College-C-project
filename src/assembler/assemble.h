@@ -16,13 +16,11 @@
 #include "tokenizer.h"
 #include "../emulator/instruction.h"
 
-typedef uint32_t u32;
 
 #define LShiftL(x,n)     x << n
 #define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
 #define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
 
-typedef uint32_t u32;
 /////////////////////////////////////////////////////////////////////////////////////////
 //  Linked List Abstract Data Type
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -1,9 +1,4 @@
-//
-// Created by klc116 on 6/7/17.
-//
-
 #include "assemble.h"
-#include "tokenizer.h"
 #include "../emulator/emu_decode.h"
 
 u32 secondpass(LINE_TOKEN *line_tokens[], u32 *instructions, struct Linkedlist **symbolTable, int numOfLines,

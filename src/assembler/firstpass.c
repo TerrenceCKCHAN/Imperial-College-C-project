@@ -1,5 +1,4 @@
 #include "assemble.h"
-#include "tokenizer.h"
 
 u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int numOfLines) {
     u32 index = 0;

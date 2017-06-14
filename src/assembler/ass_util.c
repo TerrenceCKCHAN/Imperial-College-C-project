@@ -5,7 +5,6 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "../emulator/instruction.h"
 
 //Return a 32bit instruction after getting the instruction structure pointer
 u32 assembleInstructions(INSTRUCTION* instr) {

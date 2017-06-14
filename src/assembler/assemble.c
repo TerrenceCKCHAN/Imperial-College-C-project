@@ -5,9 +5,7 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "tokenizer.h"
 #include "firstpass.h"
-#include "../emulator/instruction.h"
 
 void binaryFileWriter(u32 instr[], char *path, u32 numOfInstructions){
     FILE *ofp = fopen(path, "wb");
@@ -17,20 +15,6 @@ void binaryFileWriter(u32 instr[], char *path, u32 numOfInstructions){
     }
 
     fwrite(instr, sizeof(u32), numOfInstructions, ofp);
-}
-
-void printBit1(u32 x){
-    int i;
-    u32 mask = (u32) 1 << 31;
-    for(i = 0;i < 32;++i){
-        printf("%i", (x & mask) != 0);
-        x<<=1;
-        if(i == 19 | i == 15 | i == 11 | i == 10 |  i == 6 | i == 5 | i == 3 ) {
-            printf(" ");
-        }
-    }
-
-    printf("\n");
 }
 
 u32 sourceFileReader(char* lines[], char* filename){
@@ -54,7 +38,7 @@ u32 sourceFileReader(char* lines[], char* filename){
     return index;
 }
 
-int main(int argc, char **argv){
+int main1(int argc, char **argv){
     memoryPos = 0;
     char* lines[100];
     LINE_TOKEN* line_tokens[100];

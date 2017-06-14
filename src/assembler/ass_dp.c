@@ -5,9 +5,7 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "tokenizer.h"
 #include "parser.h"
-#include "../emulator/instruction.h"
 #include "../emulator/emulate.h"
 
 /*typedef struct {
