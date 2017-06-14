@@ -41,8 +41,8 @@ u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value){
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-//Execution of the dataprocessing instruction
-//PRE: Pointer to the machine and the structure of the dataprocessing instruction
+//Execution of the data processing instruction
+//PRE: Pointer to the machine and the structure of the data processing instruction
 //POST: Modified the contents of the machine through the pointer
 /////////////////////////////////////////////////////////////////////////////////////////
 void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
@@ -63,7 +63,25 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
 
         OpcodeOperation(datapro_I, updatedoprand2, valueofRm, &carry, &result);
 
-        CPSROperation(ARM, datapro_I, carry, result);
+            if(datapro_I->S){
+                int Nflag =GETBITS(result,31,31);
+                //seting CPSR flag
+                if(result==0){
+                    //set Z flag
+                    ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],30);
+                }else{
+                    ARM->REGISTER[16] = CLEARBIT(ARM->REGISTER[16],30);
+                }
+                if(carry){
+                    //set C flag
+                    ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],29);
+                }
+                if(Nflag){
+                    //set N flag
+                    ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],31);
+                }
+            }
+
 
         if(strcmp(opcode,"tst")!=0 | strcmp(opcode,"teq")!=0 | strcmp(opcode,"cmp")!=0){
             if(Rd != NOT_EXIST) {
@@ -73,31 +91,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//Helper Method to modify the flag in the CPSR registor
-//PRE: Pointer to the machine, the structure of the dataprocessing instruction, the carry and result after opcode operation
-//POST: Modified the contents of the CPSR registor through the pointer
-/////////////////////////////////////////////////////////////////////////////////////////
-void CPSROperation(const MACHINE *ARM, const DATAPROCESSING_INSTR *datapro_I, u32 carry, u32 result) {
-    if(datapro_I->S){
-            int Nflag =GETBITS(result,31,31);
-            //seting CPSR flag
-            if(result==0){
-                //set Z flag
-                ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],30);
-            }else{
-                ARM->REGISTER[16] = CLEARBIT(ARM->REGISTER[16],30);
-            }
-            if(carry){
-                //set C flag
-                ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],29);
-            }
-            if(Nflag){
-                //set N flag
-                ARM->REGISTER[16] = SETBIT(ARM->REGISTER[16],31);
-            }
-        }
-}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //Helper Method to modify the value in First Operand Register according to its Operation code

@@ -115,6 +115,7 @@ void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
 void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
 u32 readMemory(MACHINE* ARM, u32 address);
 void writeMemory(MACHINE* ARM, u32 address, u32 content);
+void Indexing(MACHINE *ARM, const SIN_DATA_TRAN_INSTR *sin_I, u32 result, u32 Rn, u32 address, u32 Rd);
 
 
 #endif //ARM11_06_EMULATE_H
