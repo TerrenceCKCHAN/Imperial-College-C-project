@@ -85,7 +85,7 @@ int main3(int argc,  char **argv) {
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
-    //loadBinaryFile(ARM, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img");
+//    loadBinaryFile(ARM, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img");
     loadBinaryFile(ARM, argv[1]);
     while(execute) {
         if(decodedEmpty) {
