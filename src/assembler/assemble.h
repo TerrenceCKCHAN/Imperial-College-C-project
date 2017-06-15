@@ -122,15 +122,19 @@ void lsltoMov(LINE_TOKEN* line_token);
 u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int numOfLines);
 u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbolTable, int numOfLines,
                u32 numOfInstructions);
+
 u32 parseRegister(char* operand);
 u32 parseExpression(char* operand);
+u32 shifting(LINE_TOKEN* line_token, int i);
 
 typedef struct{
-    int numOfPreIndexingExpr;
-    int numOfPostIndexingExpr;
-    char *preIndexingExpr[2];
-    char *postIndexingExpr[1];
-}EXP_IN_RECT;
+    int Num_Opr_in_bracket;
+    int Num_Opr_not_in_bracket;
+    //max of 2 operands in bracket
+    char *Opr_in_Bracket[2];
+    //max of 1 operands not in bracket
+    char *Opr_not_in_bracket[1];
+}ADDRESS;
 
 u32 Memory[100];
 u32 memoryPos;
