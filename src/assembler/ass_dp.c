@@ -18,64 +18,76 @@
     u32 OPERAND2;
 }DATAPROCESSING_INSTR;*/
 
-u32 calculate(LINE_TOKEN* line_token, int i){
+//a helper function for transforming an expression to an immediate value operand
+//the integer i state the relative position of where the <operand2> is starting
+u32 imm_value(LINE_TOKEN *line_token, int i){
+    //initialising the operand
     u32 operand2=0;
-    u32 val = parseExpression(line_token->operands[i]);
-    u32 rotate_value = 0;
-    while(val>0xff){
-        if(rotate_value>0xff){
-            printf("Error: can fit the number in 8 bit\n");
+    u32 Imm = parseExpression(line_token->operands[i]);
+    u32 Rotate = 0;
+    //a while loop for determining the Rotate and also Imm
+    while(Imm>0xff){
+        if(Rotate>0xff){
+            printf("Error: cant fit the number in 8 bit\n");
             break;
         }
         /*printf("Before ");
-        printBit(val);*/
-        val = RotateR(val,30);
-        rotate_value+=1;
+        printBit(Imm);*/
+//        Imm = RotateR(Imm,30);
+        Imm = LShiftL(Imm,2);
+        Rotate+=1;
         /*printf("After  ");
-        printBit(val);
+        printBit(Imm);
         printf("\n");*/
-        while((val&3)==0){
-            val = RotateR(val,30);
-            rotate_value+=1;
+        while((Imm&3)==0){
+//            Imm = RotateR(Imm,30);
+            Imm = LShiftL(Imm,2);
+            Rotate+=1;
         }
     }
-    /*while((val&3)==0){
-        val = RotateR(val,30);
-        rotate_value+=1;
+    /*while((Imm&3)==0){
+        Imm = RotateR(Imm,30);
+        Rotate+=1;
     }*/
-    operand2+=val;
-    operand2+=rotate_value<<8;
+    //building the operand2
+    operand2|=Imm;
+    operand2|=Rotate<<8;
     return operand2;
 }
 
-
+//a helper function for transforming an expression to an shifted register operand
+//the integer i state the relative position of where the <operand2> is starting
 u32 shifting(LINE_TOKEN* line_token, int i){
+    //initialising the operand
     u32 operand2=0;
     operand2+=parseRegister(line_token->operands[i]);
     /*printf(line_token->operands[i+1]);
     printf("\n");*/
     if(line_token->numOfOperands>i+1) {
+        // building the shift type
         if (strcmp(line_token->operands[i + 1], "lsl") == 0) {
 
         } else if (strcmp(line_token->operands[i + 1], "lsr") == 0) {
-            operand2 += 1 << 5;
+            operand2 |= 1 << 5;
         } else if (strcmp(line_token->operands[i + 1], "asr") == 0) {
-            operand2 += 2 << 5;
+            operand2 |= 2 << 5;
         } else if (strcmp(line_token->operands[i + 1], "ror") == 0) {
-            operand2 += 3 << 5;
+            operand2 |= 3 << 5;
         } else {
             printf("Error: shift type not found\n");
         }
 
         if (line_token->operands[i + 2][0] == '#') {
+            //if the shift value is a value
             if (parseExpression(line_token->operands[i + 2]) > 0x1F) {
                 printf("Error: shift integer too large\n");
             } else {
-                operand2 += parseExpression(line_token->operands[i + 2]) << 7;
+                operand2 |= parseExpression(line_token->operands[i + 2]) << 7;
             }
         } else {
-            operand2 += parseRegister(line_token->operands[i + 2]) << 8;
-            operand2 += 1 << 4;
+            //if the shift value is a register
+            operand2 |= parseRegister(line_token->operands[i + 2]) << 8;
+            operand2 |= 1 << 4;
         }
     }
     return operand2;
@@ -83,14 +95,15 @@ u32 shifting(LINE_TOKEN* line_token, int i){
 
 
 //assume the operand 2 is an immediate value for now. can be ammended to support shifting
-//helper method to avoid duplication
+//helper method to avoid duplication, instructions which use this helper include and, eor, sub, rsb, add, orr
 void assemble_instr_that_compute_results(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
     instr->instr.dp->SRC      = parseRegister(line_token->operands[1]);
+    //determining if the <operand2> is an imm value or a shifting register, then call the helper function respectively
     if (line_token->operands[2][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2=calculate(line_token,2);
+        instr->instr.dp->OPERAND2= imm_value(line_token, 2);
     }
     else{
         instr->instr.dp->I=0;
@@ -154,9 +167,10 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
     strcpy(instr->instr.dp->OPCODE, "mov");
     instr->instr.dp->DEST     = parseRegister(line_token->operands[0]);
+    //determining if operand2 is an imm value or a shift register
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2=calculate(line_token,1);
+        instr->instr.dp->OPERAND2= imm_value(line_token, 1);
 
     }
     else{
@@ -168,13 +182,14 @@ void assembleMov(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->S        = 0;
     instr->instr.dp->OPCODEBIN = 0xd;
 }
-//helper method to avoid duplication
+//helper method to avoid duplication, instructions which use this helper include tst, teq, cmp
 void assemble_set_flag_instructions(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->SRC      = parseRegister(line_token->operands[0]);
     instr->instr.dp->DEST = 0;
+    //determining if operand2 is an imm value or a shift register
     if (line_token->operands[1][0]=='#') {
         instr->instr.dp->I=1;
-        instr->instr.dp->OPERAND2 = calculate(line_token,1);
+        instr->instr.dp->OPERAND2 = imm_value(line_token, 1);
     }
     else{
         instr->instr.dp->I=0;
@@ -220,33 +235,3 @@ void assembleAndeq(LINE_TOKEN* line_token, INSTRUCTION* instr) {
     instr->instr.dp->S = 0;
     instr->instr.dp->SRC = 0;
 }
-
-//This is the implementation for one single dataProcessing function that cover all the cases.
-/*
-INSTRUCTION *dataProcessing(LINE_TOKEN *line_token) {
-    INSTRUCTION *instr = malloc(sizeof(INSTRUCTION));
-
-
-        // This is the case for Instructions that do not compute results
-    if (line_token->opcode == "tst" | "teq" | "cmp") {
-        instr->instr.dp->SRC      = line_token->operands[1];
-        instr->instr.dp->OPERAND2 = line_token->operands[2];
-    }
-        // This is the case for Single operand assignment:mov
-    else if (line_token->opcode == "mov") {
-        instr->instr.dp->DEST     = line_token->operands[0];
-        instr->instr.dp->OPERAND2 = line_token->operands[2];
-        instr->instr.dp->COND     = 1110 << 28;
-
-    }
-        // This is the case for instructions that compute results
-    else {
-        instr->instr.dp->OPCODE   = line_token->opcode;
-        instr->instr.dp->DEST     = line_token->operands[0];
-        instr->instr.dp->SRC      = line_token->operands[1];
-        instr->instr.dp->OPERAND2 = line_token->operands[2];
-        instr->instr.dp->COND     = 1110 << 28;
-    }
-
-    return instr;
-}*/

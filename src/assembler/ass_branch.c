@@ -6,7 +6,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
 
-
+//help function to transform an int to a u32 in 2's complement
 u32 transformnum(int num){
     u32 val;
     u32 valMASK = (1 << 24) - 1;
@@ -20,11 +20,14 @@ u32 transformnum(int num){
     return val & valMASK;
 }
 
-//as by the time i finish this part we still not able to get current address, create this helper so we can amend easier
+//a helper function to avoid duplicate
 void generalbr(LINE_TOKEN* line_token, INSTRUCTION* instr,struct Linkedlist *symboltable,u32 curA){
+    //get the relative address of the label
     int i = (int) lookUpValue(symboltable, line_token->operands[0]);
+    //calculate the offset, with the 8 from the pipeline principle
     i -= curA + 8;
-    printf("OFFSET = %d\n", i);
+//    printf("OFFSET = %d\n", i);
+    // transform to 2's complement
     instr->instr.br->OFFSET = transformnum(i);
     strcpy(instr->type, "branch");
 }
