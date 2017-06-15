@@ -7,6 +7,6 @@ CFLAGS  = -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -std=c99 -Werror -pedantic
 
 all: assemble emulate
 
-assemble: assembler/assemble.o  assembler/ADT_linkedlist.o assembler/ass_branch.o assembler/ass_dp.o assembler/ass_multiply.o assembler/ass_sdt.o assembler/ass_util.o assembler/firstpass.o assembler/parser.o assembler/secondpass.o assembler/table.o assembler/tokenizer.o
+assemble: assembler/assemble.o  assembler/ADT_linkedlist.o assembler/ass_branch.o assembler/ass_dp.o assembler/ass_multiply.o assembler/ass_sdt.o assembler/ass_util.o assembler/firstpass.o assembler/parser.o assembler/secondpass.o assembler/table.o assembler/tokenizer.o assembler/ass_io.o
 
 emulate: emulator/emulate.o emulator/emu_branch.o emulator/emu_decode.o emulator/emu_dp.o emulator/emu_io.o emulator/emu_multiply.o emulator/emu_sdt.o emulator/emu_util.o

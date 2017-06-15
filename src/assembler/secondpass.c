@@ -60,5 +60,4 @@ u32 secondpass(LINE_TOKEN *line_tokens[], u32 *instructions, struct BST **symbol
         }
     }
     return memoryIndex;
-}
- */
+}*/

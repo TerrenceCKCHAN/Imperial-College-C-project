@@ -17,6 +17,7 @@ u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int num
     return index;
 }
 
+
 /*
 u32 firstpass(LINE_TOKEN **line_tokens, struct BST **symbolTable, int numOfLines) {
     u32 index = 0;
