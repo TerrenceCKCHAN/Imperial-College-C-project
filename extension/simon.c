@@ -4,21 +4,21 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define CORRECT 	2	//RPI_GPIO_P1_03	//GPIO 02
-#define WRONG 		3	//RPI_GPIO_P1_05    //GPIO 03
-#define YOUR_TURN 	4	//RPI_GPIO_P1_7		//GPIO 04
-#define RED 		17	//RPI_GPIO_P1_11	//GPIO 17
-#define YELLOW 		27	//RPI_GPIO_P1_13	//GPIO 27
-#define GREEN 		9	//RPI_GPIO_P1_21	//GPIO 09
-#define WHITE 		22	//RPI_GPIO_P1_15	//GPIO 22
+#define CORRECT 	2//RPI_GPIO_P1_03	//GPIO 02
+#define WRONG 		3//RPI_GPIO_P1_05    //GPIO 03
+#define YOUR_TURN 	4//RPI_GPIO_P1_7	//GPIO 04
+#define RED 		17//RPI_GPIO_P1_11	//GPIO 17
+#define YELLOW 		27//RPI_GPIO_P1_13	//GPIO 27
+#define GREEN 		9//RPI_GPIO_P1_21	//GPIO 09
+#define WHITE 		22//RPI_GPIO_P1_15	//GPIO 22
 #define RED_BOTTON 			10//RPI_GPIO_P1_19	//GPIO 10
 #define YELLOW_BOTTON 		11//RPI_GPIO_P1_23	//GPIO 11
 #define WHITE_BOTTON 		14//RPI_GPIO_P1_8	//GPIO 14
 #define GREEN_BOTTON 		15//RPI_GPIO_P1_10	//GPIO 15
-#define COUNTER_3 		18	//RPI_GPIO_P1_12	//GPIO 18
-#define COUNTER_2 		23	//RPI_GPIO_P1_16	//GPIO 23
-#define COUNTER_1 		24	//RPI_GPIO_P1_18	//GPIO 24
-#define COUNTER_0 		25	//RPI_GPIO_P1_22	//GPIO 25
+#define COUNTER_3 		25//RPI_GPIO_P1_12	//GPIO 25
+#define COUNTER_2 		24//RPI_GPIO_P1_16	//GPIO 24
+#define COUNTER_1 		23//RPI_GPIO_P1_18	//GPIO 23
+#define COUNTER_0 		18//RPI_GPIO_P1_22	//GPIO 18
 
 
 
@@ -79,6 +79,32 @@ void WHITELightOn(){
 	delay(500);
 }
 
+void C_0_ON(){
+	bcm2835_gpio_write(COUNTER_0,HIGH);
+}
+
+void C_1_ON(){
+	bcm2835_gpio_write(COUNTER_1,HIGH);	
+}
+void C_2_ON(){
+	bcm2835_gpio_write(COUNTER_2,HIGH);	
+}
+void C_3_ON(){
+	bcm2835_gpio_write(COUNTER_3,HIGH);	
+}
+void C_0_OFF(){
+	bcm2835_gpio_clr(COUNTER_0);
+}
+void C_1_OFF(){
+	bcm2835_gpio_clr(COUNTER_1);
+}
+void C_2_OFF(){
+	bcm2835_gpio_clr(COUNTER_2);
+}
+void C_3_OFF(){
+	bcm2835_gpio_clr(COUNTER_3);
+}
+
 void initSequence(enum light sequence[], int length){
 	srand(time(NULL));
 	int index =0;
@@ -88,6 +114,101 @@ void initSequence(enum light sequence[], int length){
 	}
 }
 
+void printCounter(int rounds){
+	switch(rounds){
+		case 1:
+			C_0_ON();
+			C_1_OFF();
+			C_2_OFF();
+			C_3_OFF();
+			break;
+		case 2:
+			C_0_OFF();
+			C_1_ON();
+			C_2_OFF();
+			C_3_OFF();
+			break;
+		case 3:
+			C_0_ON();
+			C_1_ON();
+			C_2_OFF();
+			C_3_OFF();
+			break;
+		case 4:
+			C_0_OFF();
+			C_1_OFF();
+			C_2_ON();
+			C_3_OFF();
+			break;
+		case 5:
+			C_0_ON();
+			C_1_OFF();
+			C_2_ON();
+			C_3_OFF();
+			break;
+		case 6:
+			C_0_OFF();
+			C_1_ON();
+			C_2_ON();
+			C_3_OFF();
+			break;
+		case 7:
+			C_0_ON();
+			C_1_ON();
+			C_2_ON();
+			C_3_OFF();
+			break;
+		case 8:
+			C_0_OFF();
+			C_1_OFF();
+			C_2_OFF();
+			C_3_ON();
+			break;
+		case 9:
+			C_0_ON();
+			C_1_OFF();
+			C_2_OFF();
+			C_3_ON();
+			break;
+		case 10:
+			C_0_OFF();
+			C_1_ON();
+			C_2_OFF();
+			C_3_ON();
+			break;
+		case 11:
+			C_0_ON();
+			C_1_ON();
+			C_2_OFF();
+			C_3_ON();
+			break;
+		case 12:
+			C_0_OFF();
+			C_1_OFF();
+			C_2_ON();
+			C_3_ON();
+			break;
+		case 13:
+			C_0_ON();
+			C_1_OFF();
+			C_2_ON();
+			C_3_ON();
+			break;
+		case 14:
+			C_0_OFF();
+			C_1_ON();
+			C_2_ON();
+			C_3_ON();
+			break;
+		case 15:
+			C_0_ON();
+			C_1_ON();
+			C_2_ON();
+			C_3_ON();
+			break;	
+		
+		}
+}
 void printSequence(enum light sequence[], int length){
 	int index = 0;
 	for(;index<length;index++){
@@ -114,20 +235,21 @@ void OFFLight(){
 		bcm2835_gpio_clr(GREEN);
 		bcm2835_gpio_clr(WHITE);
 		bcm2835_gpio_clr(YELLOW);
-}
-
-void OFFFlag(){
 		bcm2835_gpio_clr(CORRECT);
 		bcm2835_gpio_clr(WRONG);
 		bcm2835_gpio_clr(YOUR_TURN);
+		bcm2835_gpio_clr(COUNTER_0);
+		bcm2835_gpio_clr(COUNTER_1);
+		bcm2835_gpio_clr(COUNTER_2);
+		bcm2835_gpio_clr(COUNTER_3);
 }
+
 
 char ReadInput(){
 		while(1){
 		if(bcm2835_gpio_eds(RED_BOTTON)){
 			REDLightOn();
 			bcm2835_gpio_set_eds(RED_BOTTON);
-			
 			return 'R';
 		}
 		if(bcm2835_gpio_eds(GREEN_BOTTON)){
@@ -204,13 +326,16 @@ int main(int argc, char **argv)
 	initSequence(sequence,100);
 	
 	
+	 
+	
 	while(gamestate != WRONGS){
-		int pos = 0;
 		printSequence(sequence,round);
+		int pos = 0;
 		YOUR_TURNLightOn();
 		while(gamestate == WAIT){
 		if(pos == round){
 			CORRECTLightON();
+			printCounter(round);
 			gamestate = CORRECTS;
 			break;
 		}
@@ -246,7 +371,7 @@ int main(int argc, char **argv)
 			WRONGLightON();
 		}
 	}
-
+	
 
 	OFFLight();
 	
