@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Macro definition that help to set the GPIO Pins to their corresponding lightd
+// Macro definition that help to set the GPIO Pins to their corresponding lights
 /////////////////////////////////////////////////////////////////////////////////////////
 #define CORRECTLIGHT 			2
 #define WRONGLIGHT				3
@@ -22,6 +22,16 @@
 #define COUNTER_2 				24
 #define COUNTER_1 				23
 #define COUNTER_0 				18
+
+//The maximum of sequence of light generated
+#define MAX_NUMBER_OF_LIGHT              100
+#define INIT_BLINKING_TIME               450
+#define SCALE_OF_DIFF                    150
+
+#define BLINK_TIME                       200
+#define LEVEL_1                          16
+#define LEVEL_2                          32
+
 
 //indicate the difficulty of current game state
 int difficulty = 0;
@@ -49,9 +59,9 @@ void WRONGLightON(){
 	int i =0;
 	for(;i<10;i++){
 	bcm2835_gpio_write(WRONGLIGHT,HIGH);
-	delay(200);
+	delay(BLINK_TIME);
 	bcm2835_gpio_write(WRONGLIGHT,LOW);
-	delay(200);
+	delay(BLINK_TIME);
 	}
 	delay(3000);
 }
@@ -181,18 +191,18 @@ void C_3_OFF(){
 //POST: The counter is blinked for 5 times
 /////////////////////////////////////////////////////////////////////////////////////////
 void CounterBlink(){
-	int i =0 ;
-	for(;i<5;i++){
-	C_0_ON();
-	C_1_ON();
-	C_2_ON();
-	C_3_ON();
-	delay(300);
-	C_0_OFF();
-	C_1_OFF();
-	C_2_OFF();
-	C_3_OFF();
-	delay(300);
+	int i = 0 ;
+	for(;i < 5;i++){
+	    C_0_ON();
+	    C_1_ON();
+	    C_2_ON();
+	    C_3_ON();
+	    delay(BLINK_TIME);
+	    C_0_OFF();
+	    C_1_OFF();
+	    C_2_OFF();
+	    C_3_OFF();
+	    delay(BLINK_TIME);
 	}
 	
 }
@@ -266,10 +276,10 @@ void initSequence(enum light sequence[], int length){
 //POST: The current score of the player is printed by the binary counter
 /////////////////////////////////////////////////////////////////////////////////////////
 void printCounter(int rounds){
-	if(rounds > 16 ){
+	if(rounds > LEVEL_1 ){
 		rounds %= 15;
 		
-	}else if(rounds == 16 || rounds == 32){
+	}else if(rounds == LEVEL_1 || rounds == LEVEL_2){
 		difficulty++;
 		RotateLight(50,5);
 	}
@@ -421,13 +431,14 @@ int main(int argc, char **argv) {
 	    if(!bcm2835_init()){
 		    return 1;
 	    }
-	    //Initialise the game state, current round, reserve memory for sequence and input
-	    enum light sequence[100];
+	    //Initialise the game state, reserve memory for sequence and input
+	    enum light sequence[MAX_NUMBER_OF_LIGHT];
 	    enum state gamestate = WAIT;
 	    enum light input;
+        //first round
 	    int round = 1;
         //Initialise the blinking time to be 450 milliseconds
-	    int time = 450 - difficulty * 150;
+	    int time = INIT_BLINKING_TIME - difficulty * SCALE_OF_DIFF;
 
 	    //Turn off all light
 	    OFFLight();
@@ -435,7 +446,7 @@ int main(int argc, char **argv) {
 	    initOutput();
 	    initInput();
 	    //generate a random sequence of light
-	    initSequence(sequence,100);
+	    initSequence(sequence,MAX_NUMBER_OF_LIGHT);
         //start the game by printing a starting light sequence
 	    StartGame();
 	
