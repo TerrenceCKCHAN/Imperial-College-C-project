@@ -92,26 +92,30 @@ typedef struct{
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Function declaration
+// Function declaration (Utility functions in emu_util.c)
 /////////////////////////////////////////////////////////////////////////////////////////
 int satisfyCondition(MACHINE* ARM, u32 condition);
-void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* instruction);
 void printBit(uint32_t x);
-u32 generateDataFromHex(char hex[]);
 void printRegisters(MACHINE* ARM);
 MACHINE* createMachine();
 void printMemory(MACHINE* ARM);
 void printMachineState(MACHINE* ARM);
-void loadBinaryFile(MACHINE* ARM, char *address);
-u32 updatedOprand2(MACHINE *ARM, DATAPROCESSING_INSTR *data);
-void branch(MACHINE* ARM, BRANCH_INSTR* br);
-void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
-u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
-void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
-void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
 u32 readMemory(MACHINE* ARM, u32 address);
 void writeMemory(MACHINE* ARM, u32 address, u32 content);
-void Indexing(MACHINE *ARM, const SIN_DATA_TRAN_INSTR *sin_I, u32 result, u32 Rn, u32 address, u32 Rd);
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Function declaration (Input/Output functions in emu_io.c)
+/////////////////////////////////////////////////////////////////////////////////////////
+void loadBinaryFile(MACHINE* ARM, char *address);
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Function declaration (emulating instructions in emu_branch.c, emu_dp.c, emu_multiply.c, emu_sdt.c)
+/////////////////////////////////////////////////////////////////////////////////////////
+void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* instruction);
+u32 shifingOperation(u32 shiftType, u32 valueofRm, u32 value);
+void branch(MACHINE* ARM, BRANCH_INSTR* br);
+void singleDataTran(MACHINE* ARM, SIN_DATA_TRAN_INSTR* sin_I);
+void multiply(MACHINE* ARM,MULTIPLY_INSTR* multiInstr);
+void Indexing(MACHINE *ARM, const SIN_DATA_TRAN_INSTR *sin_I, u32 result, u32 Rn, u32 address, u32 Rd);
 
 #endif //ARM11_06_EMULATE_H

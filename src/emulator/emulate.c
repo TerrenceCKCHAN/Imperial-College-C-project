@@ -28,29 +28,29 @@ u32 fetchInstruction(MACHINE* ARM, u32 pc) {
 // instruction structures
 /////////////////////////////////////////////////////////////////////////////////////////
 void decodeInstruction(INSTRUCTION* instr, u32 instruction) {
-    //printf("%x %d\n", instruction, IS_BRANCH(instruction));
-    if (instruction == 0) {  // Represent the all-zero halt instruction
+    if (instruction == 0) {
+        // Represent the all-zero halt instruction
         strcpy(instr->type, "halt");
-    } else if(IS_DATAPROCESS(instruction)) { //Represent the dataprocessing instruction
+    } else if(IS_DATAPROCESS(instruction)) {
+        //Represent the dataprocessing instruction
         strcpy(instr->type, "dataprocessing");
         instr->instr.dp = malloc(sizeof(DATAPROCESSING_INSTR));
         DecodeDataProcessing(instr->instr.dp, instruction);
-//        printDataProcessing(instr->instr.dp);
-    } else if(IS_MULTI(instruction)) { //Represent the multiply instruction
+    } else if(IS_MULTI(instruction)) {
+        //Represent the multiply instruction
         strcpy(instr->type, "multiply");
         instr->instr.mp = malloc(sizeof(MULTIPLY_INSTR));
         DecodeMultiply(instr->instr.mp, instruction);
-        //printMultiply(instr->instr.mp);
-    } else if(IS_SINDATATRAN(instruction)) { //Represent the single data transfer instruction
+    } else if(IS_SINDATATRAN(instruction)) {
+        //Represent the single data transfer instruction
         strcpy(instr->type, "singledatatransfer");
         instr->instr.sdt = malloc(sizeof(SIN_DATA_TRAN_INSTR));
         DecodeSingleDataTransfer(instr->instr.sdt, instruction);
-        //printSDT(instr->instr.sdt);
-    } else if(IS_BRANCH(instruction)) { //Represent the branch instruction
+    } else if(IS_BRANCH(instruction)) {
+        //Represent the branch instruction
         strcpy(instr->type, "branch");
         instr->instr.br = malloc(sizeof(BRANCH_INSTR));
         DecodeBranch(instr->instr.br, instruction);//
-//        printBranch(instr->instr.br);
     } else {
         printf("Instruction not valid!");
         exit(EXIT_FAILURE);
@@ -62,17 +62,20 @@ void decodeInstruction(INSTRUCTION* instr, u32 instruction) {
 // Post: The modified state of the machine after each execution function
 /////////////////////////////////////////////////////////////////////////////////////////
 void executeInstruction(MACHINE* ARM, INSTRUCTION* instr) {
-
     if(strcmp(instr->type, "dataprocessing") == 0) {
-//        parseDataprocessing(instr->instr.dp);
+        //type is dataprocessing
         dataprocessing(ARM, instr->instr.dp);
     } else if(strcmp(instr->type, "multiply") == 0) {
+        //type is multiply
         multiply(ARM, instr->instr.mp);
     } else if(strcmp(instr->type, "singledatatransfer") == 0) {
+        //type is single data transfer
         singleDataTran(ARM, instr->instr.sdt);
     } else if(strcmp(instr->type, "branch") == 0) {
+        //type is branch
         branch(ARM, instr->instr.br);
     } else if(strcmp(instr->type, "halt") == 0) {
+        //type is all zero instruction (halt)
         printf("halt function detected\n");
     }
 }

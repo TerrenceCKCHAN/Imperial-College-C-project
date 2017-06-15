@@ -16,7 +16,7 @@
 #include "tokenizer.h"
 #include "../emulator/instruction.h"
 
-
+#define MAX_NUMBER_OF_LINES 100
 #define LShiftL(x,n)     ((x) << (n))
 #define RotateR(x,n)     ((x>>n) | LShiftL(x, 32 - n))
 #define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
@@ -116,12 +116,14 @@ assemblefunction lookUpfunction(char* instr);
 assembleBranch lookUpBranch(char* instr);
 assembleSdt lookUpSdt(char* instr);
 u32 assembleInstructions(INSTRUCTION* instr);
-void printBit1(uint32_t x);
 u32 transformnum(int num);
 void lsltoMov(LINE_TOKEN* line_token);
+
+u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int numOfLines);
 u32 secondpass(LINE_TOKEN *line_tokens[], u32 *Memory, struct Linkedlist **symbolTable, int numOfLines,
                u32 numOfInstructions);
-
+u32 parseRegister(char* operand);
+u32 parseExpression(char* operand);
 
 typedef struct{
     int numOfPreIndexingExpr;

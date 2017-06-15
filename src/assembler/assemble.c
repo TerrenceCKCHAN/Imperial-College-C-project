@@ -5,14 +5,13 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "firstpass.h"
 #include "ass_io.h"
 
 int main1(int argc, char **argv){
     memoryPos = 0;
-    char* lines[100];
-    LINE_TOKEN* line_tokens[100];
-    u32 instruction[100];
+    char* lines[MAX_NUMBER_OF_LINES];
+    LINE_TOKEN* line_tokens[MAX_NUMBER_OF_LINES];
+    u32 instruction[MAX_NUMBER_OF_LINES];
     u32 numOfLines;
     u32 numOfInstructions;
 

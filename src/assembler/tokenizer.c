@@ -12,19 +12,14 @@ void lineToTokens(LINE_TOKEN *line_token, char *line) {
 
     while((token = strtok_r(rest, " ,", &rest))){
         int length = (int) strlen(token);
-//        printf("%s\n", token);
-//        printf("pos = %d", pos);
         if(pos == 0) {
-//            printf("character = %c", token[length - 1]);
             if(token[length - 1] == ':') {
                 line_token->type = label;
                 token[length - 1] = '\0';
                 strcpy(line_token->str.label, token);
             } else {
                 line_token->type = operands;
-//                printf("hi\n");
                 strcpy(line_token->str.opcode, token);
-//                printf("%s\n", line_token->str.opcode);
             }
         } else {
             line_token->operands[pos - 1] = token;
@@ -40,7 +35,6 @@ void lineToTokens(LINE_TOKEN *line_token, char *line) {
 /////////////////////////////////////////////////////////////////////////////////////////
 void fileToTokens(LINE_TOKEN **line_tokens, char **line, int numOfLines) {
     for(int index = 0; index < numOfLines; index++) {
-//        printToken(line_tokens[index]);
         line_tokens[index] = malloc(sizeof(LINE_TOKEN));
         lineToTokens(line_tokens[index], line[index]);
         lsltoMov(line_tokens[index]);
@@ -52,7 +46,6 @@ void fileToTokens(LINE_TOKEN **line_tokens, char **line, int numOfLines) {
 //POST: Whether the line is a label or an opcode and all it's oprands separated
 /////////////////////////////////////////////////////////////////////////////////////////
 void printToken(LINE_TOKEN* line_token) {
-//    printf("%d\n", line_token->type);
     switch(line_token->type) {
         case label:
             printf("label: %s\n", line_token->str.label);

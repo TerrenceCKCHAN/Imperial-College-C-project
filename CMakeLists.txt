@@ -19,12 +19,10 @@ set(SOURCE_FILES
         src/assembler/tokenizer.c
         src/assembler/tokenizer.h
         src/assembler/parser.c
-        src/assembler/parser.h
         src/assembler/table.c
         src/assembler/ADT_linkedlist.c
         src/assembler/ass_util.c
         src/assembler/firstpass.c
-        src/assembler/firstpass.h
         src/emulator/instruction.h
         src/assembler/secondpass.c
         src/assembler/ass_dp.c

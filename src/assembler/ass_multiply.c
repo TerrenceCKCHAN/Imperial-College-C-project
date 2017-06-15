@@ -4,7 +4,7 @@
 //Group: 6
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
-#include "parser.h"
+#include "assemble.h"
 
 
 void assembleMul(LINE_TOKEN* line_token, INSTRUCTION* instr) {

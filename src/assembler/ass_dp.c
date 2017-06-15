@@ -5,7 +5,6 @@
 //Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "parser.h"
 
 /*typedef struct {
     u32 INSTRUCTION;

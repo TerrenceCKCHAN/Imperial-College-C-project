@@ -19,19 +19,19 @@ int satisfyCondition(MACHINE* ARM, u32 condition) {
     int VFlag = GETBITS(ARM->REGISTER[16], 28, 28);
     int bool = NOT_EXIST;
     switch(condition) {
-        case 0x0:
+        case eq:
             bool = (ZFlag == 1) ? 1 : 0; break;
-        case 0x1:
+        case ne:
             bool = (ZFlag == 0) ? 1 : 0; break;
-        case 0xa:
+        case ge:
             bool = (NFlag == VFlag) ? 1 : 0; break;
-        case 0xb:
+        case lt:
             bool = (NFlag != VFlag) ? 1 : 0; break;
-        case 0xc:
+        case gt:
             bool = (ZFlag == 0) && (NFlag == VFlag) ? 1 : 0; break;
-        case 0xd:
+        case le:
             bool = (ZFlag == 1) || (NFlag != VFlag) ? 1 : 0; break;
-        case 0xe:
+        case al:
             bool = 1; break;
     }
     return bool;
@@ -51,7 +51,7 @@ void printBit(u32 x){
         if(i % 4 == 3){
             printf(" ");
         }
-        x<<=1;
+        x <<= 1;
     }
     printf("\n");
 }
@@ -75,7 +75,7 @@ MACHINE* createMachine() {
     MACHINE* ARM = malloc(sizeof(MACHINE));
     ARM->REGISTER[15] = 0;
     ARM->REGISTER[16] = 0;
-    for(int index = 0; index <=NUM_OF_GENERAL_REGISTER; index++) {
+    for(int index = 0; index <= NUM_OF_GENERAL_REGISTER; index++) {
         ARM->REGISTER[index] = 0;
     }
     for(int index = 0; index <MAX_MEMORY; index++) {
@@ -92,7 +92,7 @@ MACHINE* createMachine() {
 
 void printMemory(MACHINE* ARM) {
 
-    for(int index = 0; index < MAX_MEMORY; index+=4) {
+    for(int index = 0; index < MAX_MEMORY; index += 4) {
         u32 instruction = 0;
         for(int byte = 0; byte < 4; byte++) {
             instruction += ARM->MEMORY[index + byte] << ((3 - byte) * 8);
