@@ -88,7 +88,7 @@ void inputSequence(enum lights in[], char input[], int length) {
     }
 }
 */
-int main1() {
+int main2() {
     srand((unsigned int)time(NULL));
 
     enum state gameState = WAIT;

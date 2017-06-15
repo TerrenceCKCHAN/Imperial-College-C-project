@@ -99,7 +99,7 @@ u32 shifting1(LINE_TOKEN* line_token, int i){
 
 void calculate2(LINE_TOKEN *line_token, int i, INSTRUCTION *instr) {
 
-    if(line_token->operands[i][0] == '+' | line_token->operands[i][0] == '-'){
+    if((line_token->operands[i][0] == '+') | (line_token->operands[i][0] == '-')){
         if(line_token->operands[i][0] == '+'){
             instr->instr.sdt->U = 1;
         } else {
@@ -324,7 +324,7 @@ void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
     } else if(postIndexingCount >= 1 && preIndexingCount == 1){
         // Expression is in the form of [Rn], <#expression> or [Rn], {+/-}Rm{,<shift>}
         instr->instr.sdt->REGN = parseRegister(line_token->operands[1]);
-        if(line_token->operands[2][0] == ' #') {
+        if(line_token->operands[2][0] == '#') {
             // Expression is in the form of [Rn], <#expression>
             // Immediate value is used
             instr->instr.sdt->I = 0;

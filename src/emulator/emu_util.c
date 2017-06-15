@@ -15,9 +15,8 @@
 int satisfyCondition(MACHINE* ARM, u32 condition) {
     int NFlag = GETBITS(ARM->REGISTER[16], 31, 31);
     int ZFlag = GETBITS(ARM->REGISTER[16], 30, 30);
-    int CFlag = GETBITS(ARM->REGISTER[16], 29, 29);
     int VFlag = GETBITS(ARM->REGISTER[16], 28, 28);
-    int bool = NULL;
+    int bool = NOT_EXIST;
     switch(condition) {
         case 0x0:
             bool = (ZFlag == 1) ? 1 : 0; break;
@@ -47,26 +46,12 @@ void printBit(u32 x){
     u32 mask = (u32) 1 << 31;
     for(i = 0;i < 32;++i){
         printf("%i", (x & mask) != 0);
+        if(i % 4 == 3){
+            printf(" ");
+        }
         x<<=1;
     }
     printf("\n");
-}
-
-u32 generateDataFromHex(char hex[]){
-    int length = strlen(hex);
-    u32 data = 0;
-    u32 shift = (length - 1) * 4;
-    for(int pos = 0; pos < length; pos++) {
-        u32 hexValue;
-        if(hex[pos] >= '0' && hex[pos] <= '9') {
-            hexValue = (hex[pos] - '0');
-        } else if(hex[pos] >= 'a' && hex[pos] <= 'f') {
-            hexValue = hex[pos] - 'a' + 10;
-        }
-        data += hexValue << shift;
-        shift -= 4;
-    }
-    return data;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

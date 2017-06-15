@@ -15,7 +15,6 @@
 #include <string.h>
 #include "instruction.h"
 
-typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t u8;
 
@@ -24,10 +23,11 @@ typedef uint8_t u8;
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to extract and set bits in u32 binary code
 /////////////////////////////////////////////////////////////////////////////////////////
+#define GENERATEMASKHELPER(pos) (u32) ((((pos + 1) >= 32) ? ((u32) (~0)) : ((1 << (pos + 1)))) - 1)
 //Generate a mask to extract the bits of position start to position end
-#define GENERATEMASK(start,end) (u32) ((1 << (end+1)) -1) - ((1 << start) - 1)
+#define GENERATEMASK(start,end) (u32) ((GENERATEMASKHELPER(end)) - (GENERATEMASKHELPER(start - 1)))
 //Change the bits from position start to position end
-#define GETBITS(input, start, end)   (u32) ( GENERATEMASK(start, end) & input ) >> start
+#define GETBITS(input, start, end)   (u32) ((GENERATEMASK(start, end) & input) >> (start))
 //Change bit at position pos to 1
 #define SETBIT(input, pos)          (u32) (input | 1 << pos)
 //Change bit at position pos to 0
@@ -40,26 +40,26 @@ typedef uint8_t u8;
 // Macro definition that help to determine the ARM instruction set from its binary code
 /////////////////////////////////////////////////////////////////////////////////////////
 //This is use to extract bit 26 and 27 in the instruction set
-#define BIT2627_MASK             (u32)   0x3u << 26
-#define FIND_BIT2627(x)          (u32)   (BIT2627_MASK & x) >> 26
-#define FIND_BIT25(x)            (u32)   (0x1u<<25 & x)>>25
+#define BIT2627_MASK             (u32)   (0x3u << 26)
+#define FIND_BIT2627(x)          (u32)   ((BIT2627_MASK & x) >> 26)
+#define FIND_BIT25(x)            (u32)   ((0x1u<<25 & x) >> 25)
 
 //To determine which state the instruction set are
-#define IS_MULTI(x)              (u32)   (~FIND_BIT25(x)&((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0))
-#define IS_DATAPROCESS(x)        (u32)   (FIND_BIT2627(x) == 0) & ~(IS_MULTI(x))
-#define IS_SINDATATRAN(x)        (u32)   FIND_BIT2627(x) == 0x1u
-#define IS_BRANCH(x)             (u32)   FIND_BIT2627(x) == 0x2u
+#define IS_MULTI(x)              (u32)   (~FIND_BIT25(x) & ((0x90u & x) == 0x90) & (FIND_BIT2627(x) == 0))
+#define IS_DATAPROCESS(x)        (u32)   ((FIND_BIT2627(x) == 0) & ~(IS_MULTI(x)))
+#define IS_SINDATATRAN(x)        (u32)   (FIND_BIT2627(x) == 0x1u)
+#define IS_BRANCH(x)             (u32)   (FIND_BIT2627(x) == 0x2u)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that doing shift operation
 /////////////////////////////////////////////////////////////////////////////////////////
 /*define shifting operations*/
-#define MSB(x)           (1 << 31 & x) >> 31
-#define MSBH(x,v)        (MSB(x) ? (MSB(x)<<v )-1<<(32-v) : 0)
-#define LShiftL(x,n)     x << n
-#define LShiftR(x,n)     x >> n
+#define MSB(x)           ((1 << 31 & x) >> 31)
+#define MSBH(x,v)        ((MSB(x) ? (MSB(x) << v) - (1 << (32 - v)) : 0))
+#define LShiftL(x,n)     ((x) << (n))
+#define LShiftR(x,n)     ((x) >> (n))
 #define AShiftR(x,n)     (MSBH(x,n) | LShiftR(x, n))
-#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define RotateR(x,n)     (((x) >> (n)) | LShiftL(x, 32 - n))
 
 
 /////////////////////////////////////////////////////////////////////////////////////////

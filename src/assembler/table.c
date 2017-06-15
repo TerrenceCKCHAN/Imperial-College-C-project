@@ -1,5 +1,4 @@
 #include "assemble.h"
-#include "../emulator/emulate.h"
 
 
 struct table instrarray[] = {

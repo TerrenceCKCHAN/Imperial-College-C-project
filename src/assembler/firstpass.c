@@ -9,7 +9,7 @@ u32 firstpass(LINE_TOKEN **line_tokens, struct Linkedlist **symbolTable, int num
 //            printf("%s\n", line_tokens[pos]->str.label);
             u32 address = index * 4;
 //            printf("%s %d\n", line_tokens[pos]->str.label, address);
-            insertElement(symbolTable, line_tokens[pos]->str.label, (u32*)address);
+            insertElement(symbolTable, line_tokens[pos]->str.label, address);
         } else {
             index++;
         }

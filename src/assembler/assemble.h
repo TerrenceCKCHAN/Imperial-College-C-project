@@ -17,24 +17,24 @@
 #include "../emulator/instruction.h"
 
 
-#define LShiftL(x,n)     x << n
-#define RotateR(x,n)     (x>>n)|LShiftL(x, 32-n)
+#define LShiftL(x,n)     ((x) << (n))
+#define RotateR(x,n)     ((x>>n) | LShiftL(x, 32 - n))
 #define RotateRH(x,n,length)    (RotateR(x,n) | (RotateR(x,n)>>(32-length))) & GENERATEMASK(0,length-1)
+#define NOT_EXIST 0xffffffffu
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //  Linked List Abstract Data Type
 /////////////////////////////////////////////////////////////////////////////////////////
 struct Linkedlist{
     struct Linkedlist *next;
-    void* value;
+    u32 value;
     char *key;
 }*head;
 
 struct Linkedlist* getNewlist(void);
-void* lookUpValue(struct Linkedlist *list, char *key);
-char* lookUpkey(struct Linkedlist *list, void* value);
+u32 lookUpValue(struct Linkedlist *list, char *key);
 void printLinkedList(struct Linkedlist* linkedlist);
-void insertElement(struct Linkedlist** list, char *key, void* value);
+void insertElement(struct Linkedlist **list, char *key, u32 value);
 /////////////////////////////////////////////////////////////////////////////////////////
 //  Binary Search Tree Abstract Data Type
 /////////////////////////////////////////////////////////////////////////////////////////

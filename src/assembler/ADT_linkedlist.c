@@ -20,78 +20,31 @@ struct Linkedlist* getNewlist(void){
         perror("getNewList");
         exit(EXIT_FAILURE);
     }
-    list->value =NULL;
-    list->key =NULL;
-    list->next =NULL;
+    list->value = NOT_EXIST;
+    list->key = NULL;
+    list->next = NULL;
     return list;
 }
 
-
-
-
-
-void insertElement(struct Linkedlist** list, char *key, void* value){
+void insertElement(struct Linkedlist **list, char *key, u32 value){
     struct Linkedlist* newlist = getNewlist();
     newlist->key = key;
     newlist->value = value;
     newlist->next = *list;
     *list = newlist;
 }
-/*TO be done
-void insertElementLast(struct Linkedlist** list, char *key, void* value){
-    struct Linkedlist* newlist = getNewlist();
-    newlist->value = value;
-    newlist->key = key;
-    struct Linkedlist* current = *list;
-    while(current->next->next != NULL){
-        current = current->next;
-    }
-    current = newlist;
 
-}
- */
-
-void removeLast(struct Linkedlist **list){
-    struct Linkedlist *current = *list;
-    while(current->next->next!=NULL){
-        current = current->next;
-    }
-    free(current);
-}
-
-void removeFirst(struct Linkedlist **list){
-    struct Linkedlist* temp = *list;
-    *list = temp->next;
-    free(temp);
-}
-
-
-
-
-void* lookUpValue(struct Linkedlist *list, char *key){
+u32 lookUpValue(struct Linkedlist *list, char *key){
     struct Linkedlist* current =list;
     while(strcmp(current->key,key)!=0){
         current = current->next;
         if(current==NULL){
             printf("No such key");
-            return NULL;
+            exit(EXIT_FAILURE);
         }
     }
     return current->value;
 }
-
-char* lookUpkey(struct Linkedlist *list, void* value) {
-    struct Linkedlist *current = list;
-    while (current->value != value) {
-        current = current->next;
-        if (current == NULL) {
-            printf("No such value");
-            return NULL;
-        }
-    }
-    return current->key;
-}
-
 
 void printLinkedList(struct Linkedlist* linkedlist){
     struct Linkedlist*iter =linkedlist;
@@ -102,18 +55,3 @@ void printLinkedList(struct Linkedlist* linkedlist){
     }
     printf("\n");
 }
-
-/*
-int main(){
-    struct Linkedlist* list = malloc(sizeof(struct Linkedlist));
-    insertElement(&list,"a",3);
-    insertElement(&list, "b",8);
-    insertElement(&list, "c",4);
-    insertElement(&list, "d",9);
-    insertElement(&list, "e",7);
-
-    printLinkedList(list);
-
-}
-
-*/

@@ -6,7 +6,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
 #include "parser.h"
-#include "../emulator/emulate.h"
 
 /*typedef struct {
     u32 INSTRUCTION;
