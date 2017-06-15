@@ -12,6 +12,7 @@
 //PRE: State of the machine, the 4 bytes instruction
 //POST: Return 1 for true (satisfy condition) or return 0 for false (not satisfy condition)
 /////////////////////////////////////////////////////////////////////////////////////////
+
 int satisfyCondition(MACHINE* ARM, u32 condition) {
     int NFlag = GETBITS(ARM->REGISTER[16], 31, 31);
     int ZFlag = GETBITS(ARM->REGISTER[16], 30, 30);
@@ -41,6 +42,7 @@ int satisfyCondition(MACHINE* ARM, u32 condition) {
 //PRE: An unsigned 32bit integer
 //POST: Print the bitwise representation of the integer
 /////////////////////////////////////////////////////////////////////////////////////////
+
 void printBit(u32 x){
     int i;
     u32 mask = (u32) 1 << 31;
@@ -59,6 +61,7 @@ void printBit(u32 x){
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the general registers including PC and CPSR register
 /////////////////////////////////////////////////////////////////////////////////////////
+
 void printRegisters(MACHINE* ARM) {
     for(int index = 0; index <= 12; index++) {
         printf("$%-3d: %10d (0x%08x)\n", index, ARM->REGISTER[index], ARM->REGISTER[index]);
@@ -86,6 +89,7 @@ MACHINE* createMachine() {
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the memory that are non-zero
 /////////////////////////////////////////////////////////////////////////////////////////
+
 void printMemory(MACHINE* ARM) {
 
     for(int index = 0; index < MAX_MEMORY; index+=4) {
@@ -104,6 +108,7 @@ void printMemory(MACHINE* ARM) {
 //PRE: State of the Machine (MACHINE pointer)
 //POST: Print all the contents in the machine including non-zero memory and registers
 /////////////////////////////////////////////////////////////////////////////////////////
+
 void printMachineState(MACHINE* ARM) {
     printf("Registers:\n");
     printRegisters(ARM);
@@ -111,9 +116,16 @@ void printMachineState(MACHINE* ARM) {
     printMemory(ARM);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Read a 32-bit instruction from the machine at memory address (address).
+// In the case of GPIO addresses, an output is produced indicating the functions and
+// the same address is returned.
+// PRE: State of the Machine (MACHINE pointer) and the memory address
+// POST: 4 bytes starting from the address is read from the memory and returned
+/////////////////////////////////////////////////////////////////////////////////////////
+
 u32 readMemory(MACHINE* ARM, u32 address) {
     u32 memToRegister = 0;
-//    printf("%x\n", address);
     switch(address) {
         case 0x20200000:
             printf("One GPIO pin from 0 to 9 has been accessed\n");
@@ -143,9 +155,16 @@ u32 readMemory(MACHINE* ARM, u32 address) {
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Load a 32-bit instruction from the machine at memory address (address).
+// In the case of GPIO addresses, an output is produced indicating the functions
+// PRE: State of the Machine (MACHINE pointer), the instruction and the memory address to
+// load the instruction
+// POST: The state of the machine is modified with the instruction inserted to the memory array
+/////////////////////////////////////////////////////////////////////////////////////////
+
 void writeMemory(MACHINE* ARM, u32 address, u32 content) {
     u32 start = 0, end = 7;
-//    printf("%x\n", address);
     switch(address) {
         case 0x20200000:
             printf("One GPIO pin from 0 to 9 has been accessed\n");

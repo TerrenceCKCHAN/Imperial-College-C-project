@@ -11,8 +11,6 @@ void IflagOperation(const MACHINE *ARM, const DATAPROCESSING_INSTR *datapro_I, u
 
 void OpcodeOperation(const DATAPROCESSING_INSTR *datapro_I, u32 updatedoprand2, u32 valueofRm, u32 *carry, u32 *result);
 
-void CPSROperation(const MACHINE *ARM, const DATAPROCESSING_INSTR *datapro_I, u32 carry, u32 result);
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // Helper function for shifting numbers
 // Pre: the times to be shift, shift type and value to be shift
@@ -99,7 +97,7 @@ void dataprocessing(MACHINE* ARM, DATAPROCESSING_INSTR* datapro_I){
 //POST: Store the updated value into result
 /////////////////////////////////////////////////////////////////////////////////////////
 void OpcodeOperation(const DATAPROCESSING_INSTR *datapro_I, u32 updatedoprand2, u32 valueofRm, u32 *carry, u32 *result) {//OpCode operations
-    switch (GETBITS(datapro_I->INSTRUCTION,21,24)){
+    switch (datapro_I->OPCODEBIN){
             case and:
                 (*result) = (valueofRm & updatedoprand2);
                 break;
@@ -180,8 +178,3 @@ void IflagOperation(const MACHINE *ARM, const DATAPROCESSING_INSTR *datapro_I, u
 
         }
 }
-
-
-
-
-

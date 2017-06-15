@@ -86,9 +86,12 @@ int main(int argc,  char **argv) {
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
 //    loadBinaryFile(ARM, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img");
+    //load the binary file from the address given to the memory of the machine
     loadBinaryFile(ARM, argv[1]);
+    //Simulation of the three stage pipeline
     while(execute) {
         if(decodedEmpty) {
+            //Fill up the pipeline if the decoded or fetched part is empty
             if(fetchedEmpty) {
                 fetchedInstr = fetchInstruction(ARM, ARM->REGISTER[15]);
                 fetchedEmpty = 0;
@@ -99,20 +102,26 @@ int main(int argc,  char **argv) {
             }
         } else {
             if(strcmp(decodedInstr->type, "branch") == 0 && satisfyCondition(ARM, decodedInstr->instr.br->COND)) {
+                //If the branch instruction is executed the pipeline is cleared
                 executeInstruction(ARM, decodedInstr);
                 decodedEmpty = 1;
             } else {
                 if(strcmp(decodedInstr->type,"halt") == 0){
+                    //the pipeline terminates if an all zero "halt" instruction is detected
                     execute = 0;
                     break;
                 }
+                //Decoded instruction is executed
                 executeInstruction(ARM, decodedInstr);
+                //Fetched instruction is decoded
                 decodeInstruction(decodedInstr, fetchedInstr);;
             }
+            //Instruction is fetched from memory
             fetchedInstr = fetchInstruction(ARM, ARM->REGISTER[15]);
         }
         ARM->REGISTER[15] += 4;
     }
+    //print the state of the machine
     printMachineState(ARM);
     return EXIT_SUCCESS;
 }

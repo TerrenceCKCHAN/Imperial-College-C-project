@@ -14,9 +14,7 @@ struct table instrarray[] = {
         {"cmp",&assembleCmp},
         {"mul",&assembleMul},
         {"mla",&assembleMla},
-        {"andeq", &assembleAndeq}/*,
-            {"lsl",&assembleLsl},
-            {"andeq", &assembleAndeq}*/
+        {"andeq", &assembleAndeq}
 };
 
 
@@ -37,11 +35,8 @@ struct sdtelem sdtarray[]={
 };
 
 assemblefunction lookUpfunction(char* instr) {
-//    printf("Hi\n");
-//    printf("Opcode: %s\n", instrarray->opcode);
     u32 index = 0;
     while(strcmp(instrarray[index].opcode, instr) != 0 && index < 12){
-//        printf("%s\n", instrarray[index].opcode);
         index++;
     }
     return instrarray[index].func;
@@ -50,7 +45,6 @@ assemblefunction lookUpfunction(char* instr) {
 assembleBranch lookUpBranch(char* instr) {
     u32 index = 0;
     while(strcmp(brinstrarray[index].opcode, instr) != 0 && index < 7){
-//        printf("%s\n", instrarray[index].opcode);
         index++;
     }
     return brinstrarray[index].br;
@@ -59,7 +53,6 @@ assembleBranch lookUpBranch(char* instr) {
 assembleSdt lookUpSdt(char* instr) {
     u32 index = 0;
     while(strcmp(sdtarray[index].opcode, instr) != 0 && index < 2){
-//        printf("%s\n", instrarray[index].opcode);
         index++;
     }
     return sdtarray[index].sdt;

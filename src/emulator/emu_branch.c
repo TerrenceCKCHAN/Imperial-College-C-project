@@ -16,8 +16,8 @@ void branch(MACHINE* ARM, BRANCH_INSTR* br) {
     if(satisfyCondition(ARM, br->COND)) {
         u32 offset  = br->OFFSET;
         //Left shifting the offset by two bits
-        offset = LShiftL(offset,2);
-        if(offset & ( 1 << 23 )){
+        offset = LShiftL(offset, 2);
+        if(offset & (1 << 23)){
             //offset is negative
             //changing the two's complement integer to an unisgned integer
             offset = (~offset)+1;

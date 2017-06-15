@@ -15,9 +15,6 @@
 #include <string.h>
 #include "instruction.h"
 
-typedef uint16_t u16;
-typedef uint8_t u8;
-
 #define NUM_OF_GENERAL_REGISTER 17
 #define MAX_MEMORY  65536
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +31,6 @@ typedef uint8_t u8;
 #define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
 //Change bits in target from position start to position end to input
 #define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to determine the ARM instruction set from its binary code
@@ -67,16 +63,16 @@ typedef uint8_t u8;
 /////////////////////////////////////////////////////////////////////////////////////////
 #define NOT_EXIST 0xffffffffu
 
-#define and 0x00
-#define eor 0x01
-#define sub 0x02
-#define rsb 0x03
-#define add 0x04
-#define tst 0x08
-#define teq 0x09
-#define cmp 0x0a
-#define orr 0x0c
-#define mov 0x0d
+#define and 0x0
+#define eor 0x1
+#define sub 0x2
+#define rsb 0x3
+#define add 0x4
+#define tst 0x8
+#define teq 0x9
+#define cmp 0xa
+#define orr 0xc
+#define mov 0xd
 
 #define eq 0x0
 #define ne 0x1
