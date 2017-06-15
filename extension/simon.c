@@ -20,7 +20,7 @@
 #define COUNTER_1 		23//RPI_GPIO_P1_18	//GPIO 23
 #define COUNTER_0 		18//RPI_GPIO_P1_22	//GPIO 18
 
-
+int difficulty = 1;
 
 enum light{
 	REDL,
@@ -37,46 +37,51 @@ enum state{
 
 
 void WRONGLightON(){
+	int i =0;
+	for(;i<10;i++){
 	bcm2835_gpio_write(WRONG,HIGH);
-	delay(500);
+	delay(200);
 	bcm2835_gpio_write(WRONG,LOW);
+	delay(200);
+	}
+	delay(3000);
 }
 
 void CORRECTLightON(){
 	bcm2835_gpio_write(CORRECT,HIGH);
-	delay(500);
+	delay(1000);
 	bcm2835_gpio_write(CORRECT,LOW);
 }
 
 void YOUR_TURNLightOn(){
 	bcm2835_gpio_write(YOUR_TURN,HIGH);
-	delay(500);
+	delay(1000);
 	bcm2835_gpio_write(YOUR_TURN,LOW);
 }
 
-void REDLightOn(){
+void REDLightOn(int time){
 	bcm2835_gpio_write(RED,HIGH);
-	delay(500);
+	delay(time);
 	bcm2835_gpio_write(RED,LOW);
-	delay(500);
+	delay(time);
 }
-void GREENLightOn(){
+void GREENLightOn(int time){
 	bcm2835_gpio_write(GREEN,HIGH);
-	delay(500);
+	delay(time);
 	bcm2835_gpio_write(GREEN,LOW);
-	delay(500);
+	delay(time);
 }
-void YELLOWLightOn(){
+void YELLOWLightOn(int time){
 	bcm2835_gpio_write(YELLOW,HIGH);
-	delay(500);
+	delay(time);
 	bcm2835_gpio_write(YELLOW,LOW);
-	delay(500);
+	delay(time);
 }
-void WHITELightOn(){
+void WHITELightOn(int time){
 	bcm2835_gpio_write(WHITE,HIGH);
-	delay(500);
+	delay(time);
 	bcm2835_gpio_write(WHITE,LOW);
-	delay(500);
+	delay(time);
 }
 
 void C_0_ON(){
@@ -105,6 +110,63 @@ void C_3_OFF(){
 	bcm2835_gpio_clr(COUNTER_3);
 }
 
+void CounterBlink(){
+	int i =0 ;
+	for(;i<5;i++){
+	C_0_ON();
+	C_1_ON();
+	C_2_ON();
+	C_3_ON();
+	delay(300);
+	C_0_OFF();
+	C_1_OFF();
+	C_2_OFF();
+	C_3_OFF();
+	delay(300);
+	}
+	
+}
+
+
+void RotateLight(int time, int circle){
+	int  i =0;
+	CounterBlink();
+	for(;i<circle;i++){
+		bcm2835_gpio_write(RED,HIGH);
+		delay(time);
+		bcm2835_gpio_write(RED,LOW);
+		delay(time);
+		bcm2835_gpio_write(YELLOW,HIGH);
+		delay(time);
+		bcm2835_gpio_write(YELLOW,LOW);
+		delay(time);
+		bcm2835_gpio_write(GREEN,HIGH);
+		delay(time);
+		bcm2835_gpio_write(GREEN,LOW);
+		delay(time);
+		bcm2835_gpio_write(WHITE,HIGH);
+		delay(time);
+		bcm2835_gpio_write(WHITE,LOW);
+		delay(time);
+		
+		
+		
+	}
+}
+
+void AllBlink(){
+	RotateLight(20,100);	
+}
+
+void StartGame(){
+	RotateLight(50,5);
+	YOUR_TURNLightOn();
+	CORRECTLightON(); 
+	WRONGLightON();
+	delay(500);
+	
+}
+
 void initSequence(enum light sequence[], int length){
 	srand(time(NULL));
 	int index =0;
@@ -115,115 +177,57 @@ void initSequence(enum light sequence[], int length){
 }
 
 void printCounter(int rounds){
-	switch(rounds){
-		case 1:
-			C_0_ON();
-			C_1_OFF();
-			C_2_OFF();
-			C_3_OFF();
-			break;
-		case 2:
-			C_0_OFF();
-			C_1_ON();
-			C_2_OFF();
-			C_3_OFF();
-			break;
-		case 3:
-			C_0_ON();
-			C_1_ON();
-			C_2_OFF();
-			C_3_OFF();
-			break;
-		case 4:
-			C_0_OFF();
-			C_1_OFF();
-			C_2_ON();
-			C_3_OFF();
-			break;
-		case 5:
-			C_0_ON();
-			C_1_OFF();
-			C_2_ON();
-			C_3_OFF();
-			break;
-		case 6:
-			C_0_OFF();
-			C_1_ON();
-			C_2_ON();
-			C_3_OFF();
-			break;
-		case 7:
-			C_0_ON();
-			C_1_ON();
-			C_2_ON();
-			C_3_OFF();
-			break;
-		case 8:
-			C_0_OFF();
-			C_1_OFF();
-			C_2_OFF();
-			C_3_ON();
-			break;
-		case 9:
-			C_0_ON();
-			C_1_OFF();
-			C_2_OFF();
-			C_3_ON();
-			break;
-		case 10:
-			C_0_OFF();
-			C_1_ON();
-			C_2_OFF();
-			C_3_ON();
-			break;
-		case 11:
-			C_0_ON();
-			C_1_ON();
-			C_2_OFF();
-			C_3_ON();
-			break;
-		case 12:
-			C_0_OFF();
-			C_1_OFF();
-			C_2_ON();
-			C_3_ON();
-			break;
-		case 13:
-			C_0_ON();
-			C_1_OFF();
-			C_2_ON();
-			C_3_ON();
-			break;
-		case 14:
-			C_0_OFF();
-			C_1_ON();
-			C_2_ON();
-			C_3_ON();
-			break;
-		case 15:
-			C_0_ON();
-			C_1_ON();
-			C_2_ON();
-			C_3_ON();
-			break;	
+	if(rounds > 16 ){
+		rounds %= 15;
 		
-		}
+	}else if(rounds == 16 || rounds == 32){
+		difficulty++;
+		RotateLight(50,5);
+	}
+	
+	int bit[4];
+	int pos = 0;
+	while(pos < 4) {
+		bit[pos] = rounds % 2;
+		rounds /= 2;
+		pos++;
+	}
+	if(bit[0]) {
+		C_0_ON();
+	} else {
+		C_0_OFF();
+	}
+	if(bit[1]) {
+		C_1_ON();
+	} else {
+		C_1_OFF();
+	}
+	if(bit[2]) {
+		C_2_ON();
+	} else {
+		C_2_OFF();
+	}
+	if(bit[3]) {
+		C_3_ON();
+	} else {
+		C_3_OFF();
+	}
 }
-void printSequence(enum light sequence[], int length){
+void printSequence(enum light sequence[], int length, int time){
 	int index = 0;
 	for(;index<length;index++){
 		switch(sequence[index]){
 			case REDL:
-				REDLightOn();
+				REDLightOn(time);
 				break;
 			case YELLOWL:
-				YELLOWLightOn();
+				YELLOWLightOn(time);
 				break;
 			case GREENL:
-				GREENLightOn();
+				GREENLightOn(time);
 				break;
 			case WHITEL:
-				WHITELightOn();
+				WHITELightOn(time);
 				break;
 				
 		}
@@ -246,24 +250,25 @@ void OFFLight(){
 
 
 char ReadInput(){
+		int time = 500;
 		while(1){
 		if(bcm2835_gpio_eds(RED_BOTTON)){
-			REDLightOn();
+			REDLightOn(time);
 			bcm2835_gpio_set_eds(RED_BOTTON);
 			return 'R';
 		}
 		if(bcm2835_gpio_eds(GREEN_BOTTON)){
-			GREENLightOn();
+			GREENLightOn(time);
 			bcm2835_gpio_set_eds(GREEN_BOTTON);
 			return 'G';
 		}
 		if(bcm2835_gpio_eds(YELLOW_BOTTON)){
-			YELLOWLightOn();
+			YELLOWLightOn(time);
 			bcm2835_gpio_set_eds(YELLOW_BOTTON);
 			return 'Y';
 		}
 		if(bcm2835_gpio_eds(WHITE_BOTTON)){
-			WHITELightOn();
+			WHITELightOn(time);
 			bcm2835_gpio_set_eds(WHITE_BOTTON);
 			return 'W';
 		}
@@ -306,6 +311,7 @@ void initInput()
 
 int main(int argc, char **argv)
 {
+	while(1){
 	bcm2835_init();
 	if(!bcm2835_init()){
 		return 1;
@@ -317,19 +323,25 @@ int main(int argc, char **argv)
 
 	int round = 1;
 
+	int time = 450 - difficulty*150;
+
 	
+		
+		
+	
+
 	
 	OFFLight();
 	initOutput();
 	initInput();
 	
 	initSequence(sequence,100);
-	
+	StartGame();
 	
 	 
 	
 	while(gamestate != WRONGS){
-		printSequence(sequence,round);
+		printSequence(sequence,round, time);
 		int pos = 0;
 		YOUR_TURNLightOn();
 		while(gamestate == WAIT){
@@ -370,12 +382,17 @@ int main(int argc, char **argv)
 		}else if(gamestate == WRONGS){
 			WRONGLightON();
 		}
+		if(difficulty == 2){
+			AllBlink();
+			break;
+		}
 	}
 	
 
 	OFFLight();
 	
 	bcm2835_close();
+}
 	
 	return 0;
 }
