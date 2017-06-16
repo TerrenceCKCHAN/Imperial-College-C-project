@@ -62,14 +62,14 @@ Main
 \begin{itemize}  
 \item Use the function filetotokens() in tokenizer.c
 \item Each line is stored in a struct showed beside
-\item Type include label and operands, line{\_}token with type operands will have the opcode enable and vise versa
+\item Type including label and operands, line{\_}tokens with type operands will have the opcode enabled vice versa
 \end{itemize}
 
 
 \subsection{First pass}
-Extracting all lines which has the type of LABEL and create a table, using a LINKEDLIST structure implemented by us, each element is stored with the name of the label and the index (the relative position of the label in the instructions)
+Extracts all lines with the type LABEL and creates a table, using a LINKEDLIST structure implemented by us, each element is stored with the name of the label and the index (the relative position of the label in the instructions)
 \subsection{Calling appropriate functions depending on the opcode (Second Pass)}
-By using an if else branch, separate different LINE{\_}TOKENS according to their opcode (e.g. MOV, STR, LDR, etc..), call the appropriate functions and providing other information to the functions if required . This functions called are expected to return a type of following struct: 
+By using an if else branch, separate different LINE{\_}TOKENS according to their opcode (e.g. MOV, STR, LDR, etc..), we call the appropriate functions and providing other information to the functions if required. These functions called are expected to return a type of following struct: 
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -100,15 +100,13 @@ typedef struct br {
 \end{center}
 
 \subsubsection{Data Processing}
-The only part worth mentioning is the part identifying different types of operand2 , this is achieve by using several if else, which include figuring the first character of the operand is a '\#' or not to seperate shift register and expression, and also the number of operands in LINE{\_}TOKEN to figure out is there a shift or not
+The only part worth mentioning is the part identifying different types of operand2 , this is achieved by using several if else branches, which includes identifying the first character of the operand to be a '\#' , to seperate shift registers and expressions, and to determine whether there is a shift or not based on the number of operands in LINE{\_}TOKEN. 
 
 \subsubsection{Branch}
 \begin{itemize}  
-\item Additional information: linked list which stores the labels, the address of the current line
+\item First, it looks up the address of the label by looking up the linked list, calculating the offset by considering the current address and the pipeline principle.
 
-\item It first look up the address of the label by looking up the linked list, calculate the offset by considering the current address and also the pipeline principle.
-
-\item It then transform the offset,which is in type INT into two complements using a helper function transformnum(), the two complements are stored as u32 (unsigned 32 bit).
+\item It then transforms the offset, which is of type INT into two's complement using a helper function transformnum(), the two's complement is stored as a u32 (unsigned 32 bit).
 \end{itemize}
 
 
@@ -116,23 +114,19 @@ The only part worth mentioning is the part identifying different types of operan
 
 \subsubsection{Single Data Transfer}
 \begin{itemize}  
-\item Additional information: address of current line, the number of total instructions (to determine the offset when loading an expression)
+\item Calculates the offset with immediate value. Shifts of the registers are approximately the same as Data Processing, but with a few more exceptions.
 
-\item Parts for calculating the offset with immediate value and also shifting register are approximately the same as the parts in Data Processing, but with few more exceptions
-
-\item Instead of using if else loop to identify different type of <address>, a helper function parseExpressioninrect() is used, which identify different types by calculating the number of expressions in square bracket and the number of exp not in bracket
+\item Instead of using if else branch to identify different types of $<address>$, a helper function parseExpressioninrect() is used. It identifies different types by calculating the number of expressions in the square bracket and the number of expressions that are not.
 \end{itemize}
 
 \subsubsection{Multiply}
-This part is pretty straight forward, just need to fit in different register to appropriate field in INSTRUCTION.
+This part is pretty straight forward, we just have to fit in different registers to the appropriate fields in INSTRUCTION.
 
 \subsection{Assemble the INSTRUCTION into binary (Second Pass)}
-This is achieved by simply shifting to the appropriate position. E.g. instruction. A tiny remark is that we realise using |= rather than += will be easier for debugging. If we use +=, if the field (e.g. DEST in DATAPROCESSING{\_}INSTR) is longer than its expected length, it will create a mess and super difficult to debug, especially when its a binary code. So we changed to |= later on. |= and += has the same effect if all of the field has appropriate length and is not overlapping, which in fact, they should not be overlapping.
-
-
+This is achieved by simply shifting the instruction to the appropriate position. A little remark is that we chose to use $|=$ rather than += as it will be easier for debugging. If we use += and the field (e.g. DEST in DATAPROCESSING{\_}INSTR) is longer than its expected length, it will be difficult to debug, especially when it is a binary code.
 
 \section{Description of our extension - Simon}
-Our extension is to implement an early version of the game Simon -- a simple game which trains the memorisation of children. In our game, there are 4 buttons which correspond to the 4 LEDs of different colours for the player to press on. In each round a sequence of LEDs would light up, the player then have to repeat the sequence by pressing the buttons corresponding to each LED. The next element of the sequence is randomly generated by a random generator and will be stored for use in the entire game. The game is made harder and harder by adding one more element to the sequence in each consecutive round. In our game, there are two levels which consists of sixteen rounds each. The second level is more difficult as we reduce the delay between the lights on of the LEDs in a sequence. Below are the layout of the game:
+Our extension is to implement an early version of the game Simon -- a simple game which trains the memorisation of children. In our game, there are 4 buttons which corresponds to the 4 LEDs of different colours for the player to press on. In each round a sequence of LEDs would light up, the player will then have to repeat the sequence by pressing the buttons associated to each LED. The next element of the sequence is randomly generated by a random generator and will be stored for use in the entire game. The game is made harder and harder by adding one more element to the sequence in each consecutive round. In our game, there are two levels which consists of sixteen rounds each. The second level is more difficult as we reduce the delay between the lights on of the LEDs in a sequence. Below is the layout of the game:
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.75\linewidth]{TOP1.jpg}
@@ -140,7 +134,7 @@ Our extension is to implement an early version of the game Simon -- a simple gam
 \label{fig::layout}
 \end{figure}
 
-We used C to program the game $(./arm11{\_}06/extension/simon.c)$ and library bcm2835 to access the GPIO pins of Raspberry Pi (Revision 2). Each pin are corresponding to one LED or button. As figure \ref{fig::layout} shows, there is a binary counter to calculate the score of the player, three state indicating lights (Yellow, Green and Red)to represent finishing of a sequence, correct input and wrong input respectively. Below are the flowchart of the game.
+We chose to use C to program the game $(./arm11{\_}06/extension/simon.c)$ and library bcm2835 to access the GPIO pins of Raspberry Pi (Revision 2). Each pin corresponds to one LED or button. As figure \ref{fig::layout} shows, there is a binary counter to calculate the score of the player, three states indicating LEDs (Yellow, Green and Red)to represent the end of a sequence, correct input and wrong input respectively. Below is the flowchart of the game.
 
 %Flow Chart for games
 % Define block styles
@@ -156,11 +150,11 @@ We used C to program the game $(./arm11{\_}06/extension/simon.c)$ and library bc
  
    % Place nodes
    \node [block] (start) {Start The game at level 0};
-   \node [block, below of=start] (random) {A random sequence is generated followed by yellow light on the top right corner blinking};
+   \node [block, below of=start] (random) {A random sequence is generated followed by a blink of the yellow LED on the top right corner};
    \node [decision, below of=random] (input) {Correct Input?};
-   \node [block, right of=input, node distance=5cm] (correct) {Correct sequence , the green light on the top right corner will blink to indicate correct};
-   \node [block, left of=input, node distance=5cm] (wrong) {The red light on the top right corner will blink to indicate wrong input.};
-   \node [block, below of=correct, node distance=2cm] (counter) {The binary counter of score will increment by 1 and each 16 score will increase 1 level};
+   \node [block, right of=input, node distance=5cm] (correct) {Correct sequence , the green LED on the top right corner will blink to indicate correctness};
+   \node [block, left of=input, node distance=5cm] (wrong) {The red LED on the top right corner will blink to indicate a wrong input};
+   \node [block, below of=correct, node distance=2cm] (counter) {The binary counter for the score will increment by 1 and will go on to the next level whenever 16 is scored };
    \node [block, below of=counter, node distance=2cm] (win) {Once the player finished level 2, the player win the game};
    \node [blocks, right of=random, node distance=8.5cm] (wait) {Prints winning pattern};
   
@@ -185,27 +179,24 @@ We used C to program the game $(./arm11{\_}06/extension/simon.c)$ and library bc
 \section{Design and the associated challenges of Simon}
 During the extension implementation, there are two main problems.
 \begin{itemize}
-\item Hardware problems, as most of our team members are not familiar with electronic, we are confused on connecting wires on the breadboard and often encounter bugs caused by hardware problems (The LED is not blinking and no valid input is taken because of wrong circuit design)
-\item Software problems, as we are using a library bcm2835, many of its functions are unfamiliar to us and sometimes we may misunderstood the function.
+\item Hardware problems, as most of our team members are not familiar with electronics, we are confused on connecting wires on the breadboard and often encounter bugs caused by hardware problems (The LED is not blinking and no valid input is taken because of a wrong circuit design)
+\item Software problems, as we are using the library bcm2835, many of its functions are new to us and sometimes we may misunderstood the function.
 \end{itemize}
 
 \section{Testing for our implementation on Simon}
-Testings are not done only when the whole program is implemented. Instead, testings are carried out for each functions when they are implemented. For example, we test the game algorithm (simon.c) in the ide console before implementing it with the raspberry pi.\newline \newline
-When debugging the functions, we have design a few general test cases and then input the variables manually. Then some group mates carry on implementing other functions while others will continue testing the function by designing more specific edge cases.\newline \newline
-We have used the library bcm2835.h in order to access different pins. Before using the library in our program, we have tested the library with some simple functions to make sure that the library works and we understand the properties of functions from the library. We have that each pin can be set as input and output, output pin can be set and clear properly etc.. before implementing the game with the raspberry.\newline \newline
-It is also important for us to test each hardware components. We have to make sure that they are all working properly before the final tests. If we don't do this, we won't know whether it is a hardware failure or a software bug during the final debug, and will cause additional work in order to identify it. Therefore we have made sure that all parts are working, and the circuits are connected correctly before debugging the game.\newline \newline
-We test the program in this way due to the lessons learnt when debugging assembler, While debugging assembler, it is really time consuming and difficult to debug the program as a whole. Therefore when working on the extension, we test while we are coding.\newline \newline
-After making sure that each functions works, we can move on to a larger scale of testing. Simon’s says is not very complicated and the gameplay is rather straightforward, therefore we have played the game for a number of times in order to make sure that the game works in general.\newline 
-Later on, we have discussed and design a few edge cases for testing. Which includes intentionally pressing the wrong button at the wrong time, or winning the games for too many times. One remark on the later cases is that, as testing this case by winning the games are time consuming and inefficient. We have changed and implement the code in such a way that we can manually change the variable and make the program thinks that we have already won a lot of levels. We learnt that in the sense of debugging, it is usually more convenient to debug of we make some variables easy to change, though this may cause is the security problem in other situations, it is not our concern for this game.
+While debugging, we have designed a few general test cases and test by inputing the variables manually. Some group mates would carry on implementing other functions while others continue testing the function by designing more specific edge cases.
+The library bcm2835.h is used to enable access to different pins. Before using the library, we have tested the library with some simple functions to make sure that the library works and we understand the properties of functions from the library.
+It is also important for us to test each hardware component. We have to make sure that they are all working properly before the final tests. \\After making sure that each function works, we move on to a larger scale of testing. Simon is not very complicated and the gameplay is rather straightforward, therefore we have played the game for a number of times in order to make sure that the game works.\newline 
+Later on, we have discussed and designed a few cases for testing, which includes intentionally pressing the wrong button at the wrong time. 
 
 
 \section{Group Reflection}
-In the beginning of the project, we mainly work together as a group in the lab with some team members programming while others do research. Working in this way helps us resolve any problem very quickly as we can support each other face-to-face. Also, we found this beneficial because we are not familiar with C in the very beginning and lots of help is needed. However, working together in the lab means that we will have to work on each part of the project one at a time, which slows down the progress. Since we all know more about C in the middle of the project and require less support from each other, we changed our approach when working on the assembler. This is the moment when we divide work amongst all members to allow work being done individually, each member is responsible for several branches on git which we later merge them into a single file. The efficiency has since then increased a lot. If we were given the chance to start the project again, we would have started work allocation straight from the start of the project so that members can do their own individual research back at home and discuss about problems and difficulties when we are having our team meeting. In conclusion, we are satisfied on our work allocation and team communication and are looking forward to collaborate in the future.
+In the beginning of the project, we mainly work together as a group in the lab with some team members programming while others doign research. Working in this way helps us resolve any problem very quickly as we can support each other face-to-face. Also, we found this beneficial because we are not familiar with C at the very beginning and lots of help is needed. However, working together in the lab means that we will have to work on each part of the project one at a time, which slows down the progress. Since we all know more about C in the middle of the project and require less support from each other, we changed our approach when working on the assembler. This is the moment when we divide work amongst all members to allow work being done individually, each member is responsible for several branches on git which we later merge them into a single file. The efficiency has since then increased a lot. If we were given the chance to start the project again, we would have started the work allocation straight from the start of the project so that members can do their own individual research back at home and discuss about problems and difficulties when we are having our team meeting. In conclusion, we are satisfied on our work allocation and team communication and are looking forward to collaborate in the future.
 
 \section{Individual Reflection}
 \textbf{Hao, Mang (hxm16):}
-\\ Across the project, I found it satisfying and demanding. My WebPA feedback proven I am active member of the team and making a great contributions throughout the whole project.
-\\When I first start off, I felt very uncomfortable in the team  as I didn’t know well about the strength of my teammates, so it is hard to coordinate the team to work efficiently in the beginning. Also, as we are unfamiliar with Git and C programming, many of our works are having conflicts. So, in the first two week, we are behind schedule. I feel our group time management could have been improved if we have a better communication in the team. It will save a lot of time for explain the specification to the teammate who are behind progress.
+\\ Across the project, I found it satisfying and demanding. My WebPA feedback has proven that I am active member of the team and making great contributions throughout the whole project.
+\\When I first started off, I felt very uncomfortable in the team  as I don't know well about the strength of my teammates, so it is hard to coordinate the team to work efficiently in the beginning. Also, as we are unfamiliar with Git and C programming, many of our works are having conflicts. So, in the first two week, we are behind schedule. I feel our group time management could have been improved if we have a better communication in the team. It will save a lot of time for explain the specification to the teammate who are behind progress.
 \\In the future projects, I will maintain the skills of setting deadlines and milestones at the beginning of the project. It have been proven to be a effective ways to improve our time management in the project and to 
 \\
 \\
