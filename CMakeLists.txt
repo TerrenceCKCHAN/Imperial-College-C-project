@@ -16,6 +16,7 @@ set(SOURCE_FILES
         src/emulator/emu_util.c
         src/emulator/emu_multiply.c
         src/emulator/emu_sdt.c
+		src/emulator/instruction.h
         src/assembler/assemble.h
         src/assembler/tokenizer.c
         src/assembler/tokenizer.h
@@ -24,7 +25,6 @@ set(SOURCE_FILES
         src/assembler/ADT_linkedlist.c
         src/assembler/ass_util.c
         src/assembler/firstpass.c
-        src/emulator/instruction.h
         src/assembler/secondpass.c
         src/assembler/ass_dp.c
         src/assembler/ass_multiply.c
