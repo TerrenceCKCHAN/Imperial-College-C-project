@@ -7,6 +7,25 @@
 #include "emu_decode.h"
 #include "emulate.h"
 
+//Helper function for GENERATEMASK
+u32 GENERATEMASKHELPER(int pos) {
+    if(pos >= 31) {
+        return (u32) ~0;
+    } else {
+        return (u32) (1 << (pos + 1)) - 1;
+    }
+}
+
+//Generate a mask to extract the bits of position start to position end
+u32 GENERATEMASK(int start, int end) {
+    return (GENERATEMASKHELPER(end)) - (GENERATEMASKHELPER(start - 1));
+}
+
+//Get the bits from position start to position end
+u32 GETBITS(u32 input, int start, int end) {
+    return (GENERATEMASK(start, end) & input) >> (start);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //Checking if the state of the machine satisfy the condition by checking the CPSR flags of the machine
 //PRE: State of the machine, the 4 bytes instruction

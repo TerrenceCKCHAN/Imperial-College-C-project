@@ -4,6 +4,7 @@ project(arm11_06)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
+        extension/simon.c
         src/assembler/assemble.c
         src/emulator/emulate.c
         src/emulator/emu_dp.c
@@ -29,6 +30,7 @@ set(SOURCE_FILES
         src/assembler/ass_multiply.c
         src/assembler/ass_branch.c
         src/assembler/ass_sdt.c
+        src/assembler/ass_io.c
         src/assembler/ADT_BST.c programs/game.c)
 
 add_executable(arm11_06 ${SOURCE_FILES})

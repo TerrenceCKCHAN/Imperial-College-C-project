@@ -20,17 +20,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to extract and set bits in u32 binary code
 /////////////////////////////////////////////////////////////////////////////////////////
-#define GENERATEMASKHELPER(pos) (u32) ((((pos + 1) >= 32) ? ((u32) (~0)) : ((1 << (pos + 1)))) - 1)
-//Generate a mask to extract the bits of position start to position end
-#define GENERATEMASK(start,end) (u32) ((GENERATEMASKHELPER(end)) - (GENERATEMASKHELPER(start - 1)))
-//Change the bits from position start to position end
-#define GETBITS(input, start, end)   (u32) ((GENERATEMASK(start, end) & input) >> (start))
-//Change bit at position pos to 1
 #define SETBIT(input, pos)          (u32) (input | 1 << pos)
 //Change bit at position pos to 0
 #define CLEARBIT(input, pos)        (u32) (input & (~(1 << pos)))
-//Change bits in target from position start to position end to input
-#define SETBITS(input, target, start, length)  (u32) (GENERATEMASK(start, start + length - 1) | target) & (((GENERATEMASK(length, 31) | input) << start) | GENERATEMASK(0, start - 1))
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to determine the ARM instruction set from its binary code
@@ -94,6 +86,9 @@ typedef struct{
 /////////////////////////////////////////////////////////////////////////////////////////
 // Function declaration (Utility functions in emu_util.c)
 /////////////////////////////////////////////////////////////////////////////////////////
+u32 GENERATEMASKHELPER(int pos);
+u32 GENERATEMASK(int start, int end);
+u32 GETBITS(u32 input, int start, int end);
 int satisfyCondition(MACHINE* ARM, u32 condition);
 void printBit(uint32_t x);
 void printRegisters(MACHINE* ARM);

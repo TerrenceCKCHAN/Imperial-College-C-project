@@ -1,6 +1,16 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+//C Group Project - First Year (2016-2017)
+//File: ass_io.c
+//Group: 6
+//Member: Cheung, Ka (klc116), Mang, Hao (hxm16), Cheuk, Ki (kfc216), Chan, Chun (ckc116)
+/////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
-#include "ass_io.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Write the instructions to a binary file
+// Pre: valid output path is provided
+// Post: The instrucitons are loaded to the binary file
+/////////////////////////////////////////////////////////////////////////////////////////
 void binaryFileWriter(u32 instr[], char *path, u32 numOfInstructions){
     FILE *ofp = fopen(path, "wb");
     if(ofp == NULL){
@@ -11,8 +21,13 @@ void binaryFileWriter(u32 instr[], char *path, u32 numOfInstructions){
     fwrite(instr, sizeof(u32), numOfInstructions, ofp);
 }
 
-u32 sourceFileReader(char* lines[], char* filename){
-    FILE * pFile;
+/////////////////////////////////////////////////////////////////////////////////////////
+// Load the source file to the line array
+// Pre: valid assembly file is provided
+// Post: The assembly lines is loaded the the line array
+/////////////////////////////////////////////////////////////////////////////////////////
+u32 sourceFileReader(char *lines[], char *filename){
+    FILE *pFile;
     char buffer[512];
     u32 index = 0;
 

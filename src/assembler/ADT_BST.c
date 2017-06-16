@@ -100,10 +100,10 @@ struct BST_node *deleteKey(BST_node * node,char* key, bst_compare_t compare){
     if(node == NULL){
         return node;
     }else{
-        if(compare(node->key,key)==0){
+        if(compare(node->key,key) == 0){
             node = deleteNode(node);
             return node;
-        }else if(compare(node->key,key)<=0){
+        }else if(compare(node->key,key) <= 0){
             node->left = deleteKey(node->left,key,compare);
             return node;
         } else{

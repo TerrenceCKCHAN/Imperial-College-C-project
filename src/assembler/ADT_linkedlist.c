@@ -35,10 +35,10 @@ void insertElement(struct Linkedlist **list, char *key, u32 value){
 }
 
 u32 lookUpValue(struct Linkedlist *list, char *key){
-    struct Linkedlist* current =list;
-    while(strcmp(current->key,key)!=0){
+    struct Linkedlist* current = list;
+    while(strcmp(current->key,key) != 0){
         current = current->next;
-        if(current==NULL){
+        if(current == NULL){
             printf("No such key");
             exit(EXIT_FAILURE);
         }

@@ -14,6 +14,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 void branch(MACHINE* ARM, BRANCH_INSTR* br) {
     if(satisfyCondition(ARM, br->COND)) {
+        u32 offsetMask = 0xffffffu;
         u32 offset  = br->OFFSET;
         //Left shifting the offset by two bits
         offset = LShiftL(offset, 2);
@@ -21,10 +22,10 @@ void branch(MACHINE* ARM, BRANCH_INSTR* br) {
             //offset is negative
             //changing the two's complement integer to an unisgned integer
             offset = (~offset)+1;
-            ARM->REGISTER[15] -= GETBITS(offset, 0, 23);
+            ARM->REGISTER[15] -= (offsetMask & offset);
         }else{
             //offset is positive
-            ARM->REGISTER[15] += GETBITS(offset, 0, 23);
+            ARM->REGISTER[15] += (offsetMask & offset);
         }
 
     }

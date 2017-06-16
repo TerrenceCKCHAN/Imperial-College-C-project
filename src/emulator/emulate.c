@@ -88,7 +88,6 @@ int main(int argc,  char **argv) {
     u32 fetchedInstr = 1;
     INSTRUCTION* decodedInstr = malloc(sizeof(INSTRUCTION));
     int decodedEmpty = 1, fetchedEmpty = 1, execute = 1;
-//    loadBinaryFile(ARM, "/homes/klc116/CLionProjects/arm11_06/programs/kernel.img");
     //load the binary file from the address given to the memory of the machine
     loadBinaryFile(ARM, argv[1]);
     //Simulation of the three stage pipeline

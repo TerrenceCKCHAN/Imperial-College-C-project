@@ -6,41 +6,18 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include "assemble.h"
 
-
-//void parse_address(ADDRESS* Opr_in_Bracket, LINE_TOKEN* line_token){
-//    int i = 1;
-//    int expinrect = 0;
-//    int expnotinrect = 0;
-//    while(line_token->operands[i] != NULL){
-//        if (line_token->operands[i][0]=='[' ){
-//            line_token->operands[i] ++;
-//            Opr_in_Bracket->Opr_in_Bracket[expinrect] = line_token->operands[i];
-//            expinrect++;
-//        }else if(line_token->operands[i][strlen(line_token->operands[i])-1]==']'){
-//            Opr_in_Bracket->Opr_in_Bracket[expinrect] = line_token->operands[i];
-//            expinrect++;
-//        }
-//        else {
-//            Opr_in_Bracket->Opr_in_Bracket[expnotinrect] = line_token->operands[expnotinrect];
-//            expnotinrect++;
-//        }
-//        i++;
-//    }
-//    Opr_in_Bracket->Num_Opr_in_bracket=expinrect;
-//    Opr_in_Bracket->Num_Opr_not_in_bracket=expnotinrect;
-//}
-
-//an helper function for determining different case if the address is not a numeric value
+/////////////////////////////////////////////////////////////////////////////////////////
+// Helper function for determining different case if the address is not a numeric value
 // Address struct in assemble.h
+/////////////////////////////////////////////////////////////////////////////////////////
 void parse_address(ADDRESS *address, LINE_TOKEN *line_token){
-    //the index for counting where the loop is when looping through the array of operands ,as address always start at operands[1], it is initialise as 1
+    //the index for counting where the loop is when looping through the array of operands ,as address always start at operands[1], it is initialised as 1
     int index = 1;
     //number of expressions in  bracket
     int NumInBracket = 0;
     //num of expressions in bracket
     int NumNotInBracket = 0;
-    //whether the exp is in a bracket or not, if it is in, set to 1, if not, set to 0, initialise as 1 as for all case, the first exp is in a bracket,
-    // to be honest initialising is not necessary but just to make sure
+    //whether the exp is in a bracket or not, if it is in, set to 1, if not, set to 0, initialise as 1 as for all case, the first exp is in a bracket
     int inBracket = 1;
     //loop through the rest of the operands and check whether the expression is in bracket or not
     while(line_token->operands[index] != NULL){
@@ -49,7 +26,7 @@ void parse_address(ADDRESS *address, LINE_TOKEN *line_token){
         char lastChar = line_token->operands[index][length - 1];
 
         if(firstChar == '[' && lastChar == ']'){
-            //if it start with '[' then it is in a bracket, the next will not be in a bracket tho as it ends with a ']',
+            //if it starts with '[' then it is in a bracket, the next will not be in a bracket tho as it ends with a ']',
             //no case have more than one bracket
             inBracket = 0;
             line_token->operands[index]++;
@@ -82,7 +59,9 @@ void parse_address(ADDRESS *address, LINE_TOKEN *line_token){
     address->Num_Opr_not_in_bracket = NumNotInBracket;
 }
 
-//setting up bit if there's a sign, then do the shifting using the shift in data processing
+/////////////////////////////////////////////////////////////////////////////////////////
+// Setting up bit if there's a sign, then do the shifting using the shift in data processing
+/////////////////////////////////////////////////////////////////////////////////////////
 void shifting_with_sign(LINE_TOKEN *line_token, int i, INSTRUCTION *instr) {
 
     if((line_token->operands[i][0] == '+') | (line_token->operands[i][0] == '-')){
@@ -92,16 +71,18 @@ void shifting_with_sign(LINE_TOKEN *line_token, int i, INSTRUCTION *instr) {
             instr->instr.sdt->U = 0;
         }
         line_token->operands[i]++;
-        instr->instr.sdt->OFFSET= shifting(line_token, i);
+        instr->instr.sdt->OFFSET = shifting(line_token, i);
     } else {
         instr->instr.sdt->U = 1;
         instr->instr.sdt->OFFSET = shifting(line_token, i);
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
 //Approximately the same with the imm value in data processing, with few more exceptional case
+/////////////////////////////////////////////////////////////////////////////////////////
 void imm_value_sdt(LINE_TOKEN *line_token, int i, INSTRUCTION *instr, u32 address, u32 numofinstr) {
-    u32 operand2=0;
+    u32 operand2 = 0;
     u32 val;
     //clearing up bit if there is a '-'
     if(line_token -> operands[i][1] == '-'){
@@ -117,19 +98,19 @@ void imm_value_sdt(LINE_TOKEN *line_token, int i, INSTRUCTION *instr, u32 addres
     //store to memory if too large
     while(val > 0xff){
         if(rotate_value > 0xff){
-            instr->instr.sdt->REGN=15;
+            instr->instr.sdt->REGN = 15;
             Memory[memoryPos] = parseExpression(line_token->operands[i]);
-            val = (numofinstr + memoryPos)*4 - address - 8;
+            val = (numofinstr + memoryPos) * 4 - address - 8;
             memoryPos++;
             rotate_value = 0;
             printf("Error: cant fit the number in 8 bit\n");
             break;
         }
-        val = LShiftL(val,2);
-        rotate_value+=1;
-        while((val&3)==0){
-            val = LShiftL(val,2);
-            rotate_value+=1;
+        val = RotateR(val, 30);
+        rotate_value++;
+        while((val & 3) == 0){
+            val = RotateR(val, 30);
+            rotate_value++;
         }
     }
     operand2 += val;
@@ -207,7 +188,6 @@ void assembleLdr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
         if(postIndexingCount == 0 && preIndexingCount == 1){
             // Expression is in the form of [Rn]
             instr->instr.sdt->REGN   = parseRegister(exp_in_rect->Opr_in_Bracket[0]);
-//            printf(exp_in_rect->Opr_in_Bracket[0]);
             // Offset is set to 0
             instr->instr.sdt->OFFSET = 0;
             // Representing pre-Indexing instruction
@@ -321,19 +301,3 @@ void assembleStr(LINE_TOKEN *line_token, INSTRUCTION *instr, u32 address, u32 nu
         instr->instr.sdt->P = 0;
     }
 }
-
-
-/*
- * typedef struct sdt{
-    u32 INSTRUCTION;
-    char OPCODE[4];
-    u32 COND: 4;
-    u32 REGD;
-    u32 REGN;
-    u32 OFFSET;
-    u32 I: 1;
-    u32 P: 1;
-    u32 U: 1;
-    u32 L: 1;
-}SIN_DATA_TRAN_INSTR;
- */
