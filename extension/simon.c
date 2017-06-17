@@ -50,6 +50,71 @@ enum state {
     WRONG,
     WAIT
 };
+void StartGameSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/Start.mp3", NULL);
+		_exit(0);
+	}
+}
+
+void waitstartSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/waitstart1.mp3", NULL);
+		_exit(0);
+	}
+}
+/*
+void redSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/1.mp3", NULL);
+		_exit(0);
+	}
+}
+
+void yellowSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/2.mp3", NULL);
+		_exit(0);
+	}
+}
+
+void greenSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/3.mp3", NULL);
+		_exit(0);
+	}
+}
+
+void whiteSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/4.mp3", NULL);
+		_exit(0);
+	}
+}
+
+void yourturnSound(){
+	int pid;
+	pid = fork();
+	if(pid==0){
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/wait.mp3", NULL);
+		_exit(0);
+	}
+	system("killall omxplayer.bin");
+}
+*/
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //To turn on the wrong indicating light
@@ -81,6 +146,7 @@ void CORRECTLightON() {
 //POST: The wrong indicating light on for 1 second
 /////////////////////////////////////////////////////////////////////////////////////////
 void YOUR_TURNLightOn() {
+
     bcm2835_gpio_write(YOUR_TURN, HIGH);
     delay(1000);
     bcm2835_gpio_write(YOUR_TURN, LOW);
@@ -92,6 +158,7 @@ void YOUR_TURNLightOn() {
 //POST: The red light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void REDLightOn(int time) {
+
     bcm2835_gpio_write(REDLIGHT, HIGH);
     delay(time);
     bcm2835_gpio_write(REDLIGHT, LOW);
@@ -104,6 +171,7 @@ void REDLightOn(int time) {
 //POST: The red light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void GREENLightOn(int time) {
+
     bcm2835_gpio_write(GREENLIGHT, HIGH);
     delay(time);
     bcm2835_gpio_write(GREENLIGHT, LOW);
@@ -116,6 +184,7 @@ void GREENLightOn(int time) {
 //POST: The yellow light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void YELLOWLightOn(int time) {
+
     bcm2835_gpio_write(YELLOWLIGHT, HIGH);
     delay(time);
     bcm2835_gpio_write(YELLOWLIGHT, LOW);
@@ -128,6 +197,7 @@ void YELLOWLightOn(int time) {
 //POST: The white light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void WHITELightOn(int time) {
+
     bcm2835_gpio_write(WHITELIGHT, HIGH);
     delay(time);
     bcm2835_gpio_write(WHITELIGHT, LOW);
@@ -247,6 +317,9 @@ void RotateLight(int time, int circle) {
     }
 }
 
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //To blink the 4 light (RED,YELLOW,GREEN,WHITE) circularly and indicate winning of the game
 //POST: The 4 light is blinked for 20 milliseconds each circularly in 100 of times
@@ -260,11 +333,14 @@ void WINBlink() {
 //POST: All light is blinked
 /////////////////////////////////////////////////////////////////////////////////////////
 void StartGame() {
+	StartGameSound();
     RotateLight(50, 5);
+    waitstartSound();
     YOUR_TURNLightOn();
+    
     CORRECTLightON();
     WRONGLightON();
-    delay(500);
+    system("killall omxplayer.bin");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -433,6 +509,7 @@ void initInput() {
 
 
 int main(int argc, char **argv) {
+	
     //The infinite loop is to restart the game once the player lose
     while (1) {
         //Initialise the library by opening /dev/mem and getting pointers to the internal memory for BCM 2835 device registers
