@@ -4,13 +4,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-
-#include <bcm2835.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <unistd.h>
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to set the GPIO Pins to their corresponding lights
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +55,7 @@ void StartGameSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/Start.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/Start.wav", NULL);
         _exit(0);
     }
 }
@@ -71,7 +64,7 @@ void WaitStartSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/waitstart1.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/waitstart.mp3", NULL);
         _exit(0);
     }
 }
@@ -81,7 +74,7 @@ void EndSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/end.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/end.wav", NULL);
         _exit(0);
     }
 }
@@ -634,8 +627,8 @@ void WinningTest(int round){
     while (gamestate != WRONG) {
         //print the sequence of the light generated
         printSequence(sequence, round, time);
-        //initialise the current position to 0
-        int pos = 0;
+        //initialise the current position to 31
+        int pos = 31;
         //The your turn light turned on indicate, it is the player's turn
         YourTurnLightOn();
         while (gamestate == WAIT) {
@@ -676,7 +669,7 @@ void WinningTest(int round){
 }
 
 void LEDTesting(){
-    int time = 500;
+    int time = 200;
     C_0_ON();
     delay(time);
     C_0_OFF();
@@ -691,7 +684,10 @@ void LEDTesting(){
     C_3_OFF();
     StartYourTurnLightOn();
     StartCorrectLightON();
-    StartWrongLightON();
+    bcm2835_gpio_write(WRONGLIGHT, HIGH);
+    delay(time);
+    bcm2835_gpio_write(WRONGLIGHT, LOW);
+    delay(time);
     bcm2835_gpio_write(REDLIGHT, HIGH);
     delay(time);
     bcm2835_gpio_write(REDLIGHT, LOW);
@@ -708,22 +704,27 @@ void LEDTesting(){
     delay(time);
     bcm2835_gpio_write(GREENLIGHT, LOW);
     delay(time);
+    
 }
 
 void SoundTesting(){
     StartGameSound();
+    delay(5000);
     WaitStartSound();
+    delay(6000);
+
     system("aplay /home/pi/Desktop/wait.wav");
     system("aplay /home/pi/Desktop/correct.wav");
-    system("aplay /home/pi/Desktop/wait.wav");
     system("aplay /home/pi/Desktop/lose.wav");
     system("aplay /home/pi/Desktop/1.wav");
     system("aplay /home/pi/Desktop/2.wav");
     system("aplay /home/pi/Desktop/3.wav");
     system("aplay /home/pi/Desktop/4.wav");
-    upgradeSound();
-    EndSound();
-    WinSound();
+    
+    system("omxplayer /home/pi/Desktop/Upgrade.mp3");
+    system("omxplayer /home/pi/Desktop/end.wav");
+    system("omxplayer /home/pi/Desktop/win.mp3");
+    
 }
 void InputTesting(){
     int time = 500;
@@ -756,10 +757,15 @@ void ScoreTesting(){
 }
 int main(int argc, char **argv) {
     int i;
-    //initOutput();
+    bcm2835_init();
+    if(!bcm2835_init()){
+		return 1;
+	}
+    initOutput();
+    //To test LED
     LEDTesting();
-    /*OFFLight();
-    delay(200);
+
+    //To test sound
     SoundTesting();
     system("killall omxplayer.bin");
     initInput();
@@ -776,7 +782,8 @@ int main(int argc, char **argv) {
     //Game start at round 31 directly and assumed first 31 input is correct
     WinningTest(31);
     printf("Finished Testing \n");
-	*/
+	
+	bcm2835_close();
     return 0;
 }
 
