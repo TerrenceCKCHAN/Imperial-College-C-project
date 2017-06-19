@@ -64,7 +64,7 @@ void WaitStartSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/waitstart1.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/waitstart.mp3", NULL);
         _exit(0);
     }
 }
@@ -74,7 +74,7 @@ void EndSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/end.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/end.wav", NULL);
         _exit(0);
     }
 }
@@ -616,7 +616,7 @@ int main(int argc, char **argv) {
                 WrongLightON();
                 difficulty = 0;
             }
-            if (round == 2) {
+            if (round >= LEVEL_2) {
                 //The player win level 2 and anf win the game
                 WinSound();
                 WINBlink();
