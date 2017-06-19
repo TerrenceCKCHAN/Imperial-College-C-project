@@ -4,6 +4,13 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
+#include <bcm2835.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+#include <unistd.h>
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Macro definition that help to set the GPIO Pins to their corresponding lights
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -516,23 +523,20 @@ void initInput() {
 }
 
 
-int main(int argc, char **argv) {
-
+void Gameplay(int round){
     //The infinite loop is to restart the game once the player lose
-    while (1) {
+
 
         //Initialise the library by opening /dev/mem and getting pointers to the internal memory for BCM 2835 device registers
         bcm2835_init();
         //if the library can't be initialise, the program terminate
         if (!bcm2835_init()) {
-            return 1;
+            return ;
         }
         //Initialise the game state, reserve memory for sequence and input
         enum light sequence[MAX_NUMBER_OF_LIGHT];
         enum state gamestate = WAIT;
         enum light input;
-        //first round
-        int round = 1;
         //Initialise the blinking time to be 450 milliseconds
         int time = INIT_BLINKING_TIME - difficulty * SCALE_OF_DIFF;
 
@@ -585,7 +589,7 @@ int main(int argc, char **argv) {
                 WrongLightON();
                 difficulty = 0;
             }
-            if (round >= LEVEL_2) {
+            if (round == LEVEL_2) {
                 //The player win level 2 and anf win the game
                 WinSound();
                 WINBlink();
@@ -597,7 +601,181 @@ int main(int argc, char **argv) {
         OFFLight();
         //close the library, deallocating any allocated memory and closing /dev/mem
         bcm2835_close();
+
+}
+
+void WinningTest(int round){
+    //The infinite loop is to restart the game once the player lose
+
+
+    //Initialise the library by opening /dev/mem and getting pointers to the internal memory for BCM 2835 device registers
+    bcm2835_init();
+    //if the library can't be initialise, the program terminate
+    if (!bcm2835_init()) {
+        return ;
     }
+    //Initialise the game state, reserve memory for sequence and input
+    enum light sequence[MAX_NUMBER_OF_LIGHT];
+    enum state gamestate = WAIT;
+    enum light input;
+    //Initialise the blinking time to be 450 milliseconds
+    int time = INIT_BLINKING_TIME - difficulty * SCALE_OF_DIFF;
+
+    //Turn off all light
+    OFFLight();
+    //set the GPIO pin to input or output
+    initOutput();
+    initInput();
+    //generate a random sequence of light
+    initSequence(sequence, MAX_NUMBER_OF_LIGHT);
+    //start the game by printing a starting light sequence
+    StartGame();
+
+    while (gamestate != WRONG) {
+        //print the sequence of the light generated
+        printSequence(sequence, round, time);
+        //initialise the current position to 0
+        int pos = 0;
+        //The your turn light turned on indicate, it is the player's turn
+        YourTurnLightOn();
+        while (gamestate == WAIT) {
+            if (pos == round) {
+                //The player input correctly and the correct light is on
+                CorrectLightON();
+                //print the current score
+                printCounter(round);
+                //change the game state to correct
+                gamestate = CORRECT;
+                break;
+            }
+            //read the input from the player and return enum of light
+            input = ReadInput();
+
+            //the position moved no matter what is the input
+                pos++;
+
+        }
+        if (gamestate == CORRECT) {
+            //increment the round and change the game satate
+            round++;
+            gamestate = WAIT;
+        }
+        if (round >= LEVEL_2) {
+            //The player win level 2 and anf win the game
+            WinSound();
+            WINBlink();
+            break;
+        }
+    }
+    system("killall omxplayer.bin");
+    //turn off all the light and wait for restart
+    OFFLight();
+    //close the library, deallocating any allocated memory and closing /dev/mem
+    bcm2835_close();
+
+}
+
+void LEDTesting(){
+    int time = 500;
+    C_0_ON();
+    delay(time);
+    C_0_OFF();
+    C_1_ON();
+    delay(time);
+    C_1_OFF();
+    C_2_ON();
+    delay(time);
+    C_2_OFF();
+    C_3_ON();
+    delay(time);
+    C_3_OFF();
+    StartYourTurnLightOn();
+    StartCorrectLightON();
+    StartWrongLightON();
+    bcm2835_gpio_write(REDLIGHT, HIGH);
+    delay(time);
+    bcm2835_gpio_write(REDLIGHT, LOW);
+    delay(time);
+    bcm2835_gpio_write(YELLOWLIGHT, HIGH);
+    delay(time);
+    bcm2835_gpio_write(YELLOWLIGHT, LOW);
+    delay(time);
+    bcm2835_gpio_write(WHITELIGHT, HIGH);
+    delay(time);
+    bcm2835_gpio_write(WHITELIGHT, LOW);
+    delay(time);
+    bcm2835_gpio_write(GREENLIGHT, HIGH);
+    delay(time);
+    bcm2835_gpio_write(GREENLIGHT, LOW);
+    delay(time);
+}
+
+void SoundTesting(){
+    StartGameSound();
+    WaitStartSound();
+    system("aplay /home/pi/Desktop/wait.wav");
+    system("aplay /home/pi/Desktop/correct.wav");
+    system("aplay /home/pi/Desktop/wait.wav");
+    system("aplay /home/pi/Desktop/lose.wav");
+    system("aplay /home/pi/Desktop/1.wav");
+    system("aplay /home/pi/Desktop/2.wav");
+    system("aplay /home/pi/Desktop/3.wav");
+    system("aplay /home/pi/Desktop/4.wav");
+    upgradeSound();
+    EndSound();
+    WinSound();
+}
+void InputTesting(){
+    int time = 500;
+    enum light input = ReadInput();
+    switch(input){
+        case RED:
+            REDLightOn(time);
+            break;
+        case GREEN:
+            GREENLightOn(time);
+            break;
+        case WHITE:
+            WHITELightOn(time);
+            break;
+        case YELLOW:
+            YELLOWLightOn(time);
+            break;
+        default:
+            return;
+    }
+}
+
+void ScoreTesting(){
+    int round = 0;
+    for(;round < 32; round++){
+        printCounter(round);
+        delay(500);
+    }
+
+}
+int main(int argc, char **argv) {
+    int i;
+    initOutput();
+    LEDTesting();
+    OFFLight();
+    delay(200);
+    SoundTesting();
+    system("killall omxplayer.bin");
+    initInput();
+    //To test all 4 light
+    for(i = 0; i < 4 ;i++){
+        InputTesting();
+    }
+    delay(500);
+    ScoreTesting();
+    //to test game play and terminate
+    Gameplay(1);
+    //to test invalid input
+    Gameplay(1);
+    //Game start at round 31 directly and assumed first 31 input is correct
+    WinningTest(31);
+    printf("Finished Testing \n");
 
     return 0;
 }
