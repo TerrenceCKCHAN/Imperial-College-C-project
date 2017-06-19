@@ -55,7 +55,7 @@ void StartGameSound() {
     int pid;
     pid = fork();
     if (pid == 0) {
-        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/Start.mp3", NULL);
+        execlp("/usr/bin/omxplayer", " ", "/home/pi/Desktop/Start.wav", NULL);
         _exit(0);
     }
 }
@@ -136,14 +136,15 @@ void StartYourTurnLightOn() {
 //POST: The wrong indicating light blinks and the current game terminate
 /////////////////////////////////////////////////////////////////////////////////////////
 void WrongLightON() {
+	
     int i = 0;
-    for (; i < 3; i++) {
+    for (; i < 2; i++) {
         bcm2835_gpio_write(WRONGLIGHT, HIGH);
         system("aplay /home/pi/Desktop/lose.wav");
         bcm2835_gpio_write(WRONGLIGHT, LOW);
         delay(BLINK_TIME);
     }
-    delay(1000);
+    delay(500);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -327,13 +328,42 @@ void RotateLight(int time, int circle) {
     }
 }
 
+void RotateALight(int time, int circle) {
+    int i = 0;
+    for (; i < circle; i++) {
+		bcm2835_gpio_write(WHITELIGHT, HIGH);
+        delay(time);
+        bcm2835_gpio_write(WHITELIGHT, LOW);
+        delay(time);
+        bcm2835_gpio_write(GREENLIGHT, HIGH);
+        delay(time);
+        bcm2835_gpio_write(GREENLIGHT, LOW);
+        delay(time);
+        bcm2835_gpio_write(YELLOWLIGHT, HIGH);
+        delay(time);
+        bcm2835_gpio_write(YELLOWLIGHT, LOW);
+        delay(time);
+        bcm2835_gpio_write(REDLIGHT, HIGH);
+        delay(time);
+        bcm2835_gpio_write(REDLIGHT, LOW);
+        delay(time);
+        
+        
+        
+    }
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //To blink the 4 light (RED,YELLOW,GREEN,WHITE) circularly and indicate winning of the game
 //POST: The 4 light is blinked for 20 milliseconds each circularly in 100 of times
 /////////////////////////////////////////////////////////////////////////////////////////
 void WINBlink() {
-    RotateLight(20, 100);
+	int i;
+	for(i=0;i<2;i++){
+    RotateLight(40, 8);
+    RotateALight(40,7);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -343,6 +373,7 @@ void WINBlink() {
 void StartGame() {
     StartGameSound();
     RotateLight(50, 5);
+    RotateALight(50,5);
     WaitStartSound();
     StartYourTurnLightOn();
     StartCorrectLightON();
@@ -585,18 +616,20 @@ int main(int argc, char **argv) {
                 WrongLightON();
                 difficulty = 0;
             }
-            if (round >= LEVEL_2) {
+            if (round == 2) {
                 //The player win level 2 and anf win the game
                 WinSound();
                 WINBlink();
                 break;
             }
         }
+        delay(5000);
         system("killall omxplayer.bin");
         //turn off all the light and wait for restart
         OFFLight();
         //close the library, deallocating any allocated memory and closing /dev/mem
         bcm2835_close();
+        
     }
 
     return 0;

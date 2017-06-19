@@ -756,9 +756,9 @@ void ScoreTesting(){
 }
 int main(int argc, char **argv) {
     int i;
-    initOutput();
+    //initOutput();
     LEDTesting();
-    OFFLight();
+    /*OFFLight();
     delay(200);
     SoundTesting();
     system("killall omxplayer.bin");
@@ -776,7 +776,7 @@ int main(int argc, char **argv) {
     //Game start at round 31 directly and assumed first 31 input is correct
     WinningTest(31);
     printf("Finished Testing \n");
-
+	*/
     return 0;
 }
 
