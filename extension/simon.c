@@ -57,9 +57,11 @@ void StartGameSound(){
 		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/Start.mp3", NULL);
 		_exit(0);
 	}
+	
 }
 
 void waitstartSound(){
+
 	int pid;
 	pid = fork();
 	if(pid==0){
@@ -67,54 +69,36 @@ void waitstartSound(){
 		_exit(0);
 	}
 }
-/*
-void redSound(){
+
+void EndSound(){
+	delay(500);
 	int pid;
 	pid = fork();
 	if(pid==0){
-		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/1.mp3", NULL);
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/end.mp3", NULL);
 		_exit(0);
 	}
 }
 
-void yellowSound(){
+void upgradeSound(){
+
 	int pid;
 	pid = fork();
 	if(pid==0){
-		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/2.mp3", NULL);
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/Upgrade.mp3", NULL);
 		_exit(0);
 	}
 }
 
-void greenSound(){
+void WinSound(){
+
 	int pid;
 	pid = fork();
 	if(pid==0){
-		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/3.mp3", NULL);
+		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/win.mp3", NULL);
 		_exit(0);
 	}
 }
-
-void whiteSound(){
-	int pid;
-	pid = fork();
-	if(pid==0){
-		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/4.mp3", NULL);
-		_exit(0);
-	}
-}
-
-void yourturnSound(){
-	int pid;
-	pid = fork();
-	if(pid==0){
-		execlp("/usr/bin/omxplayer"," ","/home/pi/Desktop/wait.mp3", NULL);
-		_exit(0);
-	}
-	system("killall omxplayer.bin");
-}
-*/
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //To turn on the wrong indicating light
@@ -131,13 +115,23 @@ void WRONGLightON() {
     delay(3000);
 }
 
+void LOSELightON() {
+    int i = 0;
+    for (; i < 3 ; i++) {
+        bcm2835_gpio_write(WRONGLIGHT, HIGH);
+        system("aplay /home/pi/Desktop/lose.wav");
+        bcm2835_gpio_write(WRONGLIGHT, LOW);
+        delay(BLINK_TIME);
+    }
+    delay(3000);
+}
 /////////////////////////////////////////////////////////////////////////////////////////
 //To turn on the correct indicating light
 //POST: The correct indicating light on for 1 second
 /////////////////////////////////////////////////////////////////////////////////////////
 void CORRECTLightON() {
     bcm2835_gpio_write(CORRECTLIGHT, HIGH);
-    delay(1000);
+    system("aplay /home/pi/Desktop/correct.wav");
     bcm2835_gpio_write(CORRECTLIGHT, LOW);
 }
 
@@ -148,7 +142,7 @@ void CORRECTLightON() {
 void YOUR_TURNLightOn() {
 
     bcm2835_gpio_write(YOUR_TURN, HIGH);
-    delay(1000);
+    system("aplay /home/pi/Desktop/wait.wav");
     bcm2835_gpio_write(YOUR_TURN, LOW);
 }
 
@@ -158,9 +152,10 @@ void YOUR_TURNLightOn() {
 //POST: The red light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void REDLightOn(int time) {
-
+	//redSound();
     bcm2835_gpio_write(REDLIGHT, HIGH);
-    delay(time);
+    //delay(time);
+    system("aplay /home/pi/Desktop/1.wav");
     bcm2835_gpio_write(REDLIGHT, LOW);
     delay(time);
 }
@@ -171,9 +166,11 @@ void REDLightOn(int time) {
 //POST: The red light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void GREENLightOn(int time) {
-
+	//greenSound();
     bcm2835_gpio_write(GREENLIGHT, HIGH);
-    delay(time);
+    //delay(time);
+    //system("speaker-test -t sine -f 500 -l 1");
+    system("aplay /home/pi/Desktop/2.wav");
     bcm2835_gpio_write(GREENLIGHT, LOW);
     delay(time);
 }
@@ -184,9 +181,10 @@ void GREENLightOn(int time) {
 //POST: The yellow light is turned on for (time) milliseconds
 /////////////////////////////////////////////////////////////////////////////////////////
 void YELLOWLightOn(int time) {
-
+	//yellowSound();
     bcm2835_gpio_write(YELLOWLIGHT, HIGH);
-    delay(time);
+    //system("speaker-test -t sine -f 400 -l 1");
+    system("aplay /home/pi/Desktop/3.wav");
     bcm2835_gpio_write(YELLOWLIGHT, LOW);
     delay(time);
 }
@@ -199,7 +197,9 @@ void YELLOWLightOn(int time) {
 void WHITELightOn(int time) {
 
     bcm2835_gpio_write(WHITELIGHT, HIGH);
-    delay(time);
+    //delay(time);
+    //system("speaker-test -t sine -f 300 -l 1");
+    system("aplay /home/pi/Desktop/4.wav");
     bcm2835_gpio_write(WHITELIGHT, LOW);
     delay(time);
 }
@@ -365,6 +365,7 @@ void printCounter(int rounds) {
         rounds %= 15;
 
     } else if (rounds == LEVEL_1 || rounds == LEVEL_2) {
+		upgradeSound();
         difficulty++;
         RotateLight(50, 5);
     }
@@ -512,6 +513,7 @@ int main(int argc, char **argv) {
 	
     //The infinite loop is to restart the game once the player lose
     while (1) {
+		
         //Initialise the library by opening /dev/mem and getting pointers to the internal memory for BCM 2835 device registers
         bcm2835_init();
         //if the library can't be initialise, the program terminate
@@ -572,10 +574,18 @@ int main(int argc, char **argv) {
                 gamestate = WAIT;
             } else if (gamestate == WRONG) {
                 //The program will terminate and restart after the wrong indicating light blinks
-                WRONGLightON();
+                EndSound();
+                LOSELightON();
+          
+                difficulty = 0;
+                
+             
+                
+          
             }
             if (difficulty == 2) {
                 //The player reached level 3 and anf win the game
+                WinSound();
                 WINBlink();
                 break;
             }
